@@ -1,4 +1,4 @@
-# Candi Super Store Platform — Phase 1 Specification (1A, 1B, 1C, 1D, 1E, 1F)
+# Candi Super Store Platform — Phase 1 Specification (1A to 1G)
 **Date:** 2026-09-16  
 **Status:** Validated Design Spec  
 **Target:** Monorepo (`apps/customer-web`, `apps/customer-mobile`, `apps/admin-web`, `packages/*`, `supabase/*`)
@@ -9,13 +9,14 @@
 
 The **Candi Super Store Platform** is a specialized B2B wholesale distribution platform for FMCG and confectionery products serving retailers and sub-wholesalers across Pakistan.
 
-Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, customer address/profile management, MVP execution handoff, and pilot build validation across six integrated milestones:
+Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, customer address/profile management, MVP execution handoff, pilot build validation, and live controlled pilot governance across seven integrated milestones:
 - **Phase 1A — Project Foundation**: Monorepo structure (pnpm workspaces), shared theme design tokens, shared TypeScript contracts, Supabase database schema, RLS policies, and Screen 01 (Customer Welcome).
 - **Phase 1B — Authentication & Registration**: Pakistan phone OTP login (+92 normalization), multi-step registration (Retailer / Sub-wholesaler), primary address capture with coordinates, and account status lifecycle (`pending_review`, `under_review`, `approved`, `rejected`, `changes_requested`, `suspended`, `archived`).
 - **Phase 1C — Admin Control Tower**: Operations dashboard in `admin-web` with Customer Applications queue, Application Review & Decision panel (Approve, Reject, Request Changes, Suspend), Delivery Zones management, Staff RBAC with permission enforcement, and immutable Audit Logging.
 - **Phase 1D — Customer Account & Address Management**: Customer profile viewing and editing, profile completion percentage, multi-address management (with single active primary address enforcement via database partial unique index), address deactivation rules, and location pin selector.
 - **Phase 1E — Implementation Handoff & MVP Execution**: MVP scope freeze, end-to-end order-to-cash state machine, multi-unit packaging conversion rules (`carton`, `box`, `packet`, `piece`), pilot rollout parameters, and the 4-week execution roadmap.
 - **Phase 1F — Build, Integrate & Validate**: Four-stage build order (Master Data & Controls, Order-to-Cash, Warehouse & Delivery, Reconciliation & Analytics), linear 10-step integration sequence, three comprehensive test packs (Functional, Control, Reconciliation), pilot readiness checklist, and exit criteria.
+- **Phase 1G — Controlled Pilot, Daily Monitoring & Go-Live Decision**: Live controlled pilot execution (1 warehouse, 1 depot, 1 zone, 10–14 days), 5-slot daily operating rhythm, pilot monitoring register, 9 daily control checks, 3-tier exception escalation, pilot scorecard, and go-live decision framework.
 
 ---
 
@@ -523,4 +524,80 @@ Reconciled
 * All 3 test packs pass with zero high-severity financial or security control defects.
 * Stock and ledger movements reconcile with zero unexplained variance.
 * Ready for live controlled pilot deployment in Phase 1G.
+
+---
+
+## 12. Phase 1G — Controlled Pilot, Daily Monitoring & Go-Live Decision
+
+### 12.1 Controlled Pilot Scope
+* Single designated warehouse/depot and one active delivery zone.
+* Small cohort of trained order-bookers, warehouse pickers, and delivery drivers.
+* Selected pilot customer list (retailers & sub-wholesalers) and controlled SKU set.
+* Defined timeframe: 10–14 consecutive operating days under a named Pilot Owner.
+* Hard invariant: Zero scope expansion during the pilot period without documented executive approval.
+
+### 12.2 Daily Operating Rhythm (5 Operational Milestones)
+| Time | Activity | Accountable Owner |
+| :--- | :--- | :--- |
+| **Start of Day** | Verify opening stock, confirm active users, route allocations, and inspect open exceptions | Operations Lead |
+| **Before Dispatch** | Review confirmed orders, warehouse pick lists, and driver manifests | Warehouse Manager |
+| **During Delivery** | Record real-time delivery status, shortages, returns, and cash collected at each stop | Driver / Delivery Team |
+| **End of Day** | Reconcile delivered orders against invoices, recorded payments, and cashier cash receipts | Finance / Cashier |
+| **Daily Review** | Review failures, delivery delays, variances, and assign corrective action owners | Pilot Owner |
+
+### 12.3 Pilot Order Monitoring Register
+Every transaction is tracked through the unified lifecycle:
+`Order Booked` $\rightarrow$ `Confirmation Received` $\rightarrow$ `Credit & Price Validated` $\rightarrow$ `Stock Reserved` $\rightarrow$ `Picked` $\rightarrow$ `Dispatched` $\rightarrow$ `Delivered / Exception Logged` $\rightarrow$ `Invoice Issued` $\rightarrow$ `Payment Recorded` $\rightarrow$ `Khata Ledger Updated` $\rightarrow$ `Cash Reconciled`.
+
+**Tracked Fields**:
+* Order ID & Customer Account.
+* Order Date & Current Status.
+* WhatsApp Confirmation Result & Latency.
+* Stock Variance & Picking Accuracy.
+* Delivery Result (Full, Partial, Refused).
+* Invoice Number & Payment Status.
+* Cash Variance (Expected vs. Actual).
+* Exception Owner & Target Resolution Date.
+
+### 12.4 Mandatory Daily Control Invariants (9 Rules)
+1. No order proceeds without explicit approval / confirmation.
+2. No stock is dispatched without a validated picking record.
+3. No delivered order remains uninvoiced.
+4. No payment is recorded without an identifiable source receipt.
+5. No cash variance remains unexplained or unresolved.
+6. All manual overrides are auditable in `audit_logs`.
+7. All returns must have a documented reason and authorization.
+8. Customer khata balances must match the double-entry ledger.
+9. Physical stock must agree with system stock for all pilot SKUs.
+
+### 12.5 Three-Tier Exception Escalation
+* **Level 1 — Operational Correction** (Resolved within shift by supervisors): Wrong quantity, missing confirmation, picking error, delivery delay, minor data typo.
+* **Level 2 — Supervisor Review** (Action required within 4 hours): Repeated stock variance, customer pricing dispute, unapproved discount, credit-limit breach, partial delivery, unresolved cash difference.
+* **Level 3 — Pilot Owner Decision** (Immediate escalation): Customer ledger mismatch, material cash variance, system outage, unauthorized access, duplicate invoicing, data loss, or any compromise of financial/inventory integrity.
+
+### 12.6 Pilot Scorecard (6 Core Evaluation Dimensions)
+* **Commercial**: Confirmation rate ($\ge 85\%$), timeout rate ($\le 10\%$).
+* **Inventory**: Stock accuracy ($\ge 99\%$), zero unexplained picking discrepancies.
+* **Delivery**: On-time delivery rate ($\ge 95\%$), delivery refusal rate ($\le 5\%$).
+* **Finance**: 100% invoice completion, zero unreconciled cash variance at route closure.
+* **Controls**: Zero unlogged overrides, 100% resolution of escalated exceptions.
+* **Adoption**: Daily active usage by all pilot order-bookers, drivers, and cashiers without manual shadow books.
+
+### 12.7 Documented Go-Live Decision Matrix
+At the conclusion of the 10–14 day pilot, the Pilot Owner and Executive Stakeholders classify the outcome into one of four verdicts:
+1. **Proceed**: Core workflow validated, controls strictly observed, daily cash & ledger reconciliations clean, zero high-severity open issues $\rightarrow$ proceed to full rollout.
+2. **Proceed with Conditions**: Core workflow stable, but specific low-risk operational adjustments are documented with named owners and hard deadlines before scaling.
+3. **Extend Pilot**: Additional operating days required to gather conclusive stability evidence or resolve recurring Level 2 issues.
+4. **Stop and Remediate**: Critical control breach, inventory discrepancy, or financial integrity failure $\rightarrow$ halt rollout until fundamental fix is verified.
+
+### 12.8 Required Final Phase 1 Outputs
+* Pilot Performance & KPI Report.
+* Exception & Corrective-Action Register.
+* Physical Stock vs. System Stock Reconciliation Certificate.
+* Customer Ledger & Cash Reconciliation Sign-off.
+* User Feedback & Training Gap Register.
+* Standard Operating Procedure (SOP) Manual for Operations, Warehouse & Drivers.
+* Formal Go-Live Decision Record.
+* Phase 2 Prioritized Product Backlog.
+
 
