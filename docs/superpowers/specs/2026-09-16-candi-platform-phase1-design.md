@@ -1,4 +1,4 @@
-# Candi Super Store Platform — Phase 1 Specification (1A, 1B, 1C, 1D)
+# Candi Super Store Platform — Phase 1 Specification (1A, 1B, 1C, 1D, 1E)
 **Date:** 2026-09-16  
 **Status:** Validated Design Spec  
 **Target:** Monorepo (`apps/customer-web`, `apps/customer-mobile`, `apps/admin-web`, `packages/*`, `supabase/*`)
@@ -9,11 +9,12 @@
 
 The **Candi Super Store Platform** is a specialized B2B wholesale distribution platform for FMCG and confectionery products serving retailers and sub-wholesalers across Pakistan.
 
-Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, and customer address/profile management across four integrated milestones:
+Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, customer address/profile management, and the MVP execution handoff across five integrated milestones:
 - **Phase 1A — Project Foundation**: Monorepo structure (pnpm workspaces), shared theme design tokens, shared TypeScript contracts, Supabase database schema, RLS policies, and Screen 01 (Customer Welcome).
 - **Phase 1B — Authentication & Registration**: Pakistan phone OTP login (+92 normalization), multi-step registration (Retailer / Sub-wholesaler), primary address capture with coordinates, and account status lifecycle (`pending_review`, `under_review`, `approved`, `rejected`, `changes_requested`, `suspended`, `archived`).
 - **Phase 1C — Admin Control Tower**: Operations dashboard in `admin-web` with Customer Applications queue, Application Review & Decision panel (Approve, Reject, Request Changes, Suspend), Delivery Zones management, Staff RBAC with permission enforcement, and immutable Audit Logging.
 - **Phase 1D — Customer Account & Address Management**: Customer profile viewing and editing, profile completion percentage, multi-address management (with single active primary address enforcement via database partial unique index), address deactivation rules, and location pin selector.
+- **Phase 1E — Implementation Handoff & MVP Execution**: MVP scope freeze, end-to-end order-to-cash state machine, multi-unit packaging conversion rules (`carton`, `box`, `packet`, `piece`), pilot rollout parameters, and the 4-week execution roadmap.
 
 ---
 
@@ -43,6 +44,7 @@ candi-super-store/
 │   ├── architecture/
 │   ├── database/
 │   ├── permissions/
+│   ├── mvp/
 │   └── superpowers/specs/
 │
 ├── pnpm-workspace.yaml
@@ -209,7 +211,7 @@ create table public.audit_logs (
 ### 4.2 Security Functions & Triggers
 * `handle_new_user()`: Trigger on `auth.users` insert $\rightarrow$ creates `profiles` record automatically.
 * `has_permission(user_id uuid, required_perm text)`: `SECURITY DEFINER` function returning boolean based on active staff role assignments and permissions.
-* `set_primary_customer_address(p_address_id uuid, p_account_id uuid)`: Server-side function that atomicity unsets other primary flags and marks `p_address_id` as primary.
+* `set_primary_customer_address(p_address_id uuid, p_account_id uuid)`: Server-side function that atomically unsets other primary flags and marks `p_address_id` as primary.
 
 ### 4.3 Row Level Security (RLS) Summary
 * `profiles`: Users can select/update their own profile (`id = auth.uid()`). Staff with `customers.view_all` can select profiles.
@@ -335,3 +337,78 @@ create table public.audit_logs (
 * **Screen 01 & Auth Flow**: Customer Welcome renders on both web and mobile; OTP flow works seamlessly in both live Supabase mode and mock fallback mode.
 * **Customer Registration & Profile**: Multi-step registration successfully submits pending review accounts; saved addresses support add, edit, set primary, and deactivate.
 * **Admin Dashboard**: Applications queue filters and sorts; Application detail allows reviewing customer info, map coordinates, and executing Approve / Reject / Changes Requested / Suspend decisions with audit logging.
+
+---
+
+## 10. Phase 1E — Implementation Handoff & MVP Execution Blueprint
+
+### 10.1 Frozen MVP Scope
+* **Included**:
+  * Product and packaging master data (`Carton`, `Box`, `Packet`, `Piece` unit hierarchy and conversion ratios).
+  * Customer profiles, customer tiers (`retailer`, `sub_wholesaler`), and tier-based price lists.
+  * Order capture (customer portal, order-booker interface, WhatsApp confirmation trigger).
+  * Tele-sales escalation queue for unconfirmed orders.
+  * Inventory reservation on order confirmation.
+  * Invoice & Delivery Challan generation.
+  * Customer khata (balance ledger) and credit limits.
+  * Driver delivery manifest & cash collection recording.
+  * Cashier reconciliation (expected cash vs. actual cash collected).
+  * Basic management dashboard with operational metrics.
+* **Excluded**:
+  * Advanced algorithmic route optimization.
+  * Fleet telematics / GPS vehicle tracking.
+  * Complex loyalty or reward schemes.
+  * Predictive demand forecasting & multi-company consolidation.
+
+### 10.2 Order-to-Cash Operational State Machine
+```text
+Draft
+  ↓
+Pending Confirmation
+  ↓
+Confirmed
+  ↓
+Approved for Picking
+  ↓
+Picked
+  ↓
+Dispatched
+  ↓
+Delivered
+  ↓
+Reconciled
+```
+* **Exception States**: `Cancelled`, `Confirmation Timeout`, `Credit Hold`, `Partially Delivered`, `Returned`, `Cash Variance`.
+* **State Transition Invariants**: Every transition logs `actor_profile_id`, timestamp, previous status, new status, reason, and associated order/manifest IDs.
+
+### 10.3 Minimum Viable Data Model & Conversions
+* **Packaging Unit Hierarchy**: `Carton` $\rightarrow$ `Box` $\rightarrow$ `Packet` $\rightarrow$ `Piece`.
+* **Conversion Invariant**: All inventory stock is maintained in a single base unit (e.g. piece or packet). Sales units and invoices record conversion ratios so broken-carton sales never produce negative or duplicated stock.
+* **Customer Khata (Ledger)**:
+  * Invoicing $\rightarrow$ Debit Customer Account.
+  * Cash Collection $\rightarrow$ Credit Customer Account (reduces receivable).
+  * Returns $\rightarrow$ Credit adjustment with authorized audit trail.
+
+### 10.4 First Working Demonstration Workflow
+1. Order-booker logs in and creates an order for a registered retailer.
+2. System validates customer status (`approved`), active price list, stock availability, MOQ, and MOV.
+3. Order enters `Pending Confirmation`; WhatsApp message with bill summary and interactive buttons is simulated.
+4. Retailer confirms order; system reserves stock and generates a warehouse pick-list.
+5. Warehouse staff marks order as `Picked`.
+6. Driver receives delivery manifest with delivery stops.
+7. Driver records delivery completion and collected cash amount.
+8. Driver returns to depot; Cashier reconciles collected cash against invoice manifest. Order status transitions to `Reconciled`.
+
+### 10.5 Controlled Pilot Parameters & Metrics
+* **Parameters**: 1 warehouse, 1 depot, 1 delivery zone, 2 order-bookers, 3 delivery drivers, 10–14 operating days.
+* **KPIs**:
+  * Order Confirmation Rate: $\ge 85\%$
+  * Delivery Refusal Rate: $\le 5\%$
+  * Picking Accuracy: $\ge 99\%$
+  * Cash Variance: $0$ (unreconciled variance blocks route closure)
+
+### 10.6 Immediate 4-Week Execution Sequence
+* **Week 1**: Foundation, Monorepo, Database Schemas, RLS, Design Tokens, Customer Welcome (Phase 1A).
+* **Week 2**: Customer Auth (Phone OTP), Customer Registration, Customer Profile & Addresses (Phase 1B, 1D).
+* **Week 3**: Admin Applications Queue, Review & Decision Panel, Delivery Zones, Staff RBAC, Audit Logging (Phase 1C).
+* **Week 4**: MVP Order-to-Cash End-to-End Walkthrough, Master Data Import Templates, Pilot Readiness Sign-off (Phase 1E).
