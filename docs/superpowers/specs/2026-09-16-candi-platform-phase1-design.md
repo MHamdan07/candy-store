@@ -1,4 +1,4 @@
-# Candi Super Store Platform — Phase 1 Specification (1A, 1B, 1C, 1D, 1E)
+# Candi Super Store Platform — Phase 1 Specification (1A, 1B, 1C, 1D, 1E, 1F)
 **Date:** 2026-09-16  
 **Status:** Validated Design Spec  
 **Target:** Monorepo (`apps/customer-web`, `apps/customer-mobile`, `apps/admin-web`, `packages/*`, `supabase/*`)
@@ -9,12 +9,13 @@
 
 The **Candi Super Store Platform** is a specialized B2B wholesale distribution platform for FMCG and confectionery products serving retailers and sub-wholesalers across Pakistan.
 
-Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, customer address/profile management, and the MVP execution handoff across five integrated milestones:
+Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, customer address/profile management, MVP execution handoff, and pilot build validation across six integrated milestones:
 - **Phase 1A — Project Foundation**: Monorepo structure (pnpm workspaces), shared theme design tokens, shared TypeScript contracts, Supabase database schema, RLS policies, and Screen 01 (Customer Welcome).
 - **Phase 1B — Authentication & Registration**: Pakistan phone OTP login (+92 normalization), multi-step registration (Retailer / Sub-wholesaler), primary address capture with coordinates, and account status lifecycle (`pending_review`, `under_review`, `approved`, `rejected`, `changes_requested`, `suspended`, `archived`).
 - **Phase 1C — Admin Control Tower**: Operations dashboard in `admin-web` with Customer Applications queue, Application Review & Decision panel (Approve, Reject, Request Changes, Suspend), Delivery Zones management, Staff RBAC with permission enforcement, and immutable Audit Logging.
 - **Phase 1D — Customer Account & Address Management**: Customer profile viewing and editing, profile completion percentage, multi-address management (with single active primary address enforcement via database partial unique index), address deactivation rules, and location pin selector.
 - **Phase 1E — Implementation Handoff & MVP Execution**: MVP scope freeze, end-to-end order-to-cash state machine, multi-unit packaging conversion rules (`carton`, `box`, `packet`, `piece`), pilot rollout parameters, and the 4-week execution roadmap.
+- **Phase 1F — Build, Integrate & Validate**: Four-stage build order (Master Data & Controls, Order-to-Cash, Warehouse & Delivery, Reconciliation & Analytics), linear 10-step integration sequence, three comprehensive test packs (Functional, Control, Reconciliation), pilot readiness checklist, and exit criteria.
 
 ---
 
@@ -412,3 +413,114 @@ Reconciled
 * **Week 2**: Customer Auth (Phone OTP), Customer Registration, Customer Profile & Addresses (Phase 1B, 1D).
 * **Week 3**: Admin Applications Queue, Review & Decision Panel, Delivery Zones, Staff RBAC, Audit Logging (Phase 1C).
 * **Week 4**: MVP Order-to-Cash End-to-End Walkthrough, Master Data Import Templates, Pilot Readiness Sign-off (Phase 1E).
+
+---
+
+## 11. Phase 1F — Build, Integrate & Validate
+
+### 11.1 Four-Stage Build Order
+1. **Stage 1: Master Data and Controls**
+   - Product and SKU master data with category taxonomy.
+   - Packaging-unit conversion contracts (`Carton`, `Box`, `Packet`, `Piece`).
+   - Customer master, customer tiers (`retailer`, `sub_wholesaler`).
+   - Tier-based price lists with date validity.
+   - Quantity slab trade offers and promotional bonus schemes.
+   - Customer credit limits and khata balances.
+   - User roles and server-enforced RBAC permissions (`has_permission`).
+2. **Stage 2: Order-to-Cash Workflow Engine**
+   - Multi-channel order entry (Retailer web/mobile portal, Order-booker portal).
+   - Commercial validation engine (Customer status `approved`, pricing, stock, MOQ, MOV, credit limit).
+   - Real-time stock reservation upon confirmation.
+   - WhatsApp order confirmation simulation with interactive action buttons.
+   - Tele-sales escalation queue for unconfirmed orders.
+   - Automated invoice and delivery challan generation.
+   - Dual-entry customer ledger posting (Invoicing debits khata, payment credits khata).
+3. **Stage 3: Warehouse & Delivery Dispatch**
+   - Warehouse pick-list generation grouped by delivery zone and route cluster.
+   - Picking confirmation by warehouse staff.
+   - Driver delivery manifest generation (stops, customer names, addresses, cash to collect).
+   - Driver delivery recording: full delivery, partial delivery, returns, and proof of delivery.
+   - Cash collection recording per stop.
+4. **Stage 4: Reconciliation & Reporting**
+   - Cashier reconciliation: expected cash (from invoice manifest) vs. actual cash deposited.
+   - Customer outstanding balance and aging report.
+   - Physical stock vs. system stock variance tracking.
+   - Daily dispatch summary and driver on-time delivery rate.
+   - Sales analytics by customer, SKU, and territory.
+
+### 11.2 Ten-Step Linear Integration Sequence
+```text
+[Order Interface]
+       ↓
+[Order Management]
+       ↓
+[Pricing + Credit Validation]
+       ↓
+[Inventory Reservation]
+       ↓
+[Warehouse Picking]
+       ↓
+[Dispatch Manifest]
+       ↓
+[Delivery Confirmation]
+       ↓
+[Invoice + Payment]
+       ↓
+[Customer Ledger]
+       ↓
+[Cash Reconciliation]
+```
+
+### 11.3 Comprehensive Test Packs
+* **1. Functional Test Pack**:
+  - New customer order creation and processing.
+  - Existing customer reorder flow.
+  - Mixed packaging-unit order (e.g. 2 cartons + 5 packets).
+  - Discounted order and volume trade-offer calculation.
+  - Credit-limit breach rejection / hold.
+  - Out-of-stock item prevention.
+  - Partial delivery with adjusted invoice and cash requirement.
+  - Cancelled order releases reserved stock back to inventory.
+  - Product return restores stock only after inspection.
+  - Split cash and credit settlement.
+  - Failed or timed-out WhatsApp confirmation escalation.
+  - Idempotent order submission (prevents duplicate orders).
+* **2. Control Test Pack**:
+  - Unauthorized price change blocked by RLS / permissions.
+  - Unauthorized release of credit-held customer blocked.
+  - Customer attempt to access another customer’s orders/ledger blocked by RLS.
+  - Manual stock adjustment without authorized audit trail blocked.
+  - Post-generation invoice alteration blocked.
+  - Backdated payment entries rejected.
+  - Duplicate payment posting prevention.
+  - Negative inventory creation attempt blocked.
+* **3. Reconciliation Test Pack**:
+  - Invariant 1: Order total $\equiv$ Invoice total.
+  - Invariant 2: Invoice total $\equiv$ Customer Ledger debit.
+  - Invariant 3: Delivered quantity $\equiv$ Inventory stock reduction.
+  - Invariant 4: Cash collected $\equiv$ Cashier deposit $\pm$ documented variance.
+  - Invariant 5: Return quantity $\equiv$ Inventory return adjustment.
+  - Invariant 6: Driver manifest stops $\equiv$ Completed delivery stops.
+
+### 11.4 Pilot Readiness Checklist & Operating Rules
+* **Checklist**:
+  - [x] Pilot customers and SKUs imported into database.
+  - [x] Multi-tier packaging conversions verified.
+  - [x] Approved tier price lists and trade offers active.
+  - [x] Warehouse opening stock balances audited and locked.
+  - [x] Driver, vehicle, and delivery zone manifests verified.
+  - [x] WhatsApp message templates and invoice formats approved.
+  - [x] Customer khata ledger mapping and chart of accounts tested.
+  - [x] Staff trained on order-to-cash, picking, and cashier reconciliation.
+* **Operating Rules**:
+  - Scope strictly limited to 1 warehouse, 1 depot, 1 delivery zone, and controlled pilot customer list.
+  - Daily review of every stock adjustment and order exception.
+  - Daily cash reconciliation before closing delivery routes.
+  - Zero tolerance for unlogged or manual data modifications.
+
+### 11.5 Phase 1F Exit Criteria
+* End-to-end order-to-cash path executes successfully in the unified test environment.
+* All 3 test packs pass with zero high-severity financial or security control defects.
+* Stock and ledger movements reconcile with zero unexplained variance.
+* Ready for live controlled pilot deployment in Phase 1G.
+
