@@ -1,4 +1,4 @@
-# Candi Super Store Platform — Phase 1 Specification (1A to 1G)
+# Candi Super Store Platform — Phase 1 Specification (1A to 1H)
 **Date:** 2026-09-16  
 **Status:** Validated Design Spec  
 **Target:** Monorepo (`apps/customer-web`, `apps/customer-mobile`, `apps/admin-web`, `packages/*`, `supabase/*`)
@@ -9,7 +9,7 @@
 
 The **Candi Super Store Platform** is a specialized B2B wholesale distribution platform for FMCG and confectionery products serving retailers and sub-wholesalers across Pakistan.
 
-Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, customer address/profile management, MVP execution handoff, pilot build validation, and live controlled pilot governance across seven integrated milestones:
+Phase 1 establishes the complete foundation, authentication, customer registration, admin approval governance, customer address/profile management, MVP execution handoff, pilot build validation, live controlled pilot governance, and stabilization for scale across eight integrated milestones:
 - **Phase 1A — Project Foundation**: Monorepo structure (pnpm workspaces), shared theme design tokens, shared TypeScript contracts, Supabase database schema, RLS policies, and Screen 01 (Customer Welcome).
 - **Phase 1B — Authentication & Registration**: Pakistan phone OTP login (+92 normalization), multi-step registration (Retailer / Sub-wholesaler), primary address capture with coordinates, and account status lifecycle (`pending_review`, `under_review`, `approved`, `rejected`, `changes_requested`, `suspended`, `archived`).
 - **Phase 1C — Admin Control Tower**: Operations dashboard in `admin-web` with Customer Applications queue, Application Review & Decision panel (Approve, Reject, Request Changes, Suspend), Delivery Zones management, Staff RBAC with permission enforcement, and immutable Audit Logging.
@@ -17,6 +17,7 @@ Phase 1 establishes the complete foundation, authentication, customer registrati
 - **Phase 1E — Implementation Handoff & MVP Execution**: MVP scope freeze, end-to-end order-to-cash state machine, multi-unit packaging conversion rules (`carton`, `box`, `packet`, `piece`), pilot rollout parameters, and the 4-week execution roadmap.
 - **Phase 1F — Build, Integrate & Validate**: Four-stage build order (Master Data & Controls, Order-to-Cash, Warehouse & Delivery, Reconciliation & Analytics), linear 10-step integration sequence, three comprehensive test packs (Functional, Control, Reconciliation), pilot readiness checklist, and exit criteria.
 - **Phase 1G — Controlled Pilot, Daily Monitoring & Go-Live Decision**: Live controlled pilot execution (1 warehouse, 1 depot, 1 zone, 10–14 days), 5-slot daily operating rhythm, pilot monitoring register, 9 daily control checks, 3-tier exception escalation, pilot scorecard, and go-live decision framework.
+- **Phase 1H — Stabilization, Scale-Up & Continuous Improvement**: Pilot stabilization and issue classification, 12 formal operational SOPs, 5 staged rollout expansion waves, formal change control governance, executive management dashboard (16 KPIs), and Phase 2 scale backlog.
 
 ---
 
@@ -599,5 +600,95 @@ At the conclusion of the 10–14 day pilot, the Pilot Owner and Executive Stakeh
 * Standard Operating Procedure (SOP) Manual for Operations, Warehouse & Drivers.
 * Formal Go-Live Decision Record.
 * Phase 2 Prioritized Product Backlog.
+
+---
+
+## 13. Phase 1H — Stabilization, Scale-Up & Continuous Improvement
+
+### 13.1 Pilot Stabilization & Issue Classification
+Before any expansion to additional customers, delivery routes, or depots, all open pilot defects are systematically resolved and classified:
+* **Critical**: Unreconciled cash or stock variance, security/RLS breach, data loss $\rightarrow$ Must be closed before any expansion.
+* **High**: Workflow impediment requiring manual workaround $\rightarrow$ Requires a named owner and hard deadline.
+* **Medium**: Performance friction or UI annoyance $\rightarrow$ Prioritized into the improvement backlog.
+* **Low**: Cosmetic or minor typo $\rightarrow$ Addressed during routine maintenance.
+* **Feature Freeze Invariant**: Zero new business features are introduced until all Critical and High issues are validated as closed.
+
+### 13.2 Twelve Formal Standard Operating Procedures (SOPs)
+Each standard operating procedure must adhere to an 8-attribute specification contract:
+1. `Trigger`: Event initiating the SOP.
+2. `Responsible Role`: Named staff role accountable.
+3. `Required Input`: Documents, IDs, or preconditions.
+4. `Process Steps`: Sequential actions to execute.
+5. `Approval Point`: Explicit permission or supervisor gate.
+6. `Required Evidence`: System records, signatures, or photos.
+7. `Exception Path`: Handling when rules are breached.
+8. `Completion Condition`: Final state verifying completion.
+
+**The 12 Core Operational SOPs**:
+1. **SOP-01: Customer & Product Master Setup** (Adding SKUs, barcode mappings, category taxonomy, and customer accounts).
+2. **SOP-02: Price List & Trade Offer Modifications** (Audited tier pricing updates, quantity slab discounts).
+3. **SOP-03: Order Booking & Multi-Channel Confirmation** (Field order-booker entry, WhatsApp customer confirmation).
+4. **SOP-04: Customer Credit Limit & Credit-Hold Management** (Over-limit review, temporary credit holds).
+5. **SOP-05: Inventory Reservation & Warehouse Picking** (Pick-list generation, bin picking, shortage handling).
+6. **SOP-06: Dispatch Manifest & Delivery Route Handover** (Driver loading verification, delivery manifest issuance).
+7. **SOP-07: Returns, Shortages & Refused Deliveries** (Physical inspection, inventory adjustment, return authorization).
+8. **SOP-08: Invoicing & Payment Collection Capture** (Challan generation, cash receipt recording, partial payments).
+9. **SOP-09: End-of-Day Cashier Cash Reconciliation** (Expected cash vs. physical cash deposit, variance reporting).
+10. **SOP-10: Warehouse Physical Stock Reconciliation** (Cycle counts, damaged stock write-offs, variance investigation).
+11. **SOP-11: Three-Tier Exception Escalation** (Logging, investigating, and resolving operational discrepancies).
+12. **SOP-12: User Access, Role Assignments & Audit Review** (Staff onboarding/offboarding, weekly audit log inspection).
+
+### 13.3 Staged Rollout Waves (5 Expansion Milestones)
+| Wave | Scope of Expansion | Gate Criteria to Proceed |
+| :--- | :--- | :--- |
+| **Wave 1** | Expanded customer base and users within the **same delivery zone** | 100% clean cash reconciliation for 5 consecutive days |
+| **Wave 2** | Additional delivery routes and driver teams in adjacent zones | Picking accuracy $\ge 99\%$, on-time delivery $\ge 95\%$ |
+| **Wave 3** | Additional SKU lines, trade promotions, and sub-wholesaler tiers | Zero stock reservation failures, inventory accuracy $\ge 99.5\%$ |
+| **Wave 4** | Second warehouse / regional distribution depot | SOP adherence sign-off, multi-depot stock isolation verified |
+| **Wave 5** | Full territory operational scale-out | All waves 1–4 stable, executive change control sign-off |
+
+### 13.4 Change Control Governance
+All software or configuration modifications post-pilot must follow formal change control:
+* Required submission: Problem statement, Business owner, Impacted operational process, Data/integration risk assessment, Test verification criteria, Executive approval, Rollback plan, and Target release date.
+* Environmental isolation: Dedicated configurations for Development, Staging/Testing, Production, and Emergency hotfixes.
+
+### 13.5 Executive Management Dashboard (16 Weekly Measures)
+Weekly operations review tracks 16 key performance indicators:
+1. Order conversion & confirmation rate.
+2. Order-to-dispatch turnaround time.
+3. Delivery completion rate.
+4. Partial deliveries and customer returns volume.
+5. Physical vs. system stock accuracy.
+6. Warehouse picking accuracy.
+7. Invoice generation completion rate.
+8. Total outstanding accounts receivable.
+9. Payment collection rate.
+10. End-of-day cash collection variance.
+11. Total orders placed on credit hold.
+12. Staff manual override count.
+13. Open unresolved operational exceptions.
+14. Daily active user adoption across order-bookers, drivers, and warehouse staff.
+15. Average delivery stop turnaround time.
+16. Unscheduled delivery route revisions.
+
+### 13.6 Prioritized Improvement & Phase 2 Scale Backlog
+1. **Automated WhatsApp Customer Confirmation Reminders**: Auto-resending pending confirmations at 30m / 60m.
+2. **Dynamic Route Clustering & Manifest Sequencing**: Grouping delivery stops by geographic proximity.
+3. **Warehouse Barcode / QR Scanning**: Scanning cartons and boxes during picking to eliminate human error.
+4. **Mobile Proof-of-Delivery (mPOD)**: Customer signature and geofenced timestamp capture on driver mobile app.
+5. **Automated Khata Statements**: WhatsApp dispatch of weekly balance statements and payment reminders.
+6. **Supplier Purchasing & Goods Receipt PO Workflows**: Formalizing inbound supply chain from manufacturers.
+7. **Advanced Inventory Safety-Stock & Reorder Forecasting**: Automated alerts for fast-moving confectionery.
+
+### 13.7 Phase 1H Completion & Full Phase 1 Graduation Criteria
+Phase 1 of the Candi Super Store Platform is formally complete and ready for Phase 2 when:
+- [x] All Critical pilot defects are resolved; High defects have documented owners and resolution dates.
+- [x] All 12 operational SOPs are formally approved and distributed.
+- [x] Internal staff roles, permissions, and training completions are validated.
+- [x] The 5-wave expansion plan has dedicated geographic boundaries and target dates.
+- [x] Change control governance and environment segregation are active.
+- [x] The executive management dashboard is live and driven by real operational transactions.
+- [x] Cash and inventory reconciliations demonstrate zero unexplained variance over consecutive operating cycles.
+
 
 
