@@ -1,0 +1,18 @@
+{
+  "name": "candi-super-store-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Candi Super Store - B2B Wholesale Distribution Platform for FMCG and Confectionery",
+  "scripts": {
+    "dev:admin": "pnpm --filter @candi/admin-web dev",
+    "dev:customer": "pnpm --filter @candi/customer-web dev",
+    "dev:mobile": "pnpm --filter @candi/customer-mobile dev",
+    "build": "pnpm --filter \"@candi/*\" build",
+    "test": "pnpm --filter \"@candi/*\" test",
+    "lint": "pnpm --filter \"@candi/*\" lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "pnpm@10.13.1"
+}

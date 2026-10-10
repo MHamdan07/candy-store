@@ -5,64 +5,91 @@ interface TopNavProps {
   title: string;
   subtitle?: string;
   actions?: React.ReactNode;
+  onToggleSidebar?: () => void;
 }
 
-export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions }) => {
+export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onToggleSidebar }) => {
   return (
     <header
       style={{
-        height: '70px',
+        height: '68px',
         backgroundColor: '#FFFFFF',
-        borderBottom: '1.5px solid var(--color-bone)',
+        borderBottom: '1px solid var(--color-border, #E2E8F0)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 32px',
+        padding: '0 clamp(16px, 3vw, 32px)',
         position: 'sticky',
         top: 0,
         zIndex: 100,
+        fontFamily: 'var(--font-family-base)',
       }}
     >
-      <div>
-        <h1
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        {/* Mobile Hamburger Drawer Toggle */}
+        <button
+          onClick={onToggleSidebar}
+          type="button"
+          aria-label="Toggle Navigation Menu"
           style={{
-            fontFamily: 'var(--font-family-mono)',
-            fontSize: '18px',
-            fontWeight: 800,
-            color: 'var(--color-smoky-black)',
-            lineHeight: 1.2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'none',
+            border: '1px solid var(--color-border, #E2E8F0)',
+            borderRadius: '6px',
+            padding: '7px 9px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            color: 'var(--color-text-main, #0F172A)',
           }}
         >
-          {title}
-        </h1>
-        {subtitle && (
-          <p
+          ☰
+        </button>
+
+        <div>
+          <h1
             style={{
-              fontFamily: 'var(--font-family-mono)',
-              fontSize: '12px',
-              color: 'var(--color-olive-drab)',
-              marginTop: '2px',
+              fontFamily: 'var(--font-family-base)',
+              fontSize: '17px',
+              fontWeight: 800,
+              color: 'var(--color-text-main, #0F172A)',
+              lineHeight: 1.2,
+              margin: 0,
             }}
           >
-            {subtitle}
-          </p>
-        )}
+            {title}
+          </h1>
+          {subtitle && (
+            <p
+              style={{
+                fontFamily: 'var(--font-family-base)',
+                fontSize: '12px',
+                color: 'var(--color-text-muted, #64748B)',
+                margin: '2px 0 0 0',
+              }}
+            >
+              {subtitle}
+            </p>
+          )}
+        </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {/* Search bar input */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            backgroundColor: 'var(--color-surface-muted)',
-            border: '1px solid var(--color-bone)',
-            borderRadius: 'var(--radius-sm)',
+            backgroundColor: '#F8FAFC',
+            border: '1px solid var(--color-border, #E2E8F0)',
+            borderRadius: '8px',
             padding: '6px 12px',
-            width: '280px',
+            width: '240px',
           }}
+          className="admin-search-bar"
         >
-          <span style={{ marginRight: '8px', color: 'var(--color-olive-drab)', fontSize: '13px' }}>🔍</span>
+          <span style={{ marginRight: '8px', color: 'var(--color-text-muted, #64748B)', fontSize: '13px' }}>🔍</span>
           <input
             type="text"
             placeholder="Search orders, customers, SKUs..."
@@ -73,17 +100,17 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions }) => {
               fontFamily: 'inherit',
               fontSize: '12px',
               width: '100%',
-              color: 'var(--color-smoky-black)',
+              color: 'var(--color-text-main, #0F172A)',
             }}
           />
           <kbd
             style={{
               fontSize: '10px',
               backgroundColor: '#FFFFFF',
-              border: '1px solid var(--color-bone)',
+              border: '1px solid var(--color-border, #E2E8F0)',
               borderRadius: '3px',
               padding: '1px 5px',
-              color: 'var(--color-olive-drab)',
+              color: 'var(--color-text-muted, #64748B)',
             }}
           >
             /
@@ -91,10 +118,10 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions }) => {
         </div>
 
         {/* Live RBAC Role Switcher */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#F8FAFC', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-bone)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#F8FAFC', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border, #E2E8F0)' }}>
           <span style={{ fontSize: '13px' }}>🎭</span>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '9px', fontWeight: 700, color: 'var(--color-olive-drab)', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '9px', fontWeight: 800, color: 'var(--color-text-muted, #64748B)', textTransform: 'uppercase' }}>
               Simulated Role
             </span>
             <RoleSwitcherSelect />
@@ -102,18 +129,18 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions }) => {
         </div>
 
         {/* Operational Status Pill */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span
             style={{
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              backgroundColor: 'var(--color-success)',
-              boxShadow: '0 0 0 2px var(--color-success-bg)',
+              backgroundColor: '#10B981',
+              boxShadow: '0 0 0 2px rgba(16, 185, 129, 0.2)',
             }}
           />
-          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-olive-drab)' }}>
-            Central Hub Live
+          <span style={{ fontSize: '12px', fontWeight: 700, color: '#059669' }}>
+            Live
           </span>
         </div>
 
@@ -136,7 +163,7 @@ const RoleSwitcherSelect: React.FC = () => {
           backgroundColor: 'transparent',
           fontSize: '11px',
           fontWeight: 700,
-          color: 'var(--color-smoky-black)',
+          color: 'var(--color-text-main, #0F172A)',
           cursor: 'pointer',
           outline: 'none',
           padding: 0,

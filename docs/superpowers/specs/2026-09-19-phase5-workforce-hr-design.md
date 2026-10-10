@@ -1,3 +1,4 @@
+
 # Phase 5: Users, HR & Workforce Management System Design
 
 **Document ID:** SPEC-2026-PHASE-5  

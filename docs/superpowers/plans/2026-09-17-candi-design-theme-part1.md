@@ -25,9 +25,13 @@
   3. Sidebar & Top Navigation
   4. Customer List
   5. Product List
-  6. Order Screen
-  7. Invoice Screen
+  6. Order Screen (Sales)
+  7. Invoice Screen (Sales & Delivery Challan)
   8. Mobile Layout
+  9. Purchase Request Screen (Procurement: request no, requester, products, required date, reason, est. cost, approval status)
+  10. Purchase Order Screen (Procurement: PO number, supplier selection, payment terms, items, auto-calculated discount/tax/total, approval status, outstanding quantities)
+  11. Purchase Order List (Procurement: search, filters, supplier, date, total, status, delivery date, actions)
+  12. Purchase Order Approval Workflow (Modal/Action: Draft -> Submitted -> Pending Approval -> Approved -> Sent to Supplier -> Partially Received -> Fully Received -> Closed)
 
 ---
 

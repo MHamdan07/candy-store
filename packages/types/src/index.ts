@@ -1818,3 +1818,296 @@ export interface WorkforceAuditRecord {
   reason?: string;
   ipAddress?: string;
 }
+
+// ==========================================
+// Domain 2: Conversational Verification & Tele-Sales
+// ==========================================
+
+export type VerificationStatus =
+  | 'whatsapp_pending'
+  | 'whatsapp_delivered'
+  | 'whatsapp_read'
+  | 'whatsapp_confirmed'
+  | 'escalated_telesales'
+  | 'voice_verified'
+  | 'changes_requested'
+  | 'unreachable'
+  | 'released_for_picking'
+  | 'picked'
+  | 'cancelled';
+
+export type VerificationStage = 1 | 2 | 3 | 4 | 5;
+
+export type VerificationPriority = 'normal' | 'urgent' | 'sla_breached';
+
+export type WhatsAppMessageDirection = 'outbound' | 'inbound';
+
+export type WhatsAppMessageType =
+  | 'template_order_summary'
+  | 'interactive_buttons'
+  | 'customer_reply'
+  | 'reminder_ping';
+
+export interface WhatsAppMessageLog {
+  id: string;
+  timestamp: string;
+  direction: WhatsAppMessageDirection;
+  messageType: WhatsAppMessageType;
+  body: string;
+  deliveryStatus: 'queued' | 'sent' | 'delivered' | 'read' | 'failed';
+  interactivePayload?: {
+    buttonClicked?: 'confirm' | 'edit' | 'cancel';
+    customerReplyText?: string;
+  };
+}
+
+export type TeleSalesCallOutcome =
+  | 'voice_confirmed'
+  | 'quantity_adjusted'
+  | 'customer_busy_callback'
+  | 'price_dispute'
+  | 'out_of_stock_swap'
+  | 'wrong_number'
+  | 'shop_closed_cancelled';
+
+export interface TeleSalesCallLog {
+  id: string;
+  timestamp: string;
+  agentId: string;
+  agentName: string;
+  durationSeconds: number;
+  outcome: TeleSalesCallOutcome;
+  notes: string;
+  callbackScheduledAt?: string;
+}
+
+export interface ConversationalVerificationLineItem {
+  id: string;
+  skuId: string;
+  skuName: string;
+  unit: 'carton' | 'box' | 'packet' | 'piece';
+  quantity: number;
+  originalQuantity?: number;
+  unitPrice: number;
+  subtotal: number;
+  bonusQuantity?: number;
+  tradeSchemeApplied?: string;
+  binLocation?: string;
+}
+
+export interface PickingBinAllocation {
+  skuId: string;
+  skuName: string;
+  binLocation: string;
+  quantity: number;
+  unit: 'carton' | 'box' | 'packet' | 'piece';
+  batchCode?: string;
+}
+
+export interface PickingReleaseDetails {
+  releasedAt: string;
+  releasedBy: string;
+  waveId: string;
+  waveName: string;
+  assignedPickerId: string;
+  assignedPickerName: string;
+  pickingPriority: 'standard' | 'express' | 'urgent';
+  binLocations: PickingBinAllocation[];
+  status: 'pending_release' | 'released_to_floor' | 'in_picking' | 'picked';
+  manifestCode: string;
+  warehouseNotes?: string;
+}
+
+export interface ConversationalVerificationRecord {
+  id: string;
+  orderId: string;
+  orderNumber: string;
+  orderSource: 'customer_web' | 'customer_mobile' | 'order_booker' | 'phone_inbound';
+  orderCreatedAt: string;
+  customerAccountId: string;
+  customerName: string;
+  businessName: string;
+  customerType: CustomerType;
+  phoneNumber: string;
+  whatsappNumber: string;
+  deliveryZone: string;
+  deliveryAddress: string;
+  creditLimit: number;
+  currentKhataBalance: number;
+  totalAmount: number;
+  paymentMethod: 'cash_on_delivery' | 'credit' | 'partial_advance';
+  verificationStatus: VerificationStatus;
+  currentStage: VerificationStage;
+  priority: VerificationPriority;
+  slaDeadline: string;
+  isSlaBreached: boolean;
+  assignedAgentId?: string;
+  assignedAgentName?: string;
+  lines: ConversationalVerificationLineItem[];
+  whatsappMessages: WhatsAppMessageLog[];
+  callLogs: TeleSalesCallLog[];
+  creditCheckPassed?: boolean;
+  creditAvailableAfterOrder?: number;
+  pickingRelease?: PickingReleaseDetails;
+  cancellationReason?: string;
+  verifiedAt?: string;
+  verifiedBy?: string;
+}
+
+// ==========================================
+// Domain: Fleet Logistics & Vehicle Trip Manifests
+// ==========================================
+
+export type VehicleType =
+  | 'mini_van'
+  | 'light_commercial_truck'
+  | 'heavy_box_truck'
+  | 'cargo_loader_bike';
+
+export type VehicleStatus =
+  | 'active_service'
+  | 'in_transit'
+  | 'loading_dock'
+  | 'under_maintenance'
+  | 'standby_reserve';
+
+export interface DeliveryVehicle {
+  id: string;
+  registrationNumber: string; // e.g. "KHI-8821"
+  modelName: string; // e.g. "Suzuki Bolan High-Roof Van"
+  vehicleType: VehicleType;
+  payloadCapacityKg: number; // e.g. 750
+  cartonCapacity: number; // volumetric capacity e.g. 60
+  fuelType: 'petrol' | 'diesel' | 'cng' | 'electric';
+  status: VehicleStatus;
+  currentOdometerKm: number;
+  assignedDriverId?: string;
+  assignedDriverName?: string;
+  fuelLevelPercent: number;
+  trackerDeviceId?: string;
+}
+
+export type DriverStatus = 'available' | 'on_trip' | 'on_leave' | 'off_duty';
+
+export interface DeliveryDriver {
+  id: string;
+  fullName: string;
+  phoneNumber: string;
+  cnicNumber: string;
+  drivingLicenseNumber: string;
+  assignedVehicleId?: string;
+  assignedVehiclePlate?: string;
+  status: DriverStatus;
+  rating: number; // e.g. 4.9
+  completedTripsCount: number;
+  codCollectionAccuracyPercent: number;
+  mobileAppVersion?: string;
+}
+
+export interface BeatRoute {
+  id: string;
+  code: string; // e.g. "BEAT-N1"
+  name: string; // e.g. "Nazimabad & North Karachi Commercial Beat"
+  zone: string; // e.g. "Zone 1 - Nazimabad"
+  keyCommercialHubs: string[]; // e.g. ["Main Gol Market", "Liaquatabad", "Paposh Nagar"]
+  avgDailyOrdersCount: number;
+  estimatedTransitMinutes: number;
+  distanceKm: number;
+  preferredVehicleType: VehicleType;
+  isActive: boolean;
+}
+
+export type TripManifestStatus =
+  | 'draft_clustering'
+  | 'staged_loading'
+  | 'dispatched_in_transit'
+  | 'completed_delivered'
+  | 'reconciled_closed';
+
+export type StopDeliveryStatus =
+  | 'pending_dispatch'
+  | 'in_transit'
+  | 'arrived_at_shop'
+  | 'delivered_collected'
+  | 'partially_delivered'
+  | 'refused_returned';
+
+export interface TripDeliveryStop {
+  id: string;
+  stopSequence: number;
+  orderId: string;
+  orderNumber: string;
+  invoiceNumber?: string;
+  customerAccountId: string;
+  customerName: string;
+  businessName: string;
+  phoneNumber: string;
+  deliveryAddress: string;
+  areaLandmark: string;
+  totalCartons: number;
+  totalBoxes: number;
+  totalWeightKg: number;
+  paymentMethod: 'cash_on_delivery' | 'credit' | 'partial_advance';
+  expectedCodAmount: number;
+  actualCashCollected?: number;
+  status: StopDeliveryStatus;
+  arrivedAt?: string;
+  completedAt?: string;
+  proofOfDelivery?: {
+    receivedByName: string;
+    signatureRecorded: boolean;
+    stampVerified: boolean;
+    geoCoordinates?: string;
+    remarks?: string;
+  };
+  refusalReason?: string;
+}
+
+export interface TripManifest {
+  id: string;
+  manifestNumber: string; // e.g. "TRIP-2026-MNF-01"
+  beatRouteId: string;
+  beatRouteCode: string;
+  beatRouteName: string;
+  deliveryZone: string;
+  vehicleId: string;
+  vehiclePlate: string;
+  vehicleModel: string;
+  driverId: string;
+  driverName: string;
+  driverPhone: string;
+  status: TripManifestStatus;
+  scheduledDepartureTime: string;
+  actualDepartureTime?: string;
+  estimatedReturnTime: string;
+  actualReturnTime?: string;
+  totalStops: number;
+  completedStopsCount: number;
+  totalCartonsCount: number;
+  totalBoxesCount: number;
+  totalWeightKg: number;
+  payloadUtilizationPercent: number;
+  expectedTotalCod: number;
+  collectedTotalCod: number;
+  cashVariance: number;
+  departureMileageKm?: number;
+  returnMileageKm?: number;
+  dispatcherName: string;
+  cashierReconciliationId?: string;
+  notes?: string;
+  stops: TripDeliveryStop[];
+}
+
+export interface FleetKpis {
+  totalVehiclesCount: number;
+  activeVehiclesOnRoad: number;
+  vehiclesUnderMaintenance: number;
+  totalTripsToday: number;
+  inTransitTripsCount: number;
+  completedTripsCount: number;
+  overallOnTimeDeliveryRate: number;
+  totalCodExpectedToday: number;
+  totalCodCollectedToday: number;
+  averagePayloadUtilizationPercent: number;
+}
+

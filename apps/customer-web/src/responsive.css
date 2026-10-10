@@ -1,0 +1,211 @@
+/* ==========================================================================
+   Candi Super Store Wholesale Portal - Responsive Mobile, Tablet & Desktop Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Catalog Grid Layout (Mobile, Tablet, Desktop)
+   -------------------------------------------------------------------------- */
+.catalog-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tablet Grid: 768px – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .catalog-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important;
+    gap: 14px !important;
+  }
+}
+
+/* Mobile Grid: < 768px (2 cards strictly side-by-side, 10px gap) */
+@media (max-width: 767px) {
+  .catalog-products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Product Card Micro-Animations & Responsiveness
+   -------------------------------------------------------------------------- */
+.candi-product-card {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease;
+  will-change: transform, box-shadow;
+}
+
+/* Desktop Hover Lift & Image Zoom */
+@media (hover: hover) and (pointer: fine) {
+  .candi-product-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.12) !important;
+    border-color: var(--color-primary, #E11D48) !important;
+  }
+
+  .candi-product-card:hover .product-card-img {
+    transform: scale(1.06) !important;
+  }
+}
+
+/* Mobile Touch Tap Feedback */
+.candi-product-card:active {
+  transform: scale(0.98);
+}
+
+/* Add-to-Cart Spring Animation */
+@keyframes candiSpringBounce {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.candi-spring-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  animation: candiSpringBounce 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Mobile Card Height Optimization */
+@media (max-width: 767px) {
+  .product-card-header {
+    height: 80px !important;
+  }
+
+  .product-card-body {
+    padding: 8px 8px 6px 8px !important;
+    gap: 5px !important;
+  }
+
+  .product-card-title {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    min-height: 28px !important;
+  }
+
+  .product-card-formula {
+    font-size: 9px !important;
+    padding: 2px 5px !important;
+  }
+
+  .product-card-price-row {
+    font-size: 13px !important;
+  }
+
+  .product-card-action-row {
+    height: 36px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Mobile Bottom Navigation
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Wholesale Navbar Responsive Rules
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  /* Hide the top wholesale announcement micro-bar */
+  .wholesale-microbar {
+    display: none !important;
+  }
+
+  /* Hide top navigation tab pills on mobile (moved to MobileBottomNav) */
+  .wholesale-desktop-tabs {
+    display: none !important;
+  }
+
+  /* Hide large business name pill to keep mobile navbar clean and compact */
+  .wholesale-retailer-pill {
+    display: none !important;
+  }
+
+  /* Hide desktop expanded cart button */
+  .wholesale-desktop-cart {
+    display: none !important;
+  }
+
+  /* Show mobile compact cart badge button */
+  .wholesale-mobile-cart {
+    display: flex !important;
+  }
+
+  /* Show mobile language switch button in top navbar */
+  .wholesale-mobile-lang {
+    display: inline-flex !important;
+  }
+
+  /* Main content bottom clearance so fixed bottom nav doesn't overlap items */
+  .customer-main-content {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px) !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    margin-top: 10px !important;
+  }
+
+  /* Catalog Hero Banner Mobile Adjustments */
+  .wholesale-hero-banner {
+    padding: 14px 12px !important;
+  }
+
+  .wholesale-hero-title {
+    font-size: 19px !important;
+    line-height: 1.25 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .wholesale-mobile-cart {
+    display: none !important;
+  }
+
+  .wholesale-mobile-lang {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. CartDrawer and Slide-over Drawers Mobile Width & Bottom Padding
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .cart-drawer-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .cart-drawer-footer {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px) !important;
+  }
+
+  .order-tracking-drawer-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .order-tracking-drawer-footer {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px) !important;
+  }
+}
