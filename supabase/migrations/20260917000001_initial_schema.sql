@@ -272,24 +272,29 @@ alter table public.invoices enable row level security;
 alter table public.audit_logs enable row level security;
 
 -- Policies for Profiles
+drop policy if exists "Users can view their own profile" on public.profiles;
 create policy "Users can view their own profile"
   on public.profiles for select
   using (auth.uid() = id or public.has_permission(auth.uid(), 'customers.view_all'));
 
+drop policy if exists "Users can update their own profile" on public.profiles;
 create policy "Users can update their own profile"
   on public.profiles for update
   using (auth.uid() = id);
 
 -- Policies for Customer Accounts
+drop policy if exists "Customers can view their own account" on public.customer_accounts;
 create policy "Customers can view their own account"
   on public.customer_accounts for select
   using (profile_id = auth.uid() or public.has_permission(auth.uid(), 'customers.view_all'));
 
+drop policy if exists "Customers can register pending review account" on public.customer_accounts;
 create policy "Customers can register pending review account"
   on public.customer_accounts for insert
   with check (profile_id = auth.uid() and status = 'pending_review');
 
 -- Policies for Addresses
+drop policy if exists "Customers manage their own addresses" on public.customer_addresses;
 create policy "Customers manage their own addresses"
   on public.customer_addresses for all
   using (
