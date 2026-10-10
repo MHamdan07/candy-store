@@ -39,6 +39,8 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
   const location = useLocation();
 
   const {
+    products,
+    isLoadingProducts,
     setSelectedDetailProduct,
     selectedDetailProduct,
     cartItemCount,
@@ -101,12 +103,12 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
 
   // Extract unique brands for filter
   const brands = useMemo(() => {
-    return Array.from(new Set(WHOLESALE_PRODUCTS.map((p) => p.brand)));
-  }, []);
+    return Array.from(new Set(products.map((p) => p.brand)));
+  }, [products]);
 
   // Filtered and sorted products
   const filteredProducts = useMemo(() => {
-    return WHOLESALE_PRODUCTS.filter((product) => {
+    return products.filter((product) => {
       // Category filter
       if (selectedCategory !== 'all' && product.category !== selectedCategory) {
         return false;

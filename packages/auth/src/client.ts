@@ -4,25 +4,29 @@ import type { CustomerAccount, Profile, StaffAccount } from '@candi/types';
 // Detect environment keys
 const getEnvVar = (key: string): string | undefined => {
   const g = globalThis as Record<string, any>;
+  let val: any = undefined;
   if (g.process?.env?.[key]) {
-    return g.process.env[key];
+    val = g.process.env[key];
+  } else if (typeof import.meta !== 'undefined' && (import.meta as any).env?.[key]) {
+    val = (import.meta as any).env[key];
   }
-  // @ts-ignore
-  if (typeof import.meta !== 'undefined' && import.meta.env?.[key]) {
-    // @ts-ignore
-    return import.meta.env[key];
-  }
-  return undefined;
+  return typeof val === 'string' ? val.trim() : undefined;
 };
 
 const supabaseUrl = getEnvVar('VITE_SUPABASE_URL') || getEnvVar('EXPO_PUBLIC_SUPABASE_URL');
 const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY') || getEnvVar('EXPO_PUBLIC_SUPABASE_ANON_KEY');
 
-export const isLiveSupabase = Boolean(supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('placeholder'));
+export const isLiveSupabase = Boolean(
+  supabaseUrl &&
+  supabaseAnonKey &&
+  !supabaseUrl.includes('placeholder') &&
+  supabaseUrl.startsWith('http')
+);
 
 export const supabase: SupabaseClient | null = isLiveSupabase
   ? createClient(supabaseUrl!, supabaseAnonKey!)
   : null;
+
 
 // Mock Accounts Database for Offline Demo Preview
 export interface MockUserSession {

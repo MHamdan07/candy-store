@@ -7,6 +7,7 @@ import {
   INITIAL_MOCK_ORDERS,
 } from '../data/wholesaleCatalogData';
 import { useAuth } from '@candi/auth';
+import { fetchLiveProducts, submitCustomerOrder } from '../services/supabaseData';
 
 export interface CartItem {
   productId: string;
@@ -23,6 +24,11 @@ export interface CartItem {
 }
 
 export interface WholesaleOrderContextType {
+  // Live / Fallback Product Catalog
+  products: WholesaleProductItem[];
+  isLoadingProducts: boolean;
+  refreshProducts: () => Promise<void>;
+
   cartItems: CartItem[];
   addToCart: (product: WholesaleProductItem, unit?: PackagingUnitType, quantity?: number) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -78,6 +84,28 @@ const STORAGE_KEY_CREDIT = 'candi_wholesale_credit_v1';
 
 export const WholesaleOrderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { profile, customerAccount } = useAuth();
+
+  // Products State (Loaded from Supabase with instant fallback to local mock catalog)
+  const [products, setProducts] = useState<WholesaleProductItem[]>(WHOLESALE_PRODUCTS);
+  const [isLoadingProducts, setIsLoadingProducts] = useState<boolean>(false);
+
+  const refreshProducts = async () => {
+    setIsLoadingProducts(true);
+    try {
+      const liveItems = await fetchLiveProducts();
+      if (liveItems && liveItems.length > 0) {
+        setProducts(liveItems);
+      }
+    } catch (err) {
+      console.warn('Error refreshing live products from Supabase, keeping current catalog:', err);
+    } finally {
+      setIsLoadingProducts(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshProducts();
+  }, []);
 
   // Cart State
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
@@ -206,7 +234,7 @@ export const WholesaleOrderProvider: React.FC<{ children: React.ReactNode }> = (
 
   const reorder = (order: WholesaleOrderRecord) => {
     order.items.forEach((line) => {
-      const prod = WHOLESALE_PRODUCTS.find((p) => p.id === line.productId);
+      const prod = products.find((p) => p.id === line.productId || p.sku === line.sku);
       if (prod) {
         addToCart(prod, line.unit, line.quantity);
       }
@@ -285,6 +313,14 @@ export const WholesaleOrderProvider: React.FC<{ children: React.ReactNode }> = (
       setCreditBalance((prev) => prev + grandTotal);
     }
 
+    // Submit to Supabase asynchronously with fallback
+    submitCustomerOrder(newOrder, {
+      customerAccountId: customerAccount?.id,
+      deliveryZoneId: customerAccount?.assignedDeliveryZoneId,
+    }).catch((err) => {
+      console.warn('[Supabase] Background order sync note:', err);
+    });
+
     setOrders((prev) => [newOrder, ...prev]);
     clearCart();
     setConfirmationModalOrder(newOrder);
@@ -294,6 +330,9 @@ export const WholesaleOrderProvider: React.FC<{ children: React.ReactNode }> = (
   return (
     <WholesaleOrderContext.Provider
       value={{
+        products,
+        isLoadingProducts,
+        refreshProducts,
         cartItems,
         addToCart,
         updateQuantity,
