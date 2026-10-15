@@ -93,17 +93,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
       heading: 'FINANCE & LEDGERS',
       module: 'finance',
       items: [
-        { label: 'Chart of Accounts', path: '/finance/coa', icon: '🏛️' },
         { label: 'Customer Ledger', path: '/finance/customer-ledger', icon: '👤' },
-        { label: 'Supplier Ledger', path: '/finance/supplier-ledger', icon: '🏭' },
         { label: 'Payment Register', path: '/finance/payments', icon: '💵', badge: '7' },
-        { label: 'Journal Entries', path: '/finance/journal-entries', icon: '📖', badge: '4' },
-        { label: 'GL Reconciliation', path: '/finance/reconciliation', icon: '⚖️', badge: '$0' },
-        { label: 'Financial Reports', path: '/finance/reports', icon: '📊', badge: '14' },
-        { label: 'Period Closing', path: '/finance/period-closing', icon: '🔒', badge: 'GAAP' },
-        { label: 'Exception Tower', path: '/finance/exceptions', icon: '🚨', badge: '8' },
-        { label: 'Approvals & Controls', path: '/finance/approvals', icon: '🛡️', badge: '4' },
-        { label: 'Financial Audit Trail', path: '/finance/audit-trail', icon: '🔍' },
       ],
     },
     {

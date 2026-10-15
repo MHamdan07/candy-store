@@ -31,20 +31,11 @@ import { InvoiceAgingReportPage } from './pages/receivables/InvoiceAgingReportPa
 import { CollectionFollowUpPage } from './pages/receivables/CollectionFollowUpPage';
 import { ExecutiveDashboardPage } from './pages/reporting/ExecutiveDashboardPage';
 import { AdvancedReportsPage } from './pages/reporting/AdvancedReportsPage';
-import { ChartOfAccountsPage } from './pages/finance/ChartOfAccountsPage';
 import { CustomerLedgerPage } from './pages/finance/CustomerLedgerPage';
-import { SupplierLedgerPage } from './pages/finance/SupplierLedgerPage';
 import { PaymentRegisterPage } from './pages/finance/PaymentRegisterPage';
-import { JournalEntryPage } from './pages/finance/JournalEntryPage';
-import { LedgerReconciliationPage } from './pages/finance/LedgerReconciliationPage';
 import { CashCollectionPage } from './pages/cash/CashCollectionPage';
 import { CashHandoverPage } from './pages/cash/CashHandoverPage';
 import { CashReconciliationPage } from './pages/cash/CashReconciliationPage';
-import { FinancialReportsPage } from './pages/finance/FinancialReportsPage';
-import { PeriodClosingPage } from './pages/finance/PeriodClosingPage';
-import { FinancialExceptionDashboardPage } from './pages/finance/FinancialExceptionDashboardPage';
-import { FinancialApprovalsPage } from './pages/finance/FinancialApprovalsPage';
-import { FinancialAuditTrailPage } from './pages/finance/FinancialAuditTrailPage';
 import { FleetConsolePage } from './pages/delivery/FleetConsolePage';
 
 import { RolePermissionsPage } from './pages/RolePermissionsPage';
@@ -145,28 +136,10 @@ const ProtectedLayout: React.FC = () => {
         return { title: 'Cash Handover & Shift Settlement', subtitle: 'Dual-party confirmation gate between drivers and depot vault cashiers' };
       case '/cash/reconciliation':
         return { title: 'Cash Reconciliation & Vault Closing', subtitle: 'Physical currency note counter, variance explanation, and automated GL posting' };
-      case '/finance/coa':
-        return { title: 'Chart of Accounts (COA)', subtitle: 'Standard double-entry classification for assets, liabilities, equity, revenue, and expenses' };
       case '/finance/customer-ledger':
         return { title: 'Customer Sub-Ledger', subtitle: 'Detailed customer accounts receivable khata tied to GL Control Account 1100' };
-      case '/finance/supplier-ledger':
-        return { title: 'Supplier Sub-Ledger', subtitle: 'Detailed manufacturer and vendor payables khata tied to GL Control Account 2010' };
       case '/finance/payments':
         return { title: 'Payment Register', subtitle: 'Master collection inflows and disbursement register with transaction audit references' };
-      case '/finance/journal-entries':
-        return { title: 'Journal Entries & Posting Engine', subtitle: 'Immutable double-entry journal vouchers with real-time balancing and reversal trail' };
-      case '/finance/reconciliation':
-        return { title: 'General Ledger Reconciliation', subtitle: 'Proof of reconciliation comparing Sub-ledgers against GL Control Accounts ($0 variance)' };
-      case '/finance/reports':
-        return { title: '14 Statutory & Management Financial Reports', subtitle: 'General Ledger, Trial Balance, P&L, Balance Sheet, Aging, Reconciliations & Tax' };
-      case '/finance/period-closing':
-        return { title: 'Accounting Period Closing & Financial Governance', subtitle: '8-stage workflow, subledger verification, adjusting entries, and locked period guard' };
-      case '/finance/exceptions':
-        return { title: 'Financial Exception Control Tower', subtitle: 'Live monitoring and resolution of unapproved journals, cash variances, and closed-period adjustments' };
-      case '/finance/approvals':
-        return { title: 'Financial Approvals & 4-Eyes Governance', subtitle: 'Role-based authorization limits, segregation of duties, and contra-reversals' };
-      case '/finance/audit-trail':
-        return { title: 'Statutory Financial Audit Trail', subtitle: 'Immutable tamper-proof record of every financial alteration with before/after diffs' };
 
       case '/admin/roles':
         return { title: '10-Module RBAC Permissions Matrix', subtitle: 'Enterprise role-based access control and granular action privileges' };
@@ -216,17 +189,8 @@ const ProtectedLayout: React.FC = () => {
             <Route path="/cash/collections" element={<RouteGuard module="delivery" element={<CashCollectionPage />} />} />
             <Route path="/cash/handovers" element={<RouteGuard module="delivery" element={<CashHandoverPage />} />} />
             <Route path="/cash/reconciliation" element={<RouteGuard module="delivery" element={<CashReconciliationPage />} />} />
-            <Route path="/finance/coa" element={<RouteGuard module="finance" element={<ChartOfAccountsPage />} />} />
             <Route path="/finance/customer-ledger" element={<RouteGuard module="finance" element={<CustomerLedgerPage />} />} />
-            <Route path="/finance/supplier-ledger" element={<RouteGuard module="finance" element={<SupplierLedgerPage />} />} />
             <Route path="/finance/payments" element={<RouteGuard module="finance" element={<PaymentRegisterPage />} />} />
-            <Route path="/finance/journal-entries" element={<RouteGuard module="finance" element={<JournalEntryPage />} />} />
-            <Route path="/finance/reconciliation" element={<RouteGuard module="finance" element={<LedgerReconciliationPage />} />} />
-            <Route path="/finance/reports" element={<RouteGuard module="finance" element={<FinancialReportsPage />} />} />
-            <Route path="/finance/period-closing" element={<RouteGuard module="finance" element={<PeriodClosingPage />} />} />
-            <Route path="/finance/exceptions" element={<RouteGuard module="finance" element={<FinancialExceptionDashboardPage />} />} />
-            <Route path="/finance/approvals" element={<RouteGuard module="finance" element={<FinancialApprovalsPage />} />} />
-            <Route path="/finance/audit-trail" element={<RouteGuard module="finance" element={<FinancialAuditTrailPage />} />} />
             <Route path="/suppliers" element={<RouteGuard module="suppliers" element={<SupplierListPage />} />} />
             <Route path="/suppliers/:id" element={<RouteGuard module="suppliers" element={<SupplierProfilePage />} />} />
             <Route path="/procurement/requests" element={<RouteGuard module="procurement" element={<PurchaseRequestPage />} />} />
