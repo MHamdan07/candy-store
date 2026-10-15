@@ -13,14 +13,9 @@ import { ProductListPage } from './pages/ProductListPage';
 import { OrderScreenPage } from './pages/OrderScreenPage';
 import { ConversationalVerificationPage } from './pages/tele-sales/ConversationalVerificationPage';
 import { InvoiceScreenPage } from './pages/InvoiceScreenPage';
-import { PurchaseRequestPage } from './pages/PurchaseRequestPage';
-import { PurchaseOrderListPage } from './pages/PurchaseOrderListPage';
-import { PurchaseOrderPage } from './pages/PurchaseOrderPage';
 import { SupplierListPage } from './pages/SupplierListPage';
 import { SupplierProfilePage } from './pages/SupplierProfilePage';
 import { GoodsReceiptPage } from './pages/GoodsReceiptPage';
-import { SupplierInvoicePage } from './pages/SupplierInvoicePage';
-import { StockPlanningPage } from './pages/StockPlanningPage';
 import { CustomerTierListPage } from './pages/pricing/CustomerTierListPage';
 import { PriceListPage } from './pages/pricing/PriceListPage';
 import { TradeOffersPage } from './pages/pricing/TradeOffersPage';
@@ -92,18 +87,10 @@ const ProtectedLayout: React.FC = () => {
         };
       case '/invoices':
         return { title: 'Invoices & Customer Khata Ledger', subtitle: 'Cashier reconciliation and delivery challan matching' };
-      case '/procurement/requests':
-        return { title: 'Procurement: Purchase Requests', subtitle: 'Internal stock replenishment requests' };
-      case '/procurement/orders':
-        return { title: 'Procurement: Supplier Purchase Orders', subtitle: 'Authorized purchase orders for confectionery manufacturers' };
       case '/suppliers':
         return { title: 'Supplier Management & Database', subtitle: 'Vendor profiles, pricing agreements, terms, and khata balances' };
       case '/procurement/grn':
         return { title: 'Goods Received Notes (GRN)', subtitle: 'Inspection, damage segregation, and verified stock intake' };
-      case '/procurement/supplier-invoices':
-        return { title: 'Supplier Invoices & 3-Way Matching', subtitle: 'Three-way match comparison against PO and GRN before payment release' };
-      case '/procurement/planning':
-        return { title: 'Replenishment & Stock Planning', subtitle: 'Predictive reorder points, buffer levels, and suggested purchase orders' };
       case '/pricing/tiers':
         return { title: 'Customer Tiers & Eligibility Rules', subtitle: 'Price matrix levels, volume qualification thresholds, and credit terms' };
       case '/pricing/lists':
@@ -145,9 +132,6 @@ const ProtectedLayout: React.FC = () => {
         return { title: '10-Module RBAC Permissions Matrix', subtitle: 'Enterprise role-based access control and granular action privileges' };
 
       default:
-        if (location.pathname.startsWith('/procurement/orders/')) {
-          return { title: 'Purchase Order Management', subtitle: 'Supplier terms, automatic totals and receiving' };
-        }
         if (location.pathname.startsWith('/suppliers/')) {
           return { title: 'Supplier 360° Profile', subtitle: 'Purchasing history, invoices, payments, and audit history' };
         }
@@ -193,12 +177,7 @@ const ProtectedLayout: React.FC = () => {
             <Route path="/finance/payments" element={<RouteGuard module="finance" element={<PaymentRegisterPage />} />} />
             <Route path="/suppliers" element={<RouteGuard module="suppliers" element={<SupplierListPage />} />} />
             <Route path="/suppliers/:id" element={<RouteGuard module="suppliers" element={<SupplierProfilePage />} />} />
-            <Route path="/procurement/requests" element={<RouteGuard module="procurement" element={<PurchaseRequestPage />} />} />
-            <Route path="/procurement/orders" element={<RouteGuard module="procurement" element={<PurchaseOrderListPage />} />} />
-            <Route path="/procurement/orders/:id" element={<RouteGuard module="procurement" element={<PurchaseOrderPage />} />} />
             <Route path="/procurement/grn" element={<RouteGuard module="procurement" element={<GoodsReceiptPage />} />} />
-            <Route path="/procurement/supplier-invoices" element={<RouteGuard module="procurement" element={<SupplierInvoicePage />} />} />
-            <Route path="/procurement/planning" element={<RouteGuard module="procurement" element={<StockPlanningPage />} />} />
 
             <Route path="/admin/roles" element={<RouteGuard module="administration" element={<RolePermissionsPage />} />} />
 

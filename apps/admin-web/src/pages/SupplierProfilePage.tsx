@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Table, Badge, Button, Input, Dropdown, Modal, Alert } from '@candi/ui';
 import type { Supplier, SupplierStatus } from '@candi/types';
 import { INITIAL_SUPPLIERS } from '../data/suppliers';
-import { INITIAL_POS } from './PurchaseOrderListPage';
 
 export const SupplierProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -88,10 +87,8 @@ export const SupplierProfilePage: React.FC = () => {
     }
   };
 
-  // Find linked POs
-  const linkedPOs = INITIAL_POS.filter(
-    (po) => po.supplierId === supplier.id || po.supplierName.includes(supplier.name.split(' ')[0])
-  );
+  // Historical linked POs
+  const linkedPOs: any[] = [];
 
   return (
     <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>

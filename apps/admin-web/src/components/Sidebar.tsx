@@ -62,11 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
       module: 'procurement',
       items: [
         { label: 'Suppliers Database', path: '/suppliers', icon: '🏭', badge: '6' },
-        { label: 'Purchase Requests', path: '/procurement/requests', icon: '📋' },
-        { label: 'Purchase Orders', path: '/procurement/orders', icon: '🛒', badge: '3' },
         { label: 'Goods Received (GRN)', path: '/procurement/grn', icon: '📥', badge: '3' },
-        { label: 'Supplier Invoices', path: '/procurement/supplier-invoices', icon: '⚖️', badge: '3' },
-        { label: 'Stock Planning & Reorder', path: '/procurement/planning', icon: '📈', badge: '3' },
       ],
     },
     {
