@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Card, Badge, Button, Alert } from '@candi/ui';
 import { usePermissions, STANDARD_ROLES } from '@candi/auth';
 import type { StaffRoleName, SystemModule, ModulePermissions } from '@candi/types';
-import { WorkforceDataStore } from '../../data/workforceData';
 
 const MODULES_LIST: { id: SystemModule; name: string; icon: string; description: string; sensitive?: boolean }[] = [
   { id: 'dashboard', name: 'Dashboard', icon: '📊', description: 'Operational command center and real-time wholesale analytics' },
@@ -37,17 +36,6 @@ export const RolePermissionsPage: React.FC = () => {
   const handleToggle = (module: SystemModule, action: keyof ModulePermissions) => {
     const currentVal = rolePermissions[module]?.[action] || false;
     updateRolePermission(inspectingRole, module, action, !currentVal);
-
-    WorkforceDataStore.addAuditRecord({
-      actorId: 'current-user',
-      actorName: `Staff (${activeRole})`,
-      action: 'permissions_modified',
-      targetEntity: 'RolePermissions',
-      targetId: inspectingRole,
-      details: `Changed permission for ${inspectingRole} on module ${module}.${action} to ${!currentVal}`,
-      reason: 'Administrator RBAC matrix modification',
-    });
-
     setNotification(`Updated permission: ${inspectingRole} -> ${module}.${action} = ${!currentVal ? 'GRANTED' : 'REVOKED'}`);
     setTimeout(() => setNotification(null), 4000);
   };

@@ -47,20 +47,7 @@ import { FinancialApprovalsPage } from './pages/finance/FinancialApprovalsPage';
 import { FinancialAuditTrailPage } from './pages/finance/FinancialAuditTrailPage';
 import { FleetConsolePage } from './pages/delivery/FleetConsolePage';
 
-// Phase 5 Workforce & HR Pages
-import { WorkforceDashboardPage } from './pages/workforce/WorkforceDashboardPage';
-import { EmployeeListPage } from './pages/workforce/EmployeeListPage';
-import { EmployeeProfilePage } from './pages/workforce/EmployeeProfilePage';
-import { ShiftManagementPage } from './pages/workforce/ShiftManagementPage';
-import { AttendanceRegisterPage } from './pages/workforce/AttendanceRegisterPage';
-import { LeaveManagementPage } from './pages/workforce/LeaveManagementPage';
-import { PayrollRegisterPage } from './pages/workforce/PayrollRegisterPage';
-import { PayslipViewPage } from './pages/workforce/PayslipViewPage';
-import { PerformanceReviewPage } from './pages/workforce/PerformanceReviewPage';
-import { TrainingSkillsPage } from './pages/workforce/TrainingSkillsPage';
-import { WorkforceReportsPage } from './pages/workforce/WorkforceReportsPage';
-import { RolePermissionsPage } from './pages/workforce/RolePermissionsPage';
-import { WorkforceAuditTrailPage } from './pages/workforce/WorkforceAuditTrailPage';
+import { RolePermissionsPage } from './pages/RolePermissionsPage';
 import type { SystemModule } from '@candi/types';
 
 // Route guard checking view permission for active authenticated role
@@ -181,37 +168,10 @@ const ProtectedLayout: React.FC = () => {
       case '/finance/audit-trail':
         return { title: 'Statutory Financial Audit Trail', subtitle: 'Immutable tamper-proof record of every financial alteration with before/after diffs' };
 
-      // Phase 5 Workforce Routes
-      case '/workforce/dashboard':
-        return { title: 'Workforce Command & Operational Control', subtitle: 'Real-time staffing, attendance, shift coverage, and pending approvals' };
-      case '/workforce/employees':
-        return { title: 'Employee Directory & Maker-Checker Governance', subtitle: 'Staff profiles, departmental placement, and 2-tier onboarding approval' };
-      case '/workforce/shifts':
-        return { title: 'Shift Rostering & Operational Schedules', subtitle: 'Dock intake, dispatch hours, working days, and personnel assignment' };
-      case '/workforce/attendance':
-        return { title: 'Daily Attendance Register & Punch Logs', subtitle: 'Punctuality tracking, overtime authorization, and audit-backed overrides' };
-      case '/workforce/leaves':
-        return { title: 'Leave Management & Approval Workflows', subtitle: 'Paid, casual, and medical leaves with automated attendance integration' };
-      case '/workforce/payroll':
-        return { title: 'Payroll Register & Financial Compensation', subtitle: 'Attendance-synchronized calculation, dual sign-off, and GL posting' };
-      case '/workforce/performance':
-        return { title: 'Performance Management & Appraisals', subtitle: '6-stage evaluation cycle, KPI scorecards, and developmental feedback' };
-      case '/workforce/training':
-        return { title: 'Training Records & Food Safety Compliance', subtitle: 'Accredited certifications, forklift licensing, and expiry renewal tracking' };
-      case '/workforce/reports':
-        return { title: 'Workforce Business Intelligence & HR Reports', subtitle: '10 comprehensive statutory and management reports' };
       case '/admin/roles':
         return { title: '10-Module RBAC Permissions Matrix', subtitle: 'Enterprise role-based access control and granular action privileges' };
-      case '/workforce/audit':
-        return { title: 'Workforce & User Governance Audit Trail', subtitle: 'Immutable chronological ledger of all workforce operations and edits' };
 
       default:
-        if (location.pathname.startsWith('/workforce/payroll/payslips/')) {
-          return { title: 'Employee Official Salary Payslip', subtitle: 'Confectionery wholesale branded earnings and statutory deductions' };
-        }
-        if (location.pathname.startsWith('/workforce/employees/')) {
-          return { title: 'Employee 360° HR Profile Dossier', subtitle: 'Comprehensive personal, organizational, attendance, and payroll records' };
-        }
         if (location.pathname.startsWith('/procurement/orders/')) {
           return { title: 'Purchase Order Management', subtitle: 'Supplier terms, automatic totals and receiving' };
         }
@@ -276,24 +236,7 @@ const ProtectedLayout: React.FC = () => {
             <Route path="/procurement/supplier-invoices" element={<RouteGuard module="procurement" element={<SupplierInvoicePage />} />} />
             <Route path="/procurement/planning" element={<RouteGuard module="procurement" element={<StockPlanningPage />} />} />
 
-            {/* Phase 5 Workforce & HR Management Routes */}
-            <Route path="/workforce/dashboard" element={<RouteGuard module="administration" element={<WorkforceDashboardPage />} />} />
-            <Route path="/workforce/employees" element={<RouteGuard module="administration" element={<EmployeeListPage />} />} />
-            <Route path="/workforce/employees/:id" element={<RouteGuard module="administration" element={<EmployeeProfilePage />} />} />
-            <Route path="/workforce/shifts" element={<RouteGuard module="administration" element={<ShiftManagementPage />} />} />
-            <Route path="/workforce/attendance" element={<RouteGuard module="administration" element={<AttendanceRegisterPage />} />} />
-            <Route path="/workforce/leaves" element={<RouteGuard module="administration" element={<LeaveManagementPage />} />} />
-            <Route path="/workforce/payroll" element={<RouteGuard module="administration" element={<PayrollRegisterPage />} />} />
-            <Route path="/workforce/payroll/payslips/:id" element={<RouteGuard module="administration" element={<PayslipViewPage />} />} />
-            <Route path="/workforce/performance" element={<RouteGuard module="administration" element={<PerformanceReviewPage />} />} />
-            <Route path="/workforce/training" element={<RouteGuard module="administration" element={<TrainingSkillsPage />} />} />
-            <Route path="/workforce/reports" element={<RouteGuard module="administration" element={<WorkforceReportsPage />} />} />
             <Route path="/admin/roles" element={<RouteGuard module="administration" element={<RolePermissionsPage />} />} />
-            <Route path="/workforce/audit" element={<RouteGuard module="administration" element={<WorkforceAuditTrailPage />} />} />
-
-            {/* Legacy alias redirects */}
-            <Route path="/staff" element={<Navigate to="/workforce/employees" replace />} />
-            <Route path="/audit" element={<Navigate to="/workforce/audit" replace />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

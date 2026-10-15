@@ -107,20 +107,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
       ],
     },
     {
-      heading: 'WORKFORCE & OPERATIONS',
+      heading: 'SYSTEM & ACCESS',
       module: 'administration',
       items: [
-        { label: 'Workforce Dashboard', path: '/workforce/dashboard', icon: '👥' },
-        { label: 'Employees Master', path: '/workforce/employees', icon: '📇' },
-        { label: 'Shifts & Rosters', path: '/workforce/shifts', icon: '⏰' },
-        { label: 'Attendance Register', path: '/workforce/attendance', icon: '📅' },
-        { label: 'Leave Requests', path: '/workforce/leaves', icon: '🏖️' },
-        { label: 'Payroll Register', path: '/workforce/payroll', icon: '💰' },
-        { label: 'Performance Appraisals', path: '/workforce/performance', icon: '🎯' },
-        { label: 'Training Matrix', path: '/workforce/training', icon: '📚' },
-        { label: 'Workforce Reports', path: '/workforce/reports', icon: '📑' },
         { label: 'Roles & Permissions', path: '/admin/roles', icon: '🔑' },
-        { label: 'Audit Trail', path: '/workforce/audit', icon: '🛡️' },
       ],
     },
   ];
