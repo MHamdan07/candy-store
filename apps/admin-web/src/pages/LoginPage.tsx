@@ -214,23 +214,63 @@ export const LoginPage: React.FC = () => {
                 onClick={() => handleQuickLogin('03009999999')}
                 style={{ justifyContent: 'flex-start' }}
               >
-                🔑 Login as <strong>Super Admin (Operations Lead)</strong>
+                🔑 <strong>Super Admin</strong> (0300 9999999 - Farhan Zaidi)
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => handleQuickLogin('03001111111')}
+                onClick={() => handleQuickLogin('03009999901')}
                 style={{ justifyContent: 'flex-start' }}
               >
-                🏪 View as <strong>Approved Retailer (Bilal Store)</strong>
+                📋 <strong>Admin Manager</strong> (0300 9999901 - Bilal Ahmed)
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => handleQuickLogin('03002222222')}
+                onClick={() => handleQuickLogin('03009999902')}
                 style={{ justifyContent: 'flex-start' }}
               >
-                ⏳ View as <strong>Pending Review Sub-Wholesaler</strong>
+                📦 <strong>Warehouse Manager</strong> (0300 9999902 - Asim Raza)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleQuickLogin('03009999903')}
+                style={{ justifyContent: 'flex-start' }}
+              >
+                🏷️ <strong>Warehouse Staff</strong> (0300 9999903 - Kashif Mehmood)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleQuickLogin('03009999904')}
+                style={{ justifyContent: 'flex-start' }}
+              >
+                📱 <strong>Wholesale Sales Agent</strong> (0300 9999904 - Hamza Tariq)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleQuickLogin('03009999905')}
+                style={{ justifyContent: 'flex-start' }}
+              >
+                🚚 <strong>Fleet & Logistics Lead</strong> (0300 9999905 - Salman Khan)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleQuickLogin('03009999906')}
+                style={{ justifyContent: 'flex-start' }}
+              >
+                🛵 <strong>Delivery Rider</strong> (0300 9999906 - Usman Ghani)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleQuickLogin('03009999907')}
+                style={{ justifyContent: 'flex-start' }}
+              >
+                💵 <strong>Accounts & Cashier</strong> (0300 9999907 - Naveed Siddiqui)
               </Button>
             </div>
           </div>

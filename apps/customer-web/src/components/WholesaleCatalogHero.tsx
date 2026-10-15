@@ -1,6 +1,6 @@
 import React from 'react';
-import { WHOLESALE_CATEGORIES } from '../data/wholesaleCatalogData';
 import { useWholesaleOrder } from '../context/WholesaleOrderContext';
+import { CategoryPillBar } from './CategoryPillBar';
 
 export interface WholesaleCatalogHeroProps {
   searchQuery: string;
@@ -16,6 +16,7 @@ export interface WholesaleCatalogHeroProps {
   sortBy: 'featured' | 'margin_desc' | 'price_asc' | 'price_desc';
   onSortChange: (sort: 'featured' | 'margin_desc' | 'price_asc' | 'price_desc') => void;
   brands: string[];
+  categoryCounts?: Record<string, number>;
 }
 
 export const WholesaleCatalogHero: React.FC<WholesaleCatalogHeroProps> = ({
@@ -32,6 +33,7 @@ export const WholesaleCatalogHero: React.FC<WholesaleCatalogHeroProps> = ({
   sortBy,
   onSortChange,
   brands,
+  categoryCounts,
 }) => {
   const { subtotal, isFreeDelivery, freeDeliveryShortfall } = useWholesaleOrder();
 
@@ -313,43 +315,12 @@ export const WholesaleCatalogHero: React.FC<WholesaleCatalogHeroProps> = ({
           </div>
         </div>
 
-        {/* Row 2: Category Pills */}
-        <div
-          style={{
-            display: 'flex',
-            gap: '8px',
-            overflowX: 'auto',
-            paddingBottom: '4px',
-          }}
-        >
-          {WHOLESALE_CATEGORIES.map((cat) => {
-            const isSelected = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => onSelectCategory(cat.id)}
-                style={{
-                  padding: '7px 15px',
-                  borderRadius: 'var(--radius-full)',
-                  border: isSelected ? '1.5px solid #0F172A' : '1px solid var(--color-border)',
-                  backgroundColor: isSelected ? '#0F172A' : '#F8FAFC',
-                  color: isSelected ? '#FFFFFF' : 'var(--color-text-muted)',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                <span>{cat.icon}</span>
-                <span>{cat.name}</span>
-              </button>
-            );
-          })}
-        </div>
+        {/* Row 2: Category Pills (Interactive, scrollbar-free, smooth scrolling & micro-animations) */}
+        <CategoryPillBar
+          selectedCategory={selectedCategory}
+          onSelectCategory={onSelectCategory}
+          categoryCounts={categoryCounts}
+        />
       </div>
     </div>
   );

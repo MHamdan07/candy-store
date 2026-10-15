@@ -80,8 +80,15 @@ export interface WholesaleOrderRecord {
   riderNote?: string;
 }
 
-export const WHOLESALE_CATEGORIES = [
-  { id: 'all', name: 'All Products', icon: '🍬', count: 12 },
+export interface WholesaleCategoryItem {
+  id: string;
+  name: string;
+  icon: string;
+  count?: number;
+}
+
+export const WHOLESALE_CATEGORIES: WholesaleCategoryItem[] = [
+  { id: 'all', name: 'All Products', icon: '📌', count: 12 },
   { id: 'Chocolates', name: 'Chocolates & Truffles', icon: '🍫', count: 3 },
   { id: 'Candies & Chews', name: 'Candies & Chews', icon: '🍭', count: 2 },
   { id: 'Biscuits & Wafers', name: 'Wafers & Biscuits', icon: '🧇', count: 2 },
@@ -89,6 +96,50 @@ export const WHOLESALE_CATEGORIES = [
   { id: 'Hard Candies & Toffees', name: 'Toffees & Hard Candies', icon: '🍯', count: 2 },
   { id: 'Gums & Mints', name: 'Gums & Mints', icon: '🌿', count: 1 },
 ];
+
+/**
+ * Normalizes and matches product category against selected category ID/name/slug
+ */
+export function matchProductCategory(productCategory: string, targetCategory: string): boolean {
+  if (!targetCategory || targetCategory.toLowerCase() === 'all') return true;
+  if (!productCategory) return false;
+
+  const normProd = productCategory.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+  const normTarget = targetCategory.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+
+  if (normProd === normTarget) return true;
+
+  // Cross-reference with category definitions
+  const catDef = WHOLESALE_CATEGORIES.find(
+    (c) =>
+      c.id.toLowerCase() === targetCategory.toLowerCase() ||
+      c.name.toLowerCase() === targetCategory.toLowerCase()
+  );
+  if (catDef) {
+    const normId = catDef.id.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+    const normName = catDef.name.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+    if (normProd === normId || normProd === normName) return true;
+  }
+
+  return false;
+}
+
+/**
+ * Dynamically computes product counts for all categories from any active products list
+ */
+export function getCategoryCounts(products: WholesaleProductItem[]): Record<string, number> {
+  const counts: Record<string, number> = { all: products.length };
+
+  WHOLESALE_CATEGORIES.forEach((cat) => {
+    if (cat.id === 'all') {
+      counts.all = products.length;
+    } else {
+      counts[cat.id] = products.filter((p) => matchProductCategory(p.category, cat.id)).length;
+    }
+  });
+
+  return counts;
+}
 
 export const WHOLESALE_PRODUCTS: WholesaleProductItem[] = [
   {

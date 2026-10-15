@@ -9,14 +9,16 @@ export interface ProductDetailModalProps {
 }
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose }) => {
-  const { addToCart } = useWholesaleOrder();
+  const { cartItems, addToCart, updateQuantity, removeFromCart } = useWholesaleOrder();
 
   if (!product) return null;
 
-  const [orderQuantity, setOrderQuantity] = useState(product.minOrderQuantity || 1);
-  const [selectedUnit, setSelectedUnit] = useState(product.baseUnit);
+  // Live cart persistence: find active quantity of this SKU in customer's cart
+  const inCartItem = cartItems.find((item) => item.productId === product.id);
+  const cartQuantity = inCartItem?.quantity || 0;
+  const isInCart = cartQuantity > 0;
+
   const [customRetailPrice, setCustomRetailPrice] = useState(product.retailPricePerPiece);
-  const [isAdded, setIsAdded] = useState(false);
 
   // Dynamic Margin calculations
   const totalPieces = product.piecesPerUnit;
@@ -26,14 +28,29 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
   const profitMarginPercent = totalRevenue > 0 ? Math.round((netProfitPerUnit / totalRevenue) * 1000) / 10 : 0;
   const profitPerPiece = Math.round((customRetailPrice - product.wholesaleCostPerPiece) * 100) / 100;
 
-  const handleAdd = () => {
-    addToCart(product, selectedUnit, orderQuantity);
-    setIsAdded(true);
-    setTimeout(() => {
-      setIsAdded(false);
-      onClose();
-    }, 1000);
+  // Stepper handlers directly connected to active cart
+  const handleInitialAdd = () => {
+    addToCart(product, product.baseUnit, 1);
   };
+
+  const handleIncrement = () => {
+    if (isInCart) {
+      updateQuantity(product.id, cartQuantity + 1);
+    } else {
+      addToCart(product, product.baseUnit, 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (cartQuantity <= 1) {
+      removeFromCart(product.id);
+    } else {
+      updateQuantity(product.id, cartQuantity - 1);
+    }
+  };
+
+  const activeDisplayQty = isInCart ? cartQuantity : 1;
+  const totalOrderCost = activeDisplayQty * product.standardWholesalePrice;
 
   return (
     <Modal
@@ -43,19 +60,122 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
       footer={
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', flexWrap: 'wrap', gap: '12px', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 4px)' }}>
           <div>
-            <div style={{ fontSize: '12px', color: 'var(--color-text-muted, #64748B)', fontWeight: 600 }}>Total Order Cost:</div>
+            <div style={{ fontSize: '11.5px', color: 'var(--color-text-muted, #64748B)', fontWeight: 600 }}>
+              {isInCart ? `Cart Total (${cartQuantity} ${cartQuantity === 1 ? 'carton' : 'cartons'} in order):` : 'Wholesale Carton Cost:'}
+            </div>
             <div style={{ fontSize: '18px', fontWeight: 900, color: 'var(--color-text-main, #0F172A)' }}>
-              PKR {(orderQuantity * product.standardWholesalePrice).toLocaleString()}
+              PKR {totalOrderCost.toLocaleString()}
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Button variant="outline" onClick={onClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleAdd} disabled={isAdded}>
-              {isAdded ? '✓ Added to Cart!' : `Add ${orderQuantity} ${selectedUnit}(s)`}
-            </Button>
+
+            {/* Zero Heavy Background: Transparent Stepper with Trash Can Delete */}
+            {isInCart ? (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '3px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  borderRadius: '999px',
+                  padding: '3px 8px',
+                  boxShadow: '0 2px 6px rgba(225, 29, 72, 0.12)',
+                }}
+              >
+                {/* Minus or Trash Button */}
+                <button
+                  type="button"
+                  onClick={handleDecrement}
+                  aria-label={cartQuantity === 1 ? 'Remove from basket' : 'Decrease quantity'}
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    color: cartQuantity === 1 ? '#EF4444' : '#0F172A',
+                    fontSize: cartQuantity === 1 ? '13px' : '17px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 0,
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  {cartQuantity === 1 ? '🗑️' : '−'}
+                </button>
+
+                {/* Quantity Number */}
+                <span
+                  style={{
+                    minWidth: '24px',
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    fontWeight: 900,
+                    color: '#0F172A',
+                    userSelect: 'none',
+                    padding: '0 4px',
+                  }}
+                >
+                  {cartQuantity}
+                </span>
+
+                {/* Plus Button */}
+                <button
+                  type="button"
+                  onClick={handleIncrement}
+                  aria-label="Increase quantity"
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    color: 'var(--color-primary, #E11D48)',
+                    fontSize: '17px',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 0,
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleInitialAdd}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  borderRadius: '999px',
+                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  backgroundColor: '#FFFFFF',
+                  color: 'var(--color-primary, #E11D48)',
+                  fontSize: '13px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  boxShadow: '0 1px 3px rgba(225, 29, 72, 0.12)',
+                  transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+              >
+                <span style={{ fontSize: '15px', fontWeight: 900 }}>+</span>
+                <span>Add {product.baseUnit}</span>
+              </button>
+            )}
           </div>
         </div>
       }
@@ -329,74 +449,132 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
           </div>
         </div>
 
-        {/* Quantity Stepper Selector in Modal */}
+        {/* Quantity Stepper Selector in Modal (Synchronized with Active Basket) */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingTop: '8px',
-            borderTop: '1px solid var(--color-border, #E2E8F0)',
+            padding: '12px 16px',
+            backgroundColor: isInCart ? '#F0FDF4' : '#F8FAFC',
+            border: isInCart ? '1.5px solid #86EFAC' : '1px solid var(--color-border, #E2E8F0)',
+            borderRadius: '10px',
             flexWrap: 'wrap',
             gap: '12px',
           }}
         >
-          <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
-            Select Order Quantity ({product.baseUnit}s):
-          </span>
+          <div>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: isInCart ? '#166534' : 'var(--color-text-main, #0F172A)' }}>
+              {isInCart ? `🛒 Added to Order (${cartQuantity} ${cartQuantity === 1 ? 'Carton' : 'Cartons'} in Basket)` : `Select Order Quantity (${product.baseUnit}s):`}
+            </div>
+            <div style={{ fontSize: '11px', color: isInCart ? '#15803D' : '#64748B' }}>
+              {isInCart ? 'Active in your cart • Use buttons to adjust or remove' : 'Click to add wholesale cartons to your current order'}
+            </div>
+          </div>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              border: '1px solid var(--color-border, #E2E8F0)',
-              borderRadius: '8px',
-              overflow: 'hidden',
-              backgroundColor: '#FFFFFF',
-            }}
-          >
-            <button
-              onClick={() => setOrderQuantity((prev) => Math.max(product.minOrderQuantity || 1, prev - 1))}
-              type="button"
-              style={{
-                padding: '8px 16px',
-                border: 'none',
-                backgroundColor: '#F8FAFC',
-                cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: 800,
-                color: 'var(--color-text-main, #0F172A)',
-              }}
-            >
-              −
-            </button>
-            <span
-              style={{
-                padding: '8px 16px',
-                fontSize: '15px',
-                fontWeight: 900,
-                minWidth: '32px',
-                textAlign: 'center',
-                color: 'var(--color-text-main, #0F172A)',
-              }}
-            >
-              {orderQuantity}
-            </span>
-            <button
-              onClick={() => setOrderQuantity((prev) => prev + 1)}
-              type="button"
-              style={{
-                padding: '8px 16px',
-                border: 'none',
-                backgroundColor: '#F8FAFC',
-                cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: 800,
-                color: 'var(--color-text-main, #0F172A)',
-              }}
-            >
-              +
-            </button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {isInCart ? (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '3px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  borderRadius: '999px',
+                  padding: '3px 8px',
+                  boxShadow: '0 1px 4px rgba(225, 29, 72, 0.12)',
+                }}
+              >
+                {/* Minus or Trash Button */}
+                <button
+                  type="button"
+                  onClick={handleDecrement}
+                  aria-label={cartQuantity === 1 ? 'Remove from basket' : 'Decrease quantity'}
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    color: cartQuantity === 1 ? '#EF4444' : '#0F172A',
+                    fontSize: cartQuantity === 1 ? '13px' : '17px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 0,
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  {cartQuantity === 1 ? '🗑️' : '−'}
+                </button>
+
+                {/* Quantity Number */}
+                <span
+                  style={{
+                    minWidth: '24px',
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    fontWeight: 900,
+                    color: '#0F172A',
+                    userSelect: 'none',
+                    padding: '0 4px',
+                  }}
+                >
+                  {cartQuantity}
+                </span>
+
+                {/* Plus Button */}
+                <button
+                  type="button"
+                  onClick={handleIncrement}
+                  aria-label="Increase quantity"
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    color: 'var(--color-primary, #E11D48)',
+                    fontSize: '17px',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 0,
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleInitialAdd}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '7px 15px',
+                  borderRadius: '999px',
+                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  backgroundColor: '#FFFFFF',
+                  color: 'var(--color-primary, #E11D48)',
+                  fontSize: '12.5px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  boxShadow: '0 1px 3px rgba(225, 29, 72, 0.12)',
+                  transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+              >
+                <span style={{ fontSize: '15px', fontWeight: 900 }}>+</span>
+                <span>Add {product.baseUnit}</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

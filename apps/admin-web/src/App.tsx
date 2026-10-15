@@ -61,6 +61,16 @@ import { TrainingSkillsPage } from './pages/workforce/TrainingSkillsPage';
 import { WorkforceReportsPage } from './pages/workforce/WorkforceReportsPage';
 import { RolePermissionsPage } from './pages/workforce/RolePermissionsPage';
 import { WorkforceAuditTrailPage } from './pages/workforce/WorkforceAuditTrailPage';
+import type { SystemModule } from '@candi/types';
+
+// Route guard checking view permission for active authenticated role
+const RouteGuard: React.FC<{ module: SystemModule; element: React.ReactElement }> = ({ module, element }) => {
+  const { hasPermission } = usePermissions();
+  if (!hasPermission(module, 'view')) {
+    return <Navigate to="/" replace />;
+  }
+  return element;
+};
 
 const ProtectedLayout: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -225,61 +235,61 @@ const ProtectedLayout: React.FC = () => {
         <main style={{ flex: 1, padding: 'clamp(16px, 3vw, 32px)', maxWidth: '1440px', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
           <Routes>
             <Route path="/" element={<DashboardPage />} />
-            <Route path="/customers" element={<CustomerListPage />} />
-            <Route path="/customers/:id" element={<CustomerProfilePage />} />
-            <Route path="/products" element={<ProductListPage />} />
-            <Route path="/orders" element={<OrderScreenPage />} />
-            <Route path="/orders/verification" element={<ConversationalVerificationPage />} />
-            <Route path="/invoices" element={<InvoiceScreenPage />} />
-            <Route path="/pricing/tiers" element={<CustomerTierListPage />} />
-            <Route path="/pricing/lists" element={<PriceListPage />} />
-            <Route path="/pricing/trade-offers" element={<TradeOffersPage />} />
-            <Route path="/pricing/preview" element={<OrderPricingPreviewPage />} />
-            <Route path="/receivables/dashboard" element={<ReceivablesDashboardPage />} />
-            <Route path="/receivables/statement" element={<CustomerStatementPage />} />
-            <Route path="/receivables/aging" element={<InvoiceAgingReportPage />} />
-            <Route path="/receivables/follow-ups" element={<CollectionFollowUpPage />} />
-            <Route path="/reporting/management-dashboard" element={<ExecutiveDashboardPage />} />
-            <Route path="/reporting/reports" element={<AdvancedReportsPage />} />
-            <Route path="/delivery/fleet-console" element={<FleetConsolePage />} />
+            <Route path="/customers" element={<RouteGuard module="customers" element={<CustomerListPage />} />} />
+            <Route path="/customers/:id" element={<RouteGuard module="customers" element={<CustomerProfilePage />} />} />
+            <Route path="/products" element={<RouteGuard module="inventory" element={<ProductListPage />} />} />
+            <Route path="/orders" element={<RouteGuard module="sales" element={<OrderScreenPage />} />} />
+            <Route path="/orders/verification" element={<RouteGuard module="sales" element={<ConversationalVerificationPage />} />} />
+            <Route path="/invoices" element={<RouteGuard module="sales" element={<InvoiceScreenPage />} />} />
+            <Route path="/pricing/tiers" element={<RouteGuard module="sales" element={<CustomerTierListPage />} />} />
+            <Route path="/pricing/lists" element={<RouteGuard module="sales" element={<PriceListPage />} />} />
+            <Route path="/pricing/trade-offers" element={<RouteGuard module="sales" element={<TradeOffersPage />} />} />
+            <Route path="/pricing/preview" element={<RouteGuard module="sales" element={<OrderPricingPreviewPage />} />} />
+            <Route path="/receivables/dashboard" element={<RouteGuard module="sales" element={<ReceivablesDashboardPage />} />} />
+            <Route path="/receivables/statement" element={<RouteGuard module="sales" element={<CustomerStatementPage />} />} />
+            <Route path="/receivables/aging" element={<RouteGuard module="sales" element={<InvoiceAgingReportPage />} />} />
+            <Route path="/receivables/follow-ups" element={<RouteGuard module="sales" element={<CollectionFollowUpPage />} />} />
+            <Route path="/reporting/management-dashboard" element={<RouteGuard module="reports" element={<ExecutiveDashboardPage />} />} />
+            <Route path="/reporting/reports" element={<RouteGuard module="reports" element={<AdvancedReportsPage />} />} />
+            <Route path="/delivery/fleet-console" element={<RouteGuard module="delivery" element={<FleetConsolePage />} />} />
             <Route path="/fleet" element={<Navigate to="/delivery/fleet-console" replace />} />
-            <Route path="/cash/collections" element={<CashCollectionPage />} />
-            <Route path="/cash/handovers" element={<CashHandoverPage />} />
-            <Route path="/cash/reconciliation" element={<CashReconciliationPage />} />
-            <Route path="/finance/coa" element={<ChartOfAccountsPage />} />
-            <Route path="/finance/customer-ledger" element={<CustomerLedgerPage />} />
-            <Route path="/finance/supplier-ledger" element={<SupplierLedgerPage />} />
-            <Route path="/finance/payments" element={<PaymentRegisterPage />} />
-            <Route path="/finance/journal-entries" element={<JournalEntryPage />} />
-            <Route path="/finance/reconciliation" element={<LedgerReconciliationPage />} />
-            <Route path="/finance/reports" element={<FinancialReportsPage />} />
-            <Route path="/finance/period-closing" element={<PeriodClosingPage />} />
-            <Route path="/finance/exceptions" element={<FinancialExceptionDashboardPage />} />
-            <Route path="/finance/approvals" element={<FinancialApprovalsPage />} />
-            <Route path="/finance/audit-trail" element={<FinancialAuditTrailPage />} />
-            <Route path="/suppliers" element={<SupplierListPage />} />
-            <Route path="/suppliers/:id" element={<SupplierProfilePage />} />
-            <Route path="/procurement/requests" element={<PurchaseRequestPage />} />
-            <Route path="/procurement/orders" element={<PurchaseOrderListPage />} />
-            <Route path="/procurement/orders/:id" element={<PurchaseOrderPage />} />
-            <Route path="/procurement/grn" element={<GoodsReceiptPage />} />
-            <Route path="/procurement/supplier-invoices" element={<SupplierInvoicePage />} />
-            <Route path="/procurement/planning" element={<StockPlanningPage />} />
+            <Route path="/cash/collections" element={<RouteGuard module="delivery" element={<CashCollectionPage />} />} />
+            <Route path="/cash/handovers" element={<RouteGuard module="delivery" element={<CashHandoverPage />} />} />
+            <Route path="/cash/reconciliation" element={<RouteGuard module="delivery" element={<CashReconciliationPage />} />} />
+            <Route path="/finance/coa" element={<RouteGuard module="finance" element={<ChartOfAccountsPage />} />} />
+            <Route path="/finance/customer-ledger" element={<RouteGuard module="finance" element={<CustomerLedgerPage />} />} />
+            <Route path="/finance/supplier-ledger" element={<RouteGuard module="finance" element={<SupplierLedgerPage />} />} />
+            <Route path="/finance/payments" element={<RouteGuard module="finance" element={<PaymentRegisterPage />} />} />
+            <Route path="/finance/journal-entries" element={<RouteGuard module="finance" element={<JournalEntryPage />} />} />
+            <Route path="/finance/reconciliation" element={<RouteGuard module="finance" element={<LedgerReconciliationPage />} />} />
+            <Route path="/finance/reports" element={<RouteGuard module="finance" element={<FinancialReportsPage />} />} />
+            <Route path="/finance/period-closing" element={<RouteGuard module="finance" element={<PeriodClosingPage />} />} />
+            <Route path="/finance/exceptions" element={<RouteGuard module="finance" element={<FinancialExceptionDashboardPage />} />} />
+            <Route path="/finance/approvals" element={<RouteGuard module="finance" element={<FinancialApprovalsPage />} />} />
+            <Route path="/finance/audit-trail" element={<RouteGuard module="finance" element={<FinancialAuditTrailPage />} />} />
+            <Route path="/suppliers" element={<RouteGuard module="suppliers" element={<SupplierListPage />} />} />
+            <Route path="/suppliers/:id" element={<RouteGuard module="suppliers" element={<SupplierProfilePage />} />} />
+            <Route path="/procurement/requests" element={<RouteGuard module="procurement" element={<PurchaseRequestPage />} />} />
+            <Route path="/procurement/orders" element={<RouteGuard module="procurement" element={<PurchaseOrderListPage />} />} />
+            <Route path="/procurement/orders/:id" element={<RouteGuard module="procurement" element={<PurchaseOrderPage />} />} />
+            <Route path="/procurement/grn" element={<RouteGuard module="procurement" element={<GoodsReceiptPage />} />} />
+            <Route path="/procurement/supplier-invoices" element={<RouteGuard module="procurement" element={<SupplierInvoicePage />} />} />
+            <Route path="/procurement/planning" element={<RouteGuard module="procurement" element={<StockPlanningPage />} />} />
 
             {/* Phase 5 Workforce & HR Management Routes */}
-            <Route path="/workforce/dashboard" element={<WorkforceDashboardPage />} />
-            <Route path="/workforce/employees" element={<EmployeeListPage />} />
-            <Route path="/workforce/employees/:id" element={<EmployeeProfilePage />} />
-            <Route path="/workforce/shifts" element={<ShiftManagementPage />} />
-            <Route path="/workforce/attendance" element={<AttendanceRegisterPage />} />
-            <Route path="/workforce/leaves" element={<LeaveManagementPage />} />
-            <Route path="/workforce/payroll" element={<PayrollRegisterPage />} />
-            <Route path="/workforce/payroll/payslips/:id" element={<PayslipViewPage />} />
-            <Route path="/workforce/performance" element={<PerformanceReviewPage />} />
-            <Route path="/workforce/training" element={<TrainingSkillsPage />} />
-            <Route path="/workforce/reports" element={<WorkforceReportsPage />} />
-            <Route path="/admin/roles" element={<RolePermissionsPage />} />
-            <Route path="/workforce/audit" element={<WorkforceAuditTrailPage />} />
+            <Route path="/workforce/dashboard" element={<RouteGuard module="administration" element={<WorkforceDashboardPage />} />} />
+            <Route path="/workforce/employees" element={<RouteGuard module="administration" element={<EmployeeListPage />} />} />
+            <Route path="/workforce/employees/:id" element={<RouteGuard module="administration" element={<EmployeeProfilePage />} />} />
+            <Route path="/workforce/shifts" element={<RouteGuard module="administration" element={<ShiftManagementPage />} />} />
+            <Route path="/workforce/attendance" element={<RouteGuard module="administration" element={<AttendanceRegisterPage />} />} />
+            <Route path="/workforce/leaves" element={<RouteGuard module="administration" element={<LeaveManagementPage />} />} />
+            <Route path="/workforce/payroll" element={<RouteGuard module="administration" element={<PayrollRegisterPage />} />} />
+            <Route path="/workforce/payroll/payslips/:id" element={<RouteGuard module="administration" element={<PayslipViewPage />} />} />
+            <Route path="/workforce/performance" element={<RouteGuard module="administration" element={<PerformanceReviewPage />} />} />
+            <Route path="/workforce/training" element={<RouteGuard module="administration" element={<TrainingSkillsPage />} />} />
+            <Route path="/workforce/reports" element={<RouteGuard module="administration" element={<WorkforceReportsPage />} />} />
+            <Route path="/admin/roles" element={<RouteGuard module="administration" element={<RolePermissionsPage />} />} />
+            <Route path="/workforce/audit" element={<RouteGuard module="administration" element={<WorkforceAuditTrailPage />} />} />
 
             {/* Legacy alias redirects */}
             <Route path="/staff" element={<Navigate to="/workforce/employees" replace />} />

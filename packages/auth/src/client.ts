@@ -161,7 +161,7 @@ export const MOCK_ACCOUNTS: Record<string, MockUserSession> = {
     user: { id: 'usr-adm-01', phone: '+923009999999' },
     profile: {
       id: 'usr-adm-01',
-      fullName: 'Farhan Zaidi (Operations Director)',
+      fullName: 'Farhan Zaidi (Operations Lead)',
       phone: '+923009999999',
       preferredLanguage: 'en',
       createdAt: '2026-08-01T00:00:00Z',
@@ -171,6 +171,139 @@ export const MOCK_ACCOUNTS: Record<string, MockUserSession> = {
       id: 'staff-01',
       profileId: 'usr-adm-01',
       role: 'super_admin',
+      isActive: true,
+      assignedAt: '2026-08-01T00:00:00Z',
+    },
+  },
+  // 7. Operations & Admin Manager
+  '+923009999901': {
+    user: { id: 'usr-adm-02', phone: '+923009999901' },
+    profile: {
+      id: 'usr-adm-02',
+      fullName: 'Bilal Ahmed (Operations Manager)',
+      phone: '+923009999901',
+      preferredLanguage: 'en',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z',
+    },
+    staffAccount: {
+      id: 'staff-02',
+      profileId: 'usr-adm-02',
+      role: 'admin_manager',
+      isActive: true,
+      assignedAt: '2026-08-01T00:00:00Z',
+    },
+  },
+  // 8. Warehouse Manager
+  '+923009999902': {
+    user: { id: 'usr-wh-01', phone: '+923009999902' },
+    profile: {
+      id: 'usr-wh-01',
+      fullName: 'Asim Raza (Warehouse Manager)',
+      phone: '+923009999902',
+      preferredLanguage: 'en',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z',
+    },
+    staffAccount: {
+      id: 'staff-03',
+      profileId: 'usr-wh-01',
+      role: 'warehouse_manager',
+      isActive: true,
+      assignedAt: '2026-08-01T00:00:00Z',
+    },
+  },
+  // 9. Warehouse Staff / Picker
+  '+923009999903': {
+    user: { id: 'usr-wh-02', phone: '+923009999903' },
+    profile: {
+      id: 'usr-wh-02',
+      fullName: 'Kashif Mehmood (Warehouse Picker)',
+      phone: '+923009999903',
+      preferredLanguage: 'en',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z',
+    },
+    staffAccount: {
+      id: 'staff-04',
+      profileId: 'usr-wh-02',
+      role: 'warehouse_staff',
+      isActive: true,
+      assignedAt: '2026-08-01T00:00:00Z',
+    },
+  },
+  // 10. Wholesale Sales Agent / Booker
+  '+923009999904': {
+    user: { id: 'usr-sa-01', phone: '+923009999904' },
+    profile: {
+      id: 'usr-sa-01',
+      fullName: 'Hamza Tariq (Sales Order Booker)',
+      phone: '+923009999904',
+      preferredLanguage: 'en',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z',
+    },
+    staffAccount: {
+      id: 'staff-05',
+      profileId: 'usr-sa-01',
+      role: 'sales_agent',
+      isActive: true,
+      assignedAt: '2026-08-01T00:00:00Z',
+    },
+  },
+  // 11. Logistics & Fleet Manager
+  '+923009999905': {
+    user: { id: 'usr-dl-01', phone: '+923009999905' },
+    profile: {
+      id: 'usr-dl-01',
+      fullName: 'Salman Khan (Fleet & Delivery Lead)',
+      phone: '+923009999905',
+      preferredLanguage: 'en',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z',
+    },
+    staffAccount: {
+      id: 'staff-06',
+      profileId: 'usr-dl-01',
+      role: 'delivery_manager',
+      isActive: true,
+      assignedAt: '2026-08-01T00:00:00Z',
+    },
+  },
+  // 12. Delivery Fleet Rider
+  '+923009999906': {
+    user: { id: 'usr-rd-01', phone: '+923009999906' },
+    profile: {
+      id: 'usr-rd-01',
+      fullName: 'Usman Ghani (Delivery Fleet Rider)',
+      phone: '+923009999906',
+      preferredLanguage: 'en',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z',
+    },
+    staffAccount: {
+      id: 'staff-07',
+      profileId: 'usr-rd-01',
+      role: 'rider',
+      isActive: true,
+      assignedAt: '2026-08-01T00:00:00Z',
+    },
+  },
+  // 13. Accounts & Cashier Staff
+  '+923009999907': {
+    user: { id: 'usr-ac-01', phone: '+923009999907' },
+    profile: {
+      id: 'usr-ac-01',
+      fullName: 'Naveed Siddiqui (Accounts & Khata Officer)',
+      phone: '+923009999907',
+      preferredLanguage: 'en',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z',
+    },
+    staffAccount: {
+      id: 'staff-08',
+      profileId: 'usr-ac-01',
+      role: 'accounts_staff',
       isActive: true,
       assignedAt: '2026-08-01T00:00:00Z',
     },

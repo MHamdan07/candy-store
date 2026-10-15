@@ -1,9 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { Card, Badge, Button, Input, Modal, Alert } from '@candi/ui';
 import { useAuth } from '@candi/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useWholesaleOrder } from '../context/WholesaleOrderContext';
-import { WHOLESALE_PRODUCTS } from '../data/wholesaleCatalogData';
+import {
+  WHOLESALE_PRODUCTS,
+  WHOLESALE_CATEGORIES,
+  getCategoryCounts,
+  matchProductCategory,
+} from '../data/wholesaleCatalogData';
 import { WholesaleNavbar } from '../components/WholesaleNavbar';
 import { WholesaleCatalogHero } from '../components/WholesaleCatalogHero';
 import { ProductCard } from '../components/ProductCard';
@@ -16,6 +21,7 @@ import { WholesaleInvoiceModal } from '../components/WholesaleInvoiceModal';
 import { CustomerOrdersTab } from '../components/CustomerOrdersTab';
 import { CustomerKhataTab } from '../components/CustomerKhataTab';
 import { MobileBottomNav } from '../components/MobileBottomNav';
+import { useLanguage } from '../context/LanguageContext';
 
 export interface CustomerPortalPageProps {
   defaultTab?: 'catalog' | 'orders' | 'khata' | 'addresses';
@@ -57,7 +63,7 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
   }, [location.pathname, defaultTab]);
 
   const [activeTab, setActiveTab] = useState<'catalog' | 'orders' | 'khata' | 'addresses'>(initialTab);
-  const [lang, setLang] = useState<'en' | 'ur'>('en');
+  const { language: lang, setLanguage, toggleLanguage, t, isRTL } = useLanguage();
 
   // Catalog search & filter states
   const [searchQuery, setSearchQuery] = useState('');
@@ -100,17 +106,23 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
   const [notice, setNotice] = useState<string | null>(null);
 
   const status = customerAccount?.status || 'approved';
+  const catalogGridRef = useRef<HTMLDivElement>(null);
 
   // Extract unique brands for filter
   const brands = useMemo(() => {
     return Array.from(new Set(products.map((p) => p.brand)));
   }, [products]);
 
+  // Dynamically compute category counts from active products
+  const categoryCounts = useMemo(() => {
+    return getCategoryCounts(products);
+  }, [products]);
+
   // Filtered and sorted products
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      // Category filter
-      if (selectedCategory !== 'all' && product.category !== selectedCategory) {
+      // Category filter (case-insensitive & slug/id normalized)
+      if (selectedCategory !== 'all' && !matchProductCategory(product.category, selectedCategory)) {
         return false;
       }
       // Brand filter
@@ -141,7 +153,34 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
       if (sortBy === 'price_desc') return b.standardWholesalePrice - a.standardWholesalePrice;
       return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
     });
-  }, [selectedCategory, selectedBrand, highMarginOnly, inStockOnly, searchQuery, sortBy]);
+  }, [products, selectedCategory, selectedBrand, highMarginOnly, inStockOnly, searchQuery, sortBy]);
+
+  // Active category metadata for active filter banner
+  const activeCategoryInfo = useMemo(() => {
+    if (selectedCategory === 'all') return null;
+    return (
+      WHOLESALE_CATEGORIES.find(
+        (c) =>
+          c.id.toLowerCase() === selectedCategory.toLowerCase() ||
+          c.name.toLowerCase() === selectedCategory.toLowerCase()
+      ) || {
+        id: selectedCategory,
+        name: selectedCategory,
+        icon: '🍬',
+        count: filteredProducts.length,
+      }
+    );
+  }, [selectedCategory, filteredProducts.length]);
+
+  const handleSelectCategory = (catId: string) => {
+    setSelectedCategory(catId);
+    if (catalogGridRef.current) {
+      const rect = catalogGridRef.current.getBoundingClientRect();
+      if (rect.top < 80 || rect.top > window.innerHeight * 0.7) {
+        catalogGridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
 
   // Profile completion calculation
   const completionPercentage = useMemo(() => {
@@ -188,7 +227,16 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC', display: 'flex', flexDirection: 'column', fontFamily: 'var(--font-family-base)' }}>
+    <div
+      dir={isRTL ? 'rtl' : 'ltr'}
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#F8FAFC',
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: isRTL ? "'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, sans-serif" : 'var(--font-family-base)',
+      }}
+    >
       {/* Wholesale Main Navbar */}
       <WholesaleNavbar
         activeTab={activeTab}
@@ -200,7 +248,7 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
           else if (tab === 'addresses') navigate('/account');
         }}
         lang={lang}
-        onToggleLang={() => setLang((prev) => (prev === 'en' ? 'ur' : 'en'))}
+        onToggleLang={toggleLanguage}
       />
 
       {/* Main Content Area */}
@@ -223,7 +271,7 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
               selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
+              onSelectCategory={handleSelectCategory}
               selectedBrand={selectedBrand}
               onSelectBrand={setSelectedBrand}
               highMarginOnly={highMarginOnly}
@@ -233,32 +281,102 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
               sortBy={sortBy}
               onSortChange={setSortBy}
               brands={brands}
+              categoryCounts={categoryCounts}
             />
 
-            {/* Results Header Count */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
-                Showing {filteredProducts.length} Wholesale SKUs
-                {selectedCategory !== 'all' && ` in ${selectedCategory}`}
-                {selectedBrand !== 'all' && ` from ${selectedBrand}`}
-              </div>
-
-              {cartItemCount > 0 && (
-                <button
-                  onClick={() => setIsCartOpen(true)}
-                  type="button"
+            {/* Results Header Count & Active Filter Area */}
+            <div ref={catalogGridRef} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {/* Active Category Header Banner (1-Click Clear Filter) */}
+              {activeCategoryInfo && (
+                <div
                   style={{
-                    border: 'none',
-                    background: 'none',
-                    color: 'var(--color-primary, #E11D48)',
-                    fontSize: '13px',
-                    fontWeight: 800,
-                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '12px',
+                    backgroundColor: '#F8FAFC',
+                    border: '1.5px solid #CBD5E1',
+                    borderRadius: 'var(--radius-md, 10px)',
+                    padding: '12px 18px',
+                    boxShadow: '0 2px 6px rgba(15, 23, 42, 0.04)',
+                    transition: 'all 0.2s ease',
                   }}
                 >
-                  View Basket ({cartItemCount} items, {totalCartons} units) →
-                </button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '22px', lineHeight: 1 }}>{activeCategoryInfo.icon}</span>
+                    <div>
+                      <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A' }}>
+                        Showing {filteredProducts.length} product{filteredProducts.length === 1 ? '' : 's'} in {activeCategoryInfo.name}
+                      </div>
+                      <div style={{ fontSize: '11.5px', color: '#64748B' }}>
+                        Filtered confectionery inventory • Factory-gate bulk pricing
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCategory('all')}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '6px 14px',
+                      borderRadius: '9999px',
+                      backgroundColor: '#FFFFFF',
+                      border: '1.5px solid #E2E8F0',
+                      color: '#0F172A',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      boxShadow: '0 1px 3px rgba(15, 23, 42, 0.06)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#E11D48';
+                      e.currentTarget.style.color = '#FFFFFF';
+                      e.currentTarget.style.borderColor = '#E11D48';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#FFFFFF';
+                      e.currentTarget.style.color = '#0F172A';
+                      e.currentTarget.style.borderColor = '#E2E8F0';
+                      e.currentTarget.style.transform = 'none';
+                    }}
+                  >
+                    <span style={{ fontWeight: 800 }}>✕</span>
+                    <span>Clear filter</span>
+                  </button>
+                </div>
               )}
+
+              {/* General Results Header Count */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
+                  Showing {filteredProducts.length} Wholesale SKUs
+                  {selectedCategory !== 'all' && ` in ${activeCategoryInfo ? activeCategoryInfo.name : selectedCategory}`}
+                  {selectedBrand !== 'all' && ` from ${selectedBrand}`}
+                </div>
+
+                {cartItemCount > 0 && (
+                  <button
+                    onClick={() => setIsCartOpen(true)}
+                    type="button"
+                    style={{
+                      border: 'none',
+                      background: 'none',
+                      color: 'var(--color-primary, #E11D48)',
+                      fontSize: '13px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    View Basket ({cartItemCount} items, {totalCartons} units) →
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Product Grid */}

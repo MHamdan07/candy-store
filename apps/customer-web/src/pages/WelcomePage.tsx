@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Card, Logo } from '@candi/ui';
+import { Button, Card, Logo, Alert } from '@candi/ui';
 import { useAuth } from '@candi/auth';
+import { normalizePakistanPhone } from '@candi/validation';
+import { useLanguage } from '../context/LanguageContext';
 
 export const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, customerAccount } = useAuth();
-  const [lang, setLang] = useState<'en' | 'ur'>('en');
+  const { isAuthenticated, customerAccount, signInWithOtp, updateProfile, updateCustomerAccount } = useAuth();
+  const { language, setLanguage, t, isRTL } = useLanguage();
+
+  // Auth Card States
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [customerType, setCustomerType] = useState<'retailer' | 'sub_wholesaler'>('retailer');
+  
+  // Login fields
+  const [phone, setPhone] = useState('0300 1111111');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+
+  // Register fields
+  const [businessName, setBusinessName] = useState('');
+  const [ownerName, setOwnerName] = useState('');
+  const [registerPhone, setRegisterPhone] = useState('0300 2222222');
+  const [area, setArea] = useState('Karachi');
 
   // Route guard: if already logged in, redirect based on account status
   useEffect(() => {
@@ -21,102 +38,191 @@ export const WelcomePage: React.FC = () => {
     }
   }, [isAuthenticated, customerAccount, navigate]);
 
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError(null);
+
+    const norm = normalizePakistanPhone(phone);
+    if (!norm.isValid) {
+      setAuthError(norm.error || (language === 'ur' ? 'درست پاکستانی موبائل نمبر درج کریں (مثلاً 0300 1234567)' : 'Please enter a valid Pakistani phone number (e.g. 0300 1234567)'));
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await signInWithOtp(norm.normalized);
+      setIsSubmitting(false);
+
+      if (res.success) {
+        navigate('/verify-otp', {
+          state: {
+            phone: norm.normalized,
+            displayPhone: norm.display,
+            customerType,
+          },
+        });
+      } else {
+        setAuthError(res.error || (language === 'ur' ? 'کوڈ بھیجنے میں خرابی۔ دوبارہ کوشش کریں۔' : 'Unable to send verification code. Please try again.'));
+      }
+    } catch (err: any) {
+      setIsSubmitting(false);
+      setAuthError(err.message || 'Error sending OTP');
+    }
+  };
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError(null);
+
+    if (!businessName.trim() || !ownerName.trim()) {
+      setAuthError(language === 'ur' ? 'برائے مہربانی دکان اور مالک کا نام درج کریں' : 'Please provide shop name and owner name');
+      return;
+    }
+
+    const norm = normalizePakistanPhone(registerPhone);
+    if (!norm.isValid) {
+      setAuthError(norm.error || (language === 'ur' ? 'درست موبائل نمبر درج کریں' : 'Please enter a valid phone number'));
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await signInWithOtp(norm.normalized);
+      setIsSubmitting(false);
+
+      if (res.success) {
+        navigate('/verify-otp', {
+          state: {
+            phone: norm.normalized,
+            displayPhone: norm.display,
+            customerType,
+            prefill: {
+              businessName,
+              ownerName,
+              area,
+            },
+          },
+        });
+      } else {
+        setAuthError(res.error || 'Failed to initiate registration.');
+      }
+    } catch (err: any) {
+      setIsSubmitting(false);
+      setAuthError(err.message || 'Registration error');
+    }
+  };
+
   return (
     <div
+      dir={isRTL ? 'rtl' : 'ltr'}
       style={{
         minHeight: '100vh',
         backgroundColor: '#F8FAFC',
         display: 'flex',
         flexDirection: 'column',
-        fontFamily: 'var(--font-family-base)',
+        fontFamily: isRTL ? "'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, sans-serif" : 'var(--font-family-base)',
       }}
     >
       {/* Top Header Bar */}
       <header
         style={{
-          padding: '16px 32px',
+          padding: '14px 28px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           borderBottom: '1px solid var(--color-border, #E2E8F0)',
           backgroundColor: '#FFFFFF',
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
         }}
       >
         <Logo size="md" variant="confectionery" />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {/* Language Selector */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Functional Language Switcher Pill (Matching User Screenshot) */}
           <div
             style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              backgroundColor: '#F8FAFC',
+              backgroundColor: '#F1F5F9',
               borderRadius: '999px',
-              padding: '2px',
-              border: '1px solid var(--color-border, #E2E8F0)',
+              padding: '3px',
+              border: '1px solid var(--color-border, #CBD5E1)',
+              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
             }}
           >
             <button
-              onClick={() => setLang('en')}
+              onClick={() => setLanguage('en')}
               type="button"
+              aria-label="Switch to English"
               style={{
                 border: 'none',
-                backgroundColor: lang === 'en' ? 'var(--color-primary, #E11D48)' : 'transparent',
-                color: lang === 'en' ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
-                padding: '4px 12px',
+                backgroundColor: language === 'en' ? 'var(--color-primary, #E11D48)' : 'transparent',
+                color: language === 'en' ? '#FFFFFF' : '#475569',
+                padding: '5px 14px',
                 borderRadius: '999px',
                 fontSize: '12px',
                 fontWeight: 700,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                transition: 'all 0.15s ease',
+                transition: 'all 0.18s ease',
               }}
             >
               English
             </button>
             <button
-              onClick={() => setLang('ur')}
+              onClick={() => setLanguage('ur')}
               type="button"
+              aria-label="Switch to Urdu"
               style={{
                 border: 'none',
-                backgroundColor: lang === 'ur' ? 'var(--color-primary, #E11D48)' : 'transparent',
-                color: lang === 'ur' ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
-                padding: '4px 12px',
+                backgroundColor: language === 'ur' ? 'var(--color-primary, #E11D48)' : 'transparent',
+                color: language === 'ur' ? '#FFFFFF' : '#475569',
+                padding: '5px 14px',
                 borderRadius: '999px',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                transition: 'all 0.15s ease',
+                transition: 'all 0.18s ease',
               }}
             >
               اردو
             </button>
           </div>
 
-          <Button variant="outline" size="sm" onClick={() => navigate('/login')}>
-            Sign In
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setAuthMode('login');
+              const authCard = document.getElementById('wholesale-auth-card');
+              if (authCard) authCard.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            {t('nav.signIn')}
           </Button>
         </div>
       </header>
 
-      {/* Main 2-Column Hero */}
+      {/* Main 2-Column Responsive Hero */}
       <main
         style={{
           flex: 1,
-          maxWidth: '1200px',
+          maxWidth: '1240px',
           width: '100%',
           margin: '0 auto',
-          padding: '48px 24px',
+          padding: '36px 20px',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '48px',
+          gap: '36px',
           alignItems: 'center',
           boxSizing: 'border-box',
         }}
       >
-        {/* Left Column: Headline, Description & Actions */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        {/* Left Column: Value Proposition & FMCG Distribution Perks */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
             <span
               style={{
@@ -126,256 +232,435 @@ export const WelcomePage: React.FC = () => {
                 color: 'var(--color-primary, #E11D48)',
                 borderRadius: '999px',
                 fontSize: '12px',
-                fontWeight: 700,
+                fontWeight: 800,
                 letterSpacing: '0.04em',
                 marginBottom: '14px',
                 border: '1px solid rgba(225, 29, 72, 0.2)',
               }}
             >
-              ★ OFFICIAL WHOLESALE FMCG DISTRIBUTOR
+              ★ {t('badge.official')}
             </span>
 
             <h1
               style={{
-                fontFamily: 'var(--font-family-base)',
-                fontSize: 'clamp(28px, 4vw, 42px)',
+                fontSize: 'clamp(28px, 4.2vw, 42px)',
                 fontWeight: 800,
                 color: 'var(--color-text-main, #0F172A)',
-                lineHeight: 1.2,
+                lineHeight: 1.22,
                 letterSpacing: '-0.02em',
-                margin: '0 0 12px 0',
+                margin: '0 0 14px 0',
               }}
             >
-              {lang === 'en'
-                ? 'Wholesale Stock for Your Retail Business'
-                : 'آپ کے کاروبار کے لیے ہول سیل اسٹاک'}
+              {t('hero.title')}
             </h1>
           </div>
 
           <p
             style={{
-              fontSize: '15px',
+              fontSize: '15.5px',
               color: 'var(--color-text-muted, #64748B)',
-              lineHeight: 1.6,
+              lineHeight: 1.65,
               margin: 0,
             }}
           >
-            {lang === 'en'
-              ? 'Buy confectionery and FMCG products from Candi Super Store. Built for retailers and sub-wholesalers, with direct carton rates, live margin breakdowns, and fast Karachi delivery.'
-              : 'کینڈی سپر اسٹور سے کنفیکشنری اور روزمرہ مصنوعات ہول سیل نرخوں پر حاصل کریں۔ دکانداروں اور ہول سیلرز کے لیے خصوصی پلیٹ فارم۔'}
+            {t('hero.description')}
           </p>
 
-          {/* Primary & Secondary Actions */}
+          {/* Quick Action Button to Browse Catalog */}
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <Button
               variant="primary"
               size="lg"
               onClick={() => navigate('/home')}
-              style={{ minWidth: '220px', display: 'flex', alignItems: 'center', gap: '8px' }}
+              style={{ minWidth: '220px', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
             >
-              <span>🛍️ Browse Wholesale Catalog</span>
-              <span>→</span>
-            </Button>
-
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => navigate('/register')}
-              style={{ minWidth: '160px' }}
-            >
-              Create Account
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={() => navigate('/login')}
-              style={{ minWidth: '100px' }}
-            >
-              Sign In
+              <span>🛍️ {t('hero.browseBtn')}</span>
             </Button>
           </div>
 
-          {/* Three Benefit Cards */}
+          {/* Benefit Cards */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
               gap: '12px',
-              marginTop: '16px',
+              marginTop: '12px',
             }}
           >
             <Card padding="sm" style={{ border: '1px solid var(--color-border, #E2E8F0)', textAlign: 'center' }}>
-              <div style={{ fontSize: '20px', marginBottom: '4px' }}>💰</div>
-              <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>
-                Wholesale Pricing
+              <div style={{ fontSize: '22px', marginBottom: '4px' }}>💰</div>
+              <div style={{ fontSize: '12.5px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
+                {t('hero.features.pricing.title')}
               </div>
-              <div style={{ fontSize: '10px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
-                Carton & Box Tiers
-              </div>
-            </Card>
-
-            <Card padding="sm" style={{ border: '1px solid var(--color-border, #E2E8F0)', textAlign: 'center' }}>
-              <div style={{ fontSize: '20px', marginBottom: '4px' }}>🚚</div>
-              <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>
-                Business Delivery
-              </div>
-              <div style={{ fontSize: '10px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
-                COD at Shop Doorstep
+              <div style={{ fontSize: '10.5px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
+                {t('hero.features.pricing.desc')}
               </div>
             </Card>
 
             <Card padding="sm" style={{ border: '1px solid var(--color-border, #E2E8F0)', textAlign: 'center' }}>
-              <div style={{ fontSize: '20px', marginBottom: '4px' }}>📱</div>
-              <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>
-                Team Confirmation
+              <div style={{ fontSize: '22px', marginBottom: '4px' }}>🚚</div>
+              <div style={{ fontSize: '12.5px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
+                {t('hero.features.delivery.title')}
               </div>
-              <div style={{ fontSize: '10px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
-                WhatsApp & Phone Support
+              <div style={{ fontSize: '10.5px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
+                {t('hero.features.delivery.desc')}
+              </div>
+            </Card>
+
+            <Card padding="sm" style={{ border: '1px solid var(--color-border, #E2E8F0)', textAlign: 'center' }}>
+              <div style={{ fontSize: '22px', marginBottom: '4px' }}>📱</div>
+              <div style={{ fontSize: '12.5px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
+                {t('hero.features.support.title')}
+              </div>
+              <div style={{ fontSize: '10.5px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
+                {t('hero.features.support.desc')}
               </div>
             </Card>
           </div>
 
-          {/* Support action link */}
-          <div style={{ fontSize: '12px', color: 'var(--color-text-muted, #64748B)', marginTop: '8px' }}>
-            Need ordering or onboarding assistance?{' '}
+          {/* Support Escalation */}
+          <div style={{ fontSize: '12.5px', color: 'var(--color-text-muted, #64748B)' }}>
+            {t('hero.supportText')}{' '}
             <a
               href="https://wa.me/923001234567"
               target="_blank"
               rel="noreferrer"
               style={{ color: 'var(--color-primary, #E11D48)', fontWeight: 700, textDecoration: 'none' }}
             >
-              WhatsApp Support Escalation →
+              {t('hero.whatsappEscalation')}
             </a>
           </div>
         </div>
 
-        {/* Right Column: Wholesale Confectionery Showcase */}
-        <div style={{ position: 'relative' }}>
+        {/* Right Column: Interactive Retailer & Wholesaler Auth Portal (Replaces static festival box) */}
+        <div id="wholesale-auth-card" style={{ position: 'relative' }}>
           <Card
             padding="lg"
             style={{
               position: 'relative',
-              overflow: 'hidden',
               backgroundColor: '#FFFFFF',
-              border: '1px solid var(--color-border, #E2E8F0)',
-              boxShadow: '0 10px 30px rgba(15, 23, 42, 0.08)',
+              border: '1.5px solid var(--color-border, #E2E8F0)',
+              boxShadow: '0 12px 36px rgba(15, 23, 42, 0.09)',
               borderRadius: '16px',
             }}
           >
-            {/* Promo Ticket Banner */}
+            {/* Header Badge */}
             <div
               style={{
-                backgroundColor: 'var(--color-primary, #E11D48)',
-                color: '#FFFFFF',
-                padding: '10px 16px',
-                borderRadius: '8px',
                 display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: '20px',
+                alignItems: 'center',
+                marginBottom: '16px',
+                paddingBottom: '12px',
+                borderBottom: '1px solid #F1F5F9',
               }}
             >
-              <div style={{ fontWeight: 800, fontSize: '13px', letterSpacing: '0.03em' }}>
-                🎟️ WHOLESALE FESTIVAL OFFER
+              <div>
+                <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                  {t('auth.title')}
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0 0' }}>
+                  {t('auth.subtitle')}
+                </p>
               </div>
-              <div style={{ fontSize: '11px', fontWeight: 700, backgroundColor: 'rgba(0,0,0,0.2)', padding: '3px 8px', borderRadius: '4px' }}>
-                UP TO 12% OFF CARTONS
-              </div>
+              <span
+                style={{
+                  backgroundColor: '#EFF6FF',
+                  color: '#1D4ED8',
+                  padding: '4px 10px',
+                  borderRadius: '999px',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  border: '1px solid #BFDBFE',
+                }}
+              >
+                🔒 B2B Only
+              </span>
             </div>
 
-            {/* Visual Confectionery Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-              <div
-                style={{
-                  backgroundColor: '#F8FAFC',
-                  borderRadius: '10px',
-                  padding: '14px',
-                  border: '1px solid var(--color-border, #E2E8F0)',
-                }}
-              >
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>🍫</div>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>
-                  Choco Dream Truffles
-                </div>
-                <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)' }}>
-                  Carton (24 Boxes)
-                </div>
-                <div style={{ marginTop: '8px', fontSize: '13px', fontWeight: 800, color: 'var(--color-primary, #E11D48)' }}>
-                  PKR 2,900 / carton
-                </div>
-              </div>
-
-              <div
-                style={{
-                  backgroundColor: '#F8FAFC',
-                  borderRadius: '10px',
-                  padding: '14px',
-                  border: '1px solid var(--color-border, #E2E8F0)',
-                }}
-              >
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>🧇</div>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>
-                  Crispy Hazelnut Wafers
-                </div>
-                <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)' }}>
-                  Carton (36 Packets)
-                </div>
-                <div style={{ marginTop: '8px', fontSize: '13px', fontWeight: 800, color: 'var(--color-primary, #E11D48)' }}>
-                  PKR 2,050 / carton
-                </div>
-              </div>
-
-              <div
-                style={{
-                  backgroundColor: '#F8FAFC',
-                  borderRadius: '10px',
-                  padding: '14px',
-                  border: '1px solid var(--color-border, #E2E8F0)',
-                }}
-              >
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>🍬</div>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>
-                  Fruity Chewy Candies
-                </div>
-                <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)' }}>
-                  Master Carton (100 Pkts)
-                </div>
-                <div style={{ marginTop: '8px', fontSize: '13px', fontWeight: 800, color: 'var(--color-primary, #E11D48)' }}>
-                  PKR 1,280 / carton
-                </div>
-              </div>
-
-              <div
-                style={{
-                  backgroundColor: '#F8FAFC',
-                  borderRadius: '10px',
-                  padding: '14px',
-                  border: '1px solid var(--color-border, #E2E8F0)',
-                }}
-              >
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>🥛</div>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>
-                  Dairy Rich Sachets
-                </div>
-                <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)' }}>
-                  Display Box (50 pcs)
-                </div>
-                <div style={{ marginTop: '8px', fontSize: '13px', fontWeight: 800, color: 'var(--color-primary, #E11D48)' }}>
-                  PKR 1,040 / box
-                </div>
-              </div>
-            </div>
-
+            {/* Mode Tabs: Sign In vs Create Account */}
             <div
               style={{
-                marginTop: '16px',
-                textAlign: 'center',
-                fontSize: '11px',
-                color: 'var(--color-text-muted, #64748B)',
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                backgroundColor: '#F1F5F9',
+                padding: '4px',
+                borderRadius: '10px',
+                marginBottom: '18px',
+                gap: '4px',
               }}
             >
-              Wholesale pricing unlocked for all registered retail &amp; sub-wholesale partners.
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthMode('login');
+                  setAuthError(null);
+                }}
+                style={{
+                  padding: '9px 12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  backgroundColor: authMode === 'login' ? '#FFFFFF' : 'transparent',
+                  color: authMode === 'login' ? '#0F172A' : '#64748B',
+                  fontWeight: authMode === 'login' ? 800 : 600,
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  boxShadow: authMode === 'login' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                🔑 {t('auth.tab.login')}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthMode('register');
+                  setAuthError(null);
+                }}
+                style={{
+                  padding: '9px 12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  backgroundColor: authMode === 'register' ? '#FFFFFF' : 'transparent',
+                  color: authMode === 'register' ? '#0F172A' : '#64748B',
+                  fontWeight: authMode === 'register' ? 800 : 600,
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  boxShadow: authMode === 'register' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                ✨ {t('auth.tab.register')}
+              </button>
+            </div>
+
+            {/* Role Switcher: Retailer vs Sub-Wholesaler */}
+            <div style={{ marginBottom: '18px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '8px' }}>
+                {language === 'ur' ? 'اپنا کاروباری درجہ منتخب کریں:' : 'Select Your Business Type:'}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => setCustomerType('retailer')}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '10px',
+                    border: customerType === 'retailer' ? '2px solid #E11D48' : '1px solid #CBD5E1',
+                    backgroundColor: customerType === 'retailer' ? '#FFF1F2' : '#FFFFFF',
+                    textAlign: isRTL ? 'right' : 'left',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <div style={{ fontSize: '13px', fontWeight: 800, color: customerType === 'retailer' ? '#BE123C' : '#0F172A' }}>
+                    {t('auth.role.retailer')}
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                    {t('auth.role.retailer.desc')}
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCustomerType('sub_wholesaler')}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '10px',
+                    border: customerType === 'sub_wholesaler' ? '2px solid #E11D48' : '1px solid #CBD5E1',
+                    backgroundColor: customerType === 'sub_wholesaler' ? '#FFF1F2' : '#FFFFFF',
+                    textAlign: isRTL ? 'right' : 'left',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <div style={{ fontSize: '13px', fontWeight: 800, color: customerType === 'sub_wholesaler' ? '#BE123C' : '#0F172A' }}>
+                    {t('auth.role.wholesaler')}
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                    {t('auth.role.wholesaler.desc')}
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {authError && (
+              <div style={{ marginBottom: '14px' }}>
+                <Alert type="error">{authError}</Alert>
+              </div>
+            )}
+
+            {/* TAB 1: SIGN IN FORM */}
+            {authMode === 'login' && (
+              <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                    {t('auth.phone.label')}
+                  </label>
+                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder={t('auth.phone.placeholder')}
+                      style={{
+                        width: '100%',
+                        padding: '11px 14px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #CBD5E1',
+                        fontSize: '14px',
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
+                      required
+                    />
+                  </div>
+                  <div style={{ fontSize: '11px', color: '#64748B', marginTop: '4px' }}>
+                    {t('auth.phone.hint')}
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  disabled={isSubmitting}
+                  style={{ width: '100%', marginTop: '4px', fontWeight: 800 }}
+                >
+                  {isSubmitting ? t('auth.login.loading') : t('auth.login.btn')}
+                </Button>
+              </form>
+            )}
+
+            {/* TAB 2: CREATE ACCOUNT FORM */}
+            {authMode === 'register' && (
+              <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                    {t('auth.register.businessName')}
+                  </label>
+                  <input
+                    type="text"
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    placeholder={t('auth.register.businessPlaceholder')}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      border: '1.5px solid #CBD5E1',
+                      fontSize: '13px',
+                      fontFamily: 'inherit',
+                      outline: 'none',
+                      boxSizing: 'border-box',
+                    }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                      {t('auth.register.ownerName')}
+                    </label>
+                    <input
+                      type="text"
+                      value={ownerName}
+                      onChange={(e) => setOwnerName(e.target.value)}
+                      placeholder={t('auth.register.ownerPlaceholder')}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #CBD5E1',
+                        fontSize: '13px',
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                      {t('auth.register.area')}
+                    </label>
+                    <input
+                      type="text"
+                      value={area}
+                      onChange={(e) => setArea(e.target.value)}
+                      placeholder={t('auth.register.areaPlaceholder')}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #CBD5E1',
+                        fontSize: '13px',
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                    {t('auth.phone.label')} (WhatsApp)
+                  </label>
+                  <input
+                    type="tel"
+                    value={registerPhone}
+                    onChange={(e) => setRegisterPhone(e.target.value)}
+                    placeholder="0300 1234567"
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      border: '1.5px solid #CBD5E1',
+                      fontSize: '13px',
+                      fontFamily: 'inherit',
+                      outline: 'none',
+                      boxSizing: 'border-box',
+                    }}
+                    required
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  disabled={isSubmitting}
+                  style={{ width: '100%', marginTop: '6px', fontWeight: 800 }}
+                >
+                  {isSubmitting ? t('auth.login.loading') : t('auth.register.btn')}
+                </Button>
+              </form>
+            )}
+
+            {/* Guest Link */}
+            <div style={{ marginTop: '16px', textAlign: 'center' }}>
+              <button
+                type="button"
+                onClick={() => navigate('/home')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#64748B',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                }}
+              >
+                {t('auth.guestLink')}
+              </button>
             </div>
           </Card>
         </div>
