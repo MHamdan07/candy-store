@@ -24,8 +24,6 @@ import { CustomerStatementPage } from './pages/receivables/CustomerStatementPage
 import { ReceivablesDashboardPage } from './pages/receivables/ReceivablesDashboardPage';
 import { InvoiceAgingReportPage } from './pages/receivables/InvoiceAgingReportPage';
 import { CollectionFollowUpPage } from './pages/receivables/CollectionFollowUpPage';
-import { ExecutiveDashboardPage } from './pages/reporting/ExecutiveDashboardPage';
-import { AdvancedReportsPage } from './pages/reporting/AdvancedReportsPage';
 import { CustomerLedgerPage } from './pages/finance/CustomerLedgerPage';
 import { PaymentRegisterPage } from './pages/finance/PaymentRegisterPage';
 import { CashCollectionPage } from './pages/cash/CashCollectionPage';
@@ -107,10 +105,6 @@ const ProtectedLayout: React.FC = () => {
         return { title: 'Invoice Aging & Exposure Schedule', subtitle: 'Automated 5-bucket aging classification (Current, 1–30, 31–60, 61–90, >90)' };
       case '/receivables/follow-ups':
         return { title: 'Collection Follow-Up & PTP Pipeline', subtitle: 'Timestamped customer communications, PTP scheduling, and payment allocation' };
-      case '/reporting/management-dashboard':
-        return { title: 'Executive Management Dashboard', subtitle: 'Reconciled operational control tower across sales, stock, procurement, and cash' };
-      case '/reporting/reports':
-        return { title: 'Operational Business Intelligence Reports', subtitle: 'Multi-dimensional drill-down analytics for sales, inventory, purchasing, payables, and cash' };
       case '/delivery/fleet-console':
       case '/fleet':
         return {
@@ -166,8 +160,6 @@ const ProtectedLayout: React.FC = () => {
             <Route path="/receivables/statement" element={<RouteGuard module="sales" element={<CustomerStatementPage />} />} />
             <Route path="/receivables/aging" element={<RouteGuard module="sales" element={<InvoiceAgingReportPage />} />} />
             <Route path="/receivables/follow-ups" element={<RouteGuard module="sales" element={<CollectionFollowUpPage />} />} />
-            <Route path="/reporting/management-dashboard" element={<RouteGuard module="reports" element={<ExecutiveDashboardPage />} />} />
-            <Route path="/reporting/reports" element={<RouteGuard module="reports" element={<AdvancedReportsPage />} />} />
             <Route path="/delivery/fleet-console" element={<RouteGuard module="delivery" element={<FleetConsolePage />} />} />
             <Route path="/fleet" element={<Navigate to="/delivery/fleet-console" replace />} />
             <Route path="/cash/collections" element={<RouteGuard module="delivery" element={<CashCollectionPage />} />} />
