@@ -1,25 +1,44 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Logo } from '@candi/ui';
 import { useAuth, usePermissions } from '@candi/auth';
 import type { SystemModule } from '@candi/types';
+import {
+  IconDashboard,
+  IconOrders,
+  IconVerification,
+  IconInvoice,
+  IconCustomers,
+  IconPricing,
+  IconInventory,
+  IconGoodsReceipt,
+  IconFleet,
+  IconCash,
+  IconKhata,
+  IconLogout,
+} from './Icons';
+
+// Live Demo Stores for Dynamic Badges
+import { INITIAL_VERIFICATION_RECORDS } from '../data/conversationalVerification';
+import { CUSTOMERS_DATABASE } from '../data/customers';
+import { INITIAL_INVOICES_AGING } from '../data/receivablesData';
 
 interface NavLeafItem {
   label: string;
   path: string;
-  icon: string;
+  icon: React.ReactNode;
   badge?: string;
   module: SystemModule;
 }
 
 interface NavSectionItem {
   heading: string;
-  module: SystemModule;
   items: {
     label: string;
     path: string;
-    icon: string;
+    icon: React.ReactNode;
     badge?: string;
+    module: SystemModule;
   }[];
 }
 
@@ -40,56 +59,203 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     navigate('/login');
   };
 
+  // Real-time badge calculations
+  const pendingConfirmationsCount = useMemo(() => {
+    return INITIAL_VERIFICATION_RECORDS.filter(
+      (r) =>
+        r.verificationStatus === 'whatsapp_pending' ||
+        r.verificationStatus === 'whatsapp_delivered' ||
+        r.verificationStatus === 'whatsapp_read' ||
+        r.verificationStatus === 'escalated_telesales' ||
+        r.verificationStatus === 'changes_requested'
+    ).length;
+  }, []);
+
+  const pendingCustomerReviewCount = useMemo(() => {
+    return CUSTOMERS_DATABASE.filter(
+      (c) => c.status === 'pending_approval' || c.status === 'new_customer'
+    ).length;
+  }, []);
+
+  const overdueInvoicesCount = useMemo(() => {
+    return INITIAL_INVOICES_AGING.filter(
+      (inv) => inv.status === 'overdue' || (inv.daysOverdue || 0) > 0
+    ).length;
+  }, []);
+
+  // Workflow-grouped navigation according to blueprint
   const navEntries: NavEntry[] = [
-    { label: 'Dashboard', path: '/', icon: '📊', module: 'dashboard' },
-    { label: 'Customers', path: '/customers', icon: '🏪', badge: '5', module: 'customers' },
-    { label: 'Products Master', path: '/products', icon: '📦', module: 'inventory' },
-    { label: 'Goods Received (GRN)', path: '/procurement/grn', icon: '📥', badge: '3', module: 'inventory' },
-    { label: 'Orders Queue', path: '/orders', icon: '📝', badge: '12', module: 'sales' },
-    { label: '5-Stage Verification & Picking', path: '/orders/verification', icon: '💬', badge: '5-Stage', module: 'sales' },
-    { label: 'Invoices & Khata', path: '/invoices', icon: '🧾', module: 'sales' },
     {
-      heading: 'PRICING & OFFERS',
-      module: 'sales',
+      label: 'Control Tower',
+      path: '/',
+      icon: <IconDashboard size={18} />,
+      module: 'dashboard',
+    },
+    {
+      heading: 'ORDERS & VERIFICATION',
       items: [
-        { label: 'Customer Tiers', path: '/pricing/tiers', icon: '🏷️' },
-        { label: 'Wholesale Price Lists', path: '/pricing/lists', icon: '💲' },
-        { label: 'Trade Offers & Schemes', path: '/pricing/trade-offers', icon: '🎁', badge: '4' },
+        {
+          label: 'Order Console',
+          path: '/orders',
+          icon: <IconOrders size={18} />,
+          module: 'sales',
+        },
+        {
+          label: '5-Stage Verification',
+          path: '/orders/verification',
+          icon: <IconVerification size={18} />,
+          badge: pendingConfirmationsCount > 0 ? pendingConfirmationsCount.toString() : undefined,
+          module: 'sales',
+        },
+        {
+          label: 'Invoices & Challans',
+          path: '/invoices',
+          icon: <IconInvoice size={18} />,
+          module: 'sales',
+        },
       ],
     },
     {
-      heading: 'RECEIVABLES & KHATA',
-      module: 'sales',
+      heading: 'CUSTOMERS & PRICING',
       items: [
-        { label: 'Receivables Dashboard', path: '/receivables/dashboard', icon: '💳' },
-        { label: 'Customer Statement', path: '/receivables/statement', icon: '📜' },
-        { label: 'Invoice Aging', path: '/receivables/aging', icon: '⏳', badge: '5' },
-        { label: 'Collection Follow-ups', path: '/receivables/follow-ups', icon: '📞', badge: '4' },
+        {
+          label: 'Customers Directory',
+          path: '/customers',
+          icon: <IconCustomers size={18} />,
+          badge: pendingCustomerReviewCount > 0 ? pendingCustomerReviewCount.toString() : undefined,
+          module: 'customers',
+        },
+        {
+          label: 'Customer Tiers',
+          path: '/pricing/tiers',
+          icon: <IconPricing size={18} />,
+          module: 'customers',
+        },
+        {
+          label: 'Wholesale Price Lists',
+          path: '/pricing/lists',
+          icon: <IconPricing size={18} />,
+          module: 'customers',
+        },
+        {
+          label: 'Trade Offers & Schemes',
+          path: '/pricing/trade-offers',
+          icon: <IconPricing size={18} />,
+          module: 'sales',
+        },
       ],
     },
     {
-      heading: 'FLEET & LAST-MILE DELIVERY',
-      module: 'delivery',
+      heading: 'INVENTORY & WAREHOUSE',
       items: [
-        { label: 'Trip Manifest Console', path: '/delivery/fleet-console', icon: '🚚', badge: 'Live' },
-        { label: 'Cash Collections', path: '/cash/collections', icon: '📥', badge: '5' },
-        { label: 'Cash Handover', path: '/cash/handovers', icon: '🤝', badge: '2' },
-        { label: 'Vault Reconciliation', path: '/cash/reconciliation', icon: '🔐', badge: '$0' },
+        {
+          label: 'Products Master',
+          path: '/products',
+          icon: <IconInventory size={18} />,
+          module: 'inventory',
+        },
+        {
+          label: 'Goods Receipts (GRN)',
+          path: '/procurement/grn',
+          icon: <IconGoodsReceipt size={18} />,
+          module: 'inventory',
+        },
       ],
     },
     {
-      heading: 'FINANCE & LEDGERS',
-      module: 'finance',
+      heading: 'FLEET & CASH SETTLEMENT',
       items: [
-        { label: 'Customer Ledger', path: '/finance/customer-ledger', icon: '👤' },
-        { label: 'Payment Register', path: '/finance/payments', icon: '💵', badge: '7' },
+        {
+          label: 'Trip Manifest Console',
+          path: '/delivery/fleet-console',
+          icon: <IconFleet size={18} />,
+          module: 'delivery',
+        },
+        {
+          label: 'Cash Collections',
+          path: '/cash/collections',
+          icon: <IconCash size={18} />,
+          module: 'delivery',
+        },
+        {
+          label: 'Cash Handover',
+          path: '/cash/handovers',
+          icon: <IconCash size={18} />,
+          module: 'delivery',
+        },
+        {
+          label: 'Vault Reconciliation',
+          path: '/cash/reconciliation',
+          icon: <IconCash size={18} />,
+          module: 'delivery',
+        },
+      ],
+    },
+    {
+      heading: 'KHATA & RECEIVABLES',
+      items: [
+        {
+          label: 'Receivables Dashboard',
+          path: '/receivables/dashboard',
+          icon: <IconKhata size={18} />,
+          module: 'sales',
+        },
+        {
+          label: 'Customer Statements',
+          path: '/receivables/statement',
+          icon: <IconKhata size={18} />,
+          module: 'sales',
+        },
+        {
+          label: 'Invoice Aging',
+          path: '/receivables/aging',
+          icon: <IconInvoice size={18} />,
+          badge: overdueInvoicesCount > 0 ? overdueInvoicesCount.toString() : undefined,
+          module: 'sales',
+        },
+        {
+          label: 'Collection Follow-ups',
+          path: '/receivables/follow-ups',
+          icon: <IconKhata size={18} />,
+          module: 'sales',
+        },
+        {
+          label: 'Customer Sub-Ledger',
+          path: '/finance/customer-ledger',
+          icon: <IconKhata size={18} />,
+          module: 'finance',
+        },
+        {
+          label: 'Payment Register',
+          path: '/finance/payments',
+          icon: <IconCash size={18} />,
+          module: 'finance',
+        },
       ],
     },
   ];
 
-  const visibleEntries = navEntries.filter((entry) => {
-    return hasPermission(entry.module, 'view');
-  });
+  // Role-based visibility filtering per item and section
+  const visibleEntries = useMemo(() => {
+    return navEntries
+      .map((entry) => {
+        if ('items' in entry) {
+          const permittedItems = entry.items.filter((item) =>
+            hasPermission(item.module, 'view')
+          );
+          if (permittedItems.length === 0) return null;
+          return {
+            ...entry,
+            items: permittedItems,
+          };
+        }
+        if (hasPermission(entry.module, 'view')) {
+          return entry;
+        }
+        return null;
+      })
+      .filter((entry): entry is NavEntry => entry !== null);
+  }, [hasPermission, activeRole, pendingConfirmationsCount, pendingCustomerReviewCount, overdueInvoicesCount]);
 
   return (
     <>
@@ -156,11 +322,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
         </div>
 
         {/* Navigation Menu */}
-        <nav style={{ flex: 1, padding: '16px 12px', overflowY: 'auto' }}>
+        <nav style={{ flex: 1, padding: '14px 12px', overflowY: 'auto' }}>
           {visibleEntries.map((item, idx) => {
             if ('heading' in item && item.items) {
               return (
-                <div key={idx} style={{ marginTop: '18px', marginBottom: '6px' }}>
+                <div key={idx} style={{ marginTop: '16px', marginBottom: '4px' }}>
                   <div
                     style={{
                       padding: '0 12px',
@@ -195,7 +361,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                       })}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '15px' }}>{sub.icon}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', color: 'inherit' }}>
+                          {sub.icon}
+                        </span>
                         <span>{sub.label}</span>
                       </div>
                       {sub.badge && (
@@ -207,6 +375,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                             color: '#FFFFFF',
                             padding: '1px 6px',
                             borderRadius: '999px',
+                            minWidth: '18px',
+                            textAlign: 'center',
                           }}
                         >
                           {sub.badge}
@@ -241,7 +411,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                   })}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span style={{ fontSize: '15px' }}>{item.icon}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', color: 'inherit' }}>
+                      {item.icon}
+                    </span>
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
@@ -293,7 +465,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                 border: '1px solid #334155',
               }}
             >
-              {profile?.fullName ? profile.fullName.slice(0, 2).toUpperCase() : 'FZ'}
+              {profile?.fullName ? profile.fullName.slice(0, 2).toUpperCase() : 'AD'}
             </div>
             <div style={{ overflow: 'hidden', flex: 1 }}>
               <div
@@ -306,7 +478,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                   color: '#FFFFFF',
                 }}
               >
-                {profile?.fullName || 'Farhan Zaidi'}
+                {profile?.fullName || 'Staff User'}
               </div>
               <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'capitalize' }}>
                 Role: <strong style={{ color: '#E2E8F0' }}>{activeRole}</strong>
@@ -325,13 +497,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
               fontWeight: 600,
               cursor: 'pointer',
               textAlign: 'left',
-              padding: '4px 0',
+              padding: '6px 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
               transition: 'color 0.15s ease',
             }}
-            onMouseEnter={(e) => ((e.target as HTMLElement).style.color = '#FFFFFF')}
-            onMouseLeave={(e) => ((e.target as HTMLElement).style.color = '#94A3B8')}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#FFFFFF')}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#94A3B8')}
           >
-            Sign Out of Control Tower →
+            <IconLogout size={14} />
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
