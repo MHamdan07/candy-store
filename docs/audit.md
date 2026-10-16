@@ -1,10 +1,10 @@
 # Audit & Requirements Alignment Report: Candi Super Store Wholesale Platform
 
-**Document Version:** 1.0.0 (Phase 1 Audit)  
-**Date:** 2026-10-15  
+**Document Version:** 2.0.0 (Phase 2 Cleanup Executed)  
+**Date:** 2026-10-16  
 **Git Branch:** `cleanup/report-alignment`  
 **Sole Source of Truth:** `docs/report.md` (*"Architectural Blueprint and Technology Evaluation for Wholesale Confectionery and FMCG Distribution in Pakistan"*)  
-**Auditor Status:** Phase 1 Complete — Awaiting User Approval on all `UNSURE` items before proceeding to Phase 2.
+**Auditor Status:** Phase 2 Complete — All non-blueprint modules removed across 5 atomic commits; RBAC matrix pruned; drop migration drafted; test suite and build passing. Awaiting user approval to start Phase 3 (Dashboard & Visual Cleanup).
 
 ---
 
@@ -149,3 +149,64 @@ Please review the following **4 borderline items** before Phase 2 removal begins
 4. **Roles & Permissions UI Editor (`/admin/roles`, `RolePermissionsPage.tsx`)**:
    - *Report Status:* The report specifies *"role-based access security"* across staff roles (Admin, Warehouse, Sales Booker, Rider, Cashier). However, a live runtime permission checkbox matrix UI was introduced in the workforce module.
    - *Recommendation:* Remove the UI editor page, and maintain the pruned RBAC matrix as a clean, immutable configuration in `@candi/auth`.
+
+---
+
+## 5. Phase 2 Execution Summary & Verification
+
+### Atomic Commits Executed:
+1. **Commit 1 (`e6a7bf4`)**: `chore(admin-web): remove workforce and HR management module` (-7,605 lines)
+2. **Commit 2 (`3079755`)**: `chore(admin-web): remove GAAP accounting and financial exception modules` (-7,756 lines)
+3. **Commit 3 (`9846e1d`)**: `chore(admin-web): remove ERP procurement and stock planning modules` (-2,891 lines)
+4. **Commit 4 (`6921722`)**: `chore(admin-web): remove disconnected executive and advanced BI dashboards` (-1,111 lines)
+5. **Commit 5 (`887515f`)**: `chore(admin-web): finalize unsure requirements and prune RBAC matrix` (-2,813 lines)
+
+**Total lines eliminated across Phase 2:** ~22,176 lines of non-blueprint code.
+
+### Deleted Pages & Routes:
+- **Workforce / HR (12 routes):**
+  - `/workforce/dashboard` (`WorkforceDashboardPage.tsx`)
+  - `/workforce/employees`, `/staff` (`EmployeeListPage.tsx`)
+  - `/workforce/employees/:id` (`EmployeeProfilePage.tsx`)
+  - `/workforce/shifts` (`ShiftManagementPage.tsx`)
+  - `/workforce/attendance` (`AttendanceRegisterPage.tsx`)
+  - `/workforce/leaves` (`LeaveManagementPage.tsx`)
+  - `/workforce/payroll` (`PayrollRegisterPage.tsx`)
+  - `/workforce/payroll/payslips/:id` (`PayslipViewPage.tsx`)
+  - `/workforce/performance` (`PerformanceReviewPage.tsx`)
+  - `/workforce/training` (`TrainingSkillsPage.tsx`)
+  - `/workforce/reports` (`WorkforceReportsPage.tsx`)
+  - `/workforce/audit`, `/audit` (`WorkforceAuditTrailPage.tsx`)
+- **Accounting & GAAP (9 routes):**
+  - `/finance/coa` (`ChartOfAccountsPage.tsx`)
+  - `/finance/supplier-ledger` (`SupplierLedgerPage.tsx`)
+  - `/finance/journal-entries` (`JournalEntryPage.tsx`)
+  - `/finance/reconciliation` (`LedgerReconciliationPage.tsx`)
+  - `/finance/reports` (`FinancialReportsPage.tsx`)
+  - `/finance/period-closing` (`PeriodClosingPage.tsx`)
+  - `/finance/exceptions` (`FinancialExceptionDashboardPage.tsx`)
+  - `/finance/approvals` (`FinancialApprovalsPage.tsx`)
+  - `/finance/audit-trail` (`FinancialAuditTrailPage.tsx`)
+- **Procurement & Stock Planning (5 routes):**
+  - `/procurement/requests` (`PurchaseRequestPage.tsx`)
+  - `/procurement/orders` (`PurchaseOrderListPage.tsx`)
+  - `/procurement/orders/:id` (`PurchaseOrderPage.tsx`)
+  - `/procurement/supplier-invoices` (`SupplierInvoicePage.tsx`)
+  - `/procurement/planning` (`StockPlanningPage.tsx`)
+- **BI Dashboards (2 routes):**
+  - `/reporting/management-dashboard` (`ExecutiveDashboardPage.tsx`)
+  - `/reporting/reports` (`AdvancedReportsPage.tsx`)
+- **Approved Unsure Items (3 routes):**
+  - `/suppliers`, `/suppliers/:id` (`SupplierListPage.tsx`, `SupplierProfilePage.tsx`)
+  - `/pricing/preview` (`OrderPricingPreviewPage.tsx`)
+  - `/admin/roles` (`RolePermissionsPage.tsx`)
+
+### New Files Created (With Rationale):
+- `apps/admin-web/src/data/vendors.ts`: Minimal static vendor registry (Candyland, Hilal, EBM, Mitchells) to power GRN batch intake vendor selection without requiring a full ERP supplier CRM.
+- `supabase/migrations/20261016000001_drop_unused_erp_tables.sql`: Migration file that drops `public.purchase_orders` while preserving `public.suppliers` for GRN vendor foreign key reference. (Drafted only; NOT executed).
+
+### Deferred Missing Report Features (For Post-Cleanup Phase):
+1. **FBR Digital Invoicing Integration**: Generation and rendering of PRAL Invoice Reference Number (IRN) and QR code on invoices and challans (Report §1, §3).
+2. **Third-Party Courier CPR Tracking**: Real-time tracking and Cash Settlement Proof / CPR number logging for intercity COD couriers (Trax, PostEx, Leopard) (Report §5.4).
+3. **Real SMS OTP Authentication**: Replacing mock developer authentication with production SMS OTP verification for sales bookers and depot staff.
+

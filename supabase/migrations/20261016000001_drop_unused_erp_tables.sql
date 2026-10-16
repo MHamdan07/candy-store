@@ -1,0 +1,27 @@
+-- ====================================================================
+-- CANDI SUPER STORE PLATFORM: CLEANUP UNUSED ERP TABLES
+-- ====================================================================
+--
+-- CAUTION / PRE-EXECUTION ADVISORY:
+-- Always back up the database before running this migration!
+--
+-- This migration drops legacy ERP procurement tables that were removed
+-- to align strictly with the blueprint (docs/report.md).
+-- Confectionery distributors in Pakistan intake goods directly via manufacturer
+-- delivery challans / GRN (§5.3) rather than formal ERP Purchase Orders.
+--
+-- TABLE DROPPED:
+-- 1. public.purchase_orders:
+--    Reason: Enterprise purchase order drafting, approvals, and supplier PO lifecycle
+--    are not part of the wholesale confectionery distribution blueprint (docs/report.md).
+--    Replaced by streamlined Goods Receipt Note (GRN) batch/lot intake (§5.3).
+--
+-- TABLE PRESERVED:
+-- 1. public.suppliers:
+--    Reason: KEPT. GRN batch intake records require a vendor/manufacturer entity
+--    reference (e.g., Candyland, EBM, Hilal, English Biscuit Manufacturers).
+--
+-- ====================================================================
+
+-- 1. Drop public.purchase_orders
+drop table if exists public.purchase_orders cascade;
