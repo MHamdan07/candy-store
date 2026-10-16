@@ -44,6 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     { label: 'Dashboard', path: '/', icon: '📊', module: 'dashboard' },
     { label: 'Customers', path: '/customers', icon: '🏪', badge: '5', module: 'customers' },
     { label: 'Products Master', path: '/products', icon: '📦', module: 'inventory' },
+    { label: 'Goods Received (GRN)', path: '/procurement/grn', icon: '📥', badge: '3', module: 'inventory' },
     { label: 'Orders Queue', path: '/orders', icon: '📝', badge: '12', module: 'sales' },
     { label: '5-Stage Verification & Picking', path: '/orders/verification', icon: '💬', badge: '5-Stage', module: 'sales' },
     { label: 'Invoices & Khata', path: '/invoices', icon: '🧾', module: 'sales' },
@@ -54,15 +55,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
         { label: 'Customer Tiers', path: '/pricing/tiers', icon: '🏷️' },
         { label: 'Wholesale Price Lists', path: '/pricing/lists', icon: '💲' },
         { label: 'Trade Offers & Schemes', path: '/pricing/trade-offers', icon: '🎁', badge: '4' },
-        { label: 'Order Pricing Preview', path: '/pricing/preview', icon: '⚡' },
-      ],
-    },
-    {
-      heading: 'PROCUREMENT',
-      module: 'procurement',
-      items: [
-        { label: 'Suppliers Database', path: '/suppliers', icon: '🏭', badge: '6' },
-        { label: 'Goods Received (GRN)', path: '/procurement/grn', icon: '📥', badge: '3' },
       ],
     },
     {
@@ -91,13 +83,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
       items: [
         { label: 'Customer Ledger', path: '/finance/customer-ledger', icon: '👤' },
         { label: 'Payment Register', path: '/finance/payments', icon: '💵', badge: '7' },
-      ],
-    },
-    {
-      heading: 'SYSTEM & ACCESS',
-      module: 'administration',
-      items: [
-        { label: 'Roles & Permissions', path: '/admin/roles', icon: '🔑' },
       ],
     },
   ];

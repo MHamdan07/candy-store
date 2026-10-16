@@ -14,10 +14,6 @@ interface PermissionsContextType {
   activeRole: StaffRoleName;
   matrix: Record<StaffRoleName, Record<SystemModule, ModulePermissions>>;
   hasPermission: (module: SystemModule, action?: keyof ModulePermissions) => boolean;
-  canViewCompensation: () => boolean;
-  canApproveLeave: () => boolean;
-  canApprovePayroll: () => boolean;
-  canOverrideAttendance: () => boolean;
   switchRole: (role: StaffRoleName) => void;
   updateRolePermission: (
     role: StaffRoleName,
@@ -30,7 +26,6 @@ interface PermissionsContextType {
 
 const PermissionsContext = createContext<PermissionsContextType | null>(null);
 
-const STORAGE_KEY_ROLE = 'candi_active_role_v1';
 const STORAGE_KEY_MATRIX = 'candi_role_permissions_matrix_v1';
 
 export const PermissionsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -96,37 +91,12 @@ export const PermissionsProvider: React.FC<{ children: React.ReactNode }> = ({ c
     return Boolean(modPerms[action]);
   };
 
-  const canViewCompensation = (): boolean => {
-    return activeRole === 'super_admin' || activeRole === 'admin_manager' || activeRole === 'accounts_staff';
-  };
-
-  const canApproveLeave = (): boolean => {
-    return (
-      activeRole === 'super_admin' ||
-      activeRole === 'admin_manager' ||
-      activeRole === 'warehouse_manager' ||
-      activeRole === 'delivery_manager'
-    );
-  };
-
-  const canApprovePayroll = (): boolean => {
-    return activeRole === 'super_admin' || activeRole === 'admin_manager' || activeRole === 'accounts_staff';
-  };
-
-  const canOverrideAttendance = (): boolean => {
-    return activeRole === 'super_admin' || activeRole === 'admin_manager' || activeRole === 'warehouse_manager';
-  };
-
   return (
     <PermissionsContext.Provider
       value={{
         activeRole,
         matrix,
         hasPermission,
-        canViewCompensation,
-        canApproveLeave,
-        canApprovePayroll,
-        canOverrideAttendance,
         switchRole,
         updateRolePermission,
         resetPermissionsToDefault,

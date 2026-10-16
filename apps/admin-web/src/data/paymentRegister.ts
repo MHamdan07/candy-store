@@ -1,7 +1,7 @@
 import type { PaymentRegisterRecord } from '@candi/types';
 
 export const INITIAL_PAYMENT_REGISTER: PaymentRegisterRecord[] = [
-  // ================= CUSTOMER INFLOWS =================
+  // Customer Khata & Invoice Receipts
   {
     id: 'pay-001',
     paymentNumber: 'PAY-2026-018',
@@ -72,61 +72,6 @@ export const INITIAL_PAYMENT_REGISTER: PaymentRegisterRecord[] = [
     approvalStatus: 'approved',
     approvedBy: 'Kashif Razzaq',
     notes: 'Post-dated clearing cheque deposited with Meezan Bank.',
-    reconciledInGL: false,
-  },
-
-  // ================= SUPPLIER DISBURSEMENTS =================
-  {
-    id: 'pay-005',
-    paymentNumber: 'PAY-2026-398',
-    partyType: 'supplier',
-    partyId: 'sup-01',
-    partyCode: 'SUP-NAT-01',
-    partyName: 'National Confectionery Industries Ltd.',
-    paymentMethod: 'bank_transfer',
-    amount: 410000,
-    paymentDate: '2026-08-25',
-    invoiceReference: 'INV-NAT-9710',
-    receiptOrTransactionRef: 'FT-HBL-8812903',
-    recordedBy: 'Farhan Zaidi',
-    approvalStatus: 'reconciled',
-    approvedBy: 'Kashif Razzaq',
-    notes: 'Full settlement of approved PO-2026-060 invoice via RTGS.',
-    reconciledInGL: true,
-  },
-  {
-    id: 'pay-006',
-    paymentNumber: 'PAY-2026-441',
-    partyType: 'supplier',
-    partyId: 'sup-01',
-    partyCode: 'SUP-NAT-01',
-    partyName: 'National Confectionery Industries Ltd.',
-    paymentMethod: 'cheque',
-    amount: 150000,
-    paymentDate: '2026-09-05',
-    invoiceReference: 'INV-NAT-9840',
-    receiptOrTransactionRef: 'HBL-CHQ-882901',
-    recordedBy: 'Farhan Zaidi',
-    approvalStatus: 'reconciled',
-    approvedBy: 'Kashif Razzaq',
-    notes: 'Part-settlement of bi-weekly confectionery delivery.',
-    reconciledInGL: true,
-  },
-  {
-    id: 'pay-007',
-    paymentNumber: 'PAY-2026-455',
-    partyType: 'supplier',
-    partyId: 'sup-02',
-    partyCode: 'SUP-GLD-02',
-    partyName: 'Golden Wheat Milling & Bakery Supplies',
-    paymentMethod: 'bank_transfer',
-    amount: 45000,
-    paymentDate: '2026-09-17',
-    invoiceReference: 'INV-GLD-4011',
-    receiptOrTransactionRef: 'FT-HBL-9948120',
-    recordedBy: 'Accounts Clerk',
-    approvalStatus: 'pending_approval',
-    notes: 'Pending final CFO token approval before bank dispatch.',
     reconciledInGL: false,
   },
 ];

@@ -1514,12 +1514,8 @@ export type SystemModule =
   | 'sales'
   | 'customers'
   | 'inventory'
-  | 'procurement'
-  | 'suppliers'
   | 'delivery'
-  | 'finance'
-  | 'reports'
-  | 'administration';
+  | 'finance';
 
 export interface ModulePermissions {
   view: boolean;

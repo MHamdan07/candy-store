@@ -13,13 +13,10 @@ import { ProductListPage } from './pages/ProductListPage';
 import { OrderScreenPage } from './pages/OrderScreenPage';
 import { ConversationalVerificationPage } from './pages/tele-sales/ConversationalVerificationPage';
 import { InvoiceScreenPage } from './pages/InvoiceScreenPage';
-import { SupplierListPage } from './pages/SupplierListPage';
-import { SupplierProfilePage } from './pages/SupplierProfilePage';
 import { GoodsReceiptPage } from './pages/GoodsReceiptPage';
 import { CustomerTierListPage } from './pages/pricing/CustomerTierListPage';
 import { PriceListPage } from './pages/pricing/PriceListPage';
 import { TradeOffersPage } from './pages/pricing/TradeOffersPage';
-import { OrderPricingPreviewPage } from './pages/pricing/OrderPricingPreviewPage';
 import { CustomerStatementPage } from './pages/receivables/CustomerStatementPage';
 import { ReceivablesDashboardPage } from './pages/receivables/ReceivablesDashboardPage';
 import { InvoiceAgingReportPage } from './pages/receivables/InvoiceAgingReportPage';
@@ -30,8 +27,6 @@ import { CashCollectionPage } from './pages/cash/CashCollectionPage';
 import { CashHandoverPage } from './pages/cash/CashHandoverPage';
 import { CashReconciliationPage } from './pages/cash/CashReconciliationPage';
 import { FleetConsolePage } from './pages/delivery/FleetConsolePage';
-
-import { RolePermissionsPage } from './pages/RolePermissionsPage';
 import type { SystemModule } from '@candi/types';
 
 // Route guard checking view permission for active authenticated role
@@ -85,8 +80,6 @@ const ProtectedLayout: React.FC = () => {
         };
       case '/invoices':
         return { title: 'Invoices & Customer Khata Ledger', subtitle: 'Cashier reconciliation and delivery challan matching' };
-      case '/suppliers':
-        return { title: 'Supplier Management & Database', subtitle: 'Vendor profiles, pricing agreements, terms, and khata balances' };
       case '/procurement/grn':
         return { title: 'Goods Received Notes (GRN)', subtitle: 'Inspection, damage segregation, and verified stock intake' };
       case '/pricing/tiers':
@@ -95,8 +88,6 @@ const ProtectedLayout: React.FC = () => {
         return { title: 'Wholesale Price List Management', subtitle: 'Standard catalog rates, customer-tier price covenants, validity dates, and audit trail' };
       case '/pricing/trade-offers':
         return { title: 'Trade Offers & Promotional Schemes', subtitle: 'Volume incentives, bonus carton programs, and promotion validity windows' };
-      case '/pricing/preview':
-        return { title: 'Order Pricing Preview & Waterfall Engine', subtitle: 'Real-time 4-step pricing priority resolver, discount gate, and order simulation' };
       case '/receivables/dashboard':
         return { title: 'Receivables Management & Collections', subtitle: 'Credit-hold controls, recovery tracking, and overdue invoices' };
       case '/receivables/statement':
@@ -122,13 +113,7 @@ const ProtectedLayout: React.FC = () => {
       case '/finance/payments':
         return { title: 'Payment Register', subtitle: 'Master collection inflows and disbursement register with transaction audit references' };
 
-      case '/admin/roles':
-        return { title: '10-Module RBAC Permissions Matrix', subtitle: 'Enterprise role-based access control and granular action privileges' };
-
       default:
-        if (location.pathname.startsWith('/suppliers/')) {
-          return { title: 'Supplier 360° Profile', subtitle: 'Purchasing history, invoices, payments, and audit history' };
-        }
         if (location.pathname.startsWith('/customers/')) {
           return { title: 'Customer 360° Profile', subtitle: 'Delivery addresses, tier pricing, credit control, and khata ledger' };
         }
@@ -155,7 +140,6 @@ const ProtectedLayout: React.FC = () => {
             <Route path="/pricing/tiers" element={<RouteGuard module="sales" element={<CustomerTierListPage />} />} />
             <Route path="/pricing/lists" element={<RouteGuard module="sales" element={<PriceListPage />} />} />
             <Route path="/pricing/trade-offers" element={<RouteGuard module="sales" element={<TradeOffersPage />} />} />
-            <Route path="/pricing/preview" element={<RouteGuard module="sales" element={<OrderPricingPreviewPage />} />} />
             <Route path="/receivables/dashboard" element={<RouteGuard module="sales" element={<ReceivablesDashboardPage />} />} />
             <Route path="/receivables/statement" element={<RouteGuard module="sales" element={<CustomerStatementPage />} />} />
             <Route path="/receivables/aging" element={<RouteGuard module="sales" element={<InvoiceAgingReportPage />} />} />
@@ -167,11 +151,7 @@ const ProtectedLayout: React.FC = () => {
             <Route path="/cash/reconciliation" element={<RouteGuard module="delivery" element={<CashReconciliationPage />} />} />
             <Route path="/finance/customer-ledger" element={<RouteGuard module="finance" element={<CustomerLedgerPage />} />} />
             <Route path="/finance/payments" element={<RouteGuard module="finance" element={<PaymentRegisterPage />} />} />
-            <Route path="/suppliers" element={<RouteGuard module="suppliers" element={<SupplierListPage />} />} />
-            <Route path="/suppliers/:id" element={<RouteGuard module="suppliers" element={<SupplierProfilePage />} />} />
-            <Route path="/procurement/grn" element={<RouteGuard module="procurement" element={<GoodsReceiptPage />} />} />
-
-            <Route path="/admin/roles" element={<RouteGuard module="administration" element={<RolePermissionsPage />} />} />
+            <Route path="/procurement/grn" element={<RouteGuard module="inventory" element={<GoodsReceiptPage />} />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

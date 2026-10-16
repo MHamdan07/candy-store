@@ -33,7 +33,7 @@ test('Test users exist in MOCK_ACCOUNTS for all 8 staff roles', () => {
   }
 });
 
-test('Super Admin has access to all modules and routes', () => {
+test('Super Admin has access to all active modules and routes', () => {
   const modules: SystemModule[] = [
     'dashboard',
     'sales',
@@ -41,8 +41,6 @@ test('Super Admin has access to all modules and routes', () => {
     'inventory',
     'delivery',
     'finance',
-    'reports',
-    'administration',
   ];
 
   for (const mod of modules) {
@@ -56,11 +54,10 @@ test('Warehouse Manager can only access allowed operational routes', () => {
   assert.equal(canRoleAccessModule('warehouse_manager', 'inventory'), true);
   assert.equal(canRoleAccessModule('warehouse_manager', 'delivery'), true);
 
-  // Prohibited: sales orders, customer khata, finance GL, administration
+  // Prohibited: sales orders, customer khata, finance GL
   assert.equal(canRoleAccessModule('warehouse_manager', 'sales'), false);
   assert.equal(canRoleAccessModule('warehouse_manager', 'customers'), false);
   assert.equal(canRoleAccessModule('warehouse_manager', 'finance'), false);
-  assert.equal(canRoleAccessModule('warehouse_manager', 'administration'), false);
 });
 
 test('Delivery Rider can only access delivery routes and customer drop-offs', () => {
@@ -69,26 +66,24 @@ test('Delivery Rider can only access delivery routes and customer drop-offs', ()
   assert.equal(canRoleAccessModule('rider', 'delivery'), true);
   assert.equal(canRoleAccessModule('rider', 'customers'), true);
 
-  // Prohibited: inventory adjustment, sales order book, finance GL, procurement, admin
+  // Prohibited: inventory adjustment, sales order book, finance GL
   assert.equal(canRoleAccessModule('rider', 'inventory'), false);
   assert.equal(canRoleAccessModule('rider', 'sales'), false);
   assert.equal(canRoleAccessModule('rider', 'finance'), false);
-  assert.equal(canRoleAccessModule('rider', 'administration'), false);
 });
 
-test('Accounts Staff can access finance, khata, customer ledger, but not delivery routing or administration', () => {
+test('Accounts Staff can access finance, khata, customer ledger, but not delivery routing', () => {
   // Allowed
   assert.equal(canRoleAccessModule('accounts_staff', 'dashboard'), true);
   assert.equal(canRoleAccessModule('accounts_staff', 'finance'), true);
   assert.equal(canRoleAccessModule('accounts_staff', 'sales'), true);
   assert.equal(canRoleAccessModule('accounts_staff', 'customers'), true);
 
-  // Prohibited: fleet delivery dispatch, administration
+  // Prohibited: fleet delivery dispatch
   assert.equal(canRoleAccessModule('accounts_staff', 'delivery'), false);
-  assert.equal(canRoleAccessModule('accounts_staff', 'administration'), false);
 });
 
-test('Wholesale Sales Agent can book orders and view customers, but cannot access finance GL or administration', () => {
+test('Wholesale Sales Agent can book orders and view customers, but cannot access finance GL', () => {
   // Allowed
   assert.equal(canRoleAccessModule('sales_agent', 'dashboard'), true);
   assert.equal(canRoleAccessModule('sales_agent', 'sales'), true);
@@ -97,5 +92,4 @@ test('Wholesale Sales Agent can book orders and view customers, but cannot acces
 
   // Prohibited
   assert.equal(canRoleAccessModule('sales_agent', 'finance'), false);
-  assert.equal(canRoleAccessModule('sales_agent', 'administration'), false);
 });

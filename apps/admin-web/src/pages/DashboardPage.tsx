@@ -168,17 +168,17 @@ export const DashboardPage: React.FC = () => {
 
         <Card padding="md">
           <h3 style={{ fontSize: '14px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)', marginBottom: '6px' }}>
-            🛒 Procurement & Supplier Orders
+            📥 Receiving & Batch Tracking (GRN)
           </h3>
           <p style={{ fontSize: '12px', color: 'var(--color-text-muted, #64748B)', marginBottom: '16px' }}>
-            Track confectionery purchase requests and approve purchase orders for suppliers.
+            Record factory dock arrivals, damage segregation, and verified batch/expiry intake.
           </p>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <Button size="sm" variant="secondary" onClick={() => navigate('/procurement/orders')}>
-              Purchase Orders (3)
+            <Button size="sm" variant="secondary" onClick={() => navigate('/procurement/grn')}>
+              Goods Receipts (GRN)
             </Button>
-            <Button size="sm" variant="outline" onClick={() => navigate('/procurement/requests')}>
-              Purchase Requests
+            <Button size="sm" variant="outline" onClick={() => navigate('/products')}>
+              Wholesale Catalog
             </Button>
           </div>
         </Card>
