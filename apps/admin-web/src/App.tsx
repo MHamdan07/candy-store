@@ -107,11 +107,11 @@ const ProtectedLayout: React.FC = () => {
       case '/cash/handovers':
         return { title: 'Cash Handover & Shift Settlement', subtitle: 'Dual-party confirmation gate between drivers and depot vault cashiers' };
       case '/cash/reconciliation':
-        return { title: 'Cash Reconciliation & Vault Closing', subtitle: 'Physical currency note counter, variance explanation, and automated GL posting' };
+        return { title: 'Cash Reconciliation & Vault Closing', subtitle: 'Physical currency note counter, zero-variance verification, and shift closing' };
       case '/finance/customer-ledger':
-        return { title: 'Customer Sub-Ledger', subtitle: 'Detailed customer accounts receivable khata tied to GL Control Account 1100' };
+        return { title: 'Customer Sub-Ledger', subtitle: 'Detailed double-entry customer accounts receivable khata' };
       case '/finance/payments':
-        return { title: 'Payment Register', subtitle: 'Master collection inflows and disbursement register with transaction audit references' };
+        return { title: 'Payment Register', subtitle: 'Master customer collection inflows and payment receipts' };
 
       default:
         if (location.pathname.startsWith('/customers/')) {
