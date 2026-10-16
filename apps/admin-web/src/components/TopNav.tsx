@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '@candi/auth';
+import { IconMenu, IconSearch } from './Icons';
 
 interface TopNavProps {
   title: string;
@@ -42,11 +43,10 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
             borderRadius: '6px',
             padding: '7px 9px',
             cursor: 'pointer',
-            fontSize: '16px',
             color: 'var(--color-text-main, #0F172A)',
           }}
         >
-          ☰
+          <IconMenu size={16} />
         </button>
 
         <div>
@@ -91,7 +91,9 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
           }}
           className="admin-search-bar"
         >
-          <span style={{ marginRight: '8px', color: 'var(--color-text-muted, #64748B)', fontSize: '13px' }}>🔍</span>
+          <span style={{ marginRight: '8px', color: 'var(--color-text-muted, #64748B)', display: 'flex', alignItems: 'center' }}>
+            <IconSearch size={14} />
+          </span>
           <input
             type="text"
             placeholder="Search orders, customers, SKUs..."

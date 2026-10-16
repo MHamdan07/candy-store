@@ -134,3 +134,19 @@ export const IconLogout: React.FC<IconProps> = ({ size = 18, color = 'currentCol
     <line x1="21" y1="12" x2="9" y2="12" />
   </svg>
 );
+
+export const IconMenu: React.FC<IconProps> = ({ size = 18, color = 'currentColor', strokeWidth = 2, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="4" x2="20" y1="12" y2="12" />
+    <line x1="4" x2="20" y1="6" y2="6" />
+    <line x1="4" x2="20" y1="18" y2="18" />
+  </svg>
+);
+
+export const IconSearch: React.FC<IconProps> = ({ size = 18, color = 'currentColor', strokeWidth = 2, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.3-4.3" />
+  </svg>
+);
+

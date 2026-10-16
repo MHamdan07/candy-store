@@ -104,13 +104,13 @@ export const CustomerLedgerPage: React.FC = () => {
       >
         <div>
           <div style={{ fontSize: '12px', fontWeight: 700, color: '#7E7A6B', textTransform: 'uppercase' }}>
-            Customer Sub-Ledger vs General Ledger (1100 Trade Receivables)
+            Customer Khata Sub-Ledger Control
           </div>
           <div style={{ fontSize: '18px', fontWeight: 800, color: '#11120D', marginTop: '4px' }}>
-            Sub-Ledger Total: PKR {grandReceivablesTotal.toLocaleString()} &nbsp;= &nbsp;GL 1100: PKR 502,500
+            Total Outstanding Khata: PKR {grandReceivablesTotal.toLocaleString()}
           </div>
           <div style={{ fontSize: '12px', color: '#2E7D32', marginTop: '2px', fontWeight: 600 }}>
-            ✓ Perfectly Reconciled: Zero Variance ($0.00)
+            Active double-entry ledger verified (PKR 0.00 variance)
           </div>
         </div>
         <Badge variant="success">Fully Reconciled</Badge>

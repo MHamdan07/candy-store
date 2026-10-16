@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { INITIAL_INVOICES_AGING } from '../../data/receivablesData';
 import { INITIAL_COLLECTION_CASES } from '../../data/collectionFollowUps';
 import { CUSTOMERS_DATABASE } from '../../data/customers';
+import { IconAlert } from '../../components/Icons';
 
 export const ReceivablesDashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -150,7 +151,7 @@ export const ReceivablesDashboardPage: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-          <span style={{ fontSize: '28px' }}>🚫</span>
+          <IconAlert size={28} color="#D00000" />
           <div>
             <div style={{ fontWeight: 800, fontSize: '15px', color: '#D00000' }}>
               CREDIT-HOLD ALERT: {creditHoldCustomers.length} Wholesale Accounts Locked

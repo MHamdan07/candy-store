@@ -204,7 +204,7 @@ export const OrderScreenPage: React.FC = () => {
       >
         <div>
           <div style={{ fontSize: '14px', fontWeight: 800, color: '#9F1239' }}>
-            💬 5-Stage WhatsApp & Tele-Sales Conversational Verification Desk
+            5-Stage WhatsApp & Tele-Sales Conversational Verification Desk
           </div>
           <div style={{ fontSize: '12px', color: '#BE123C' }}>
             Multi-channel confirmation tracking, live phone quantity adjustments, khata credit check, and warehouse wave picking release engine.
@@ -390,7 +390,7 @@ export const OrderScreenPage: React.FC = () => {
                       {l.bonusQty ? (
                         <tr style={{ backgroundColor: '#F0F9F5', borderBottom: '1px solid var(--color-bone)' }}>
                           <td style={{ padding: '6px 12px', color: '#1B4332', fontSize: '11px' }}>
-                            🎁 Trade Scheme Bonus: {l.name}
+                            Trade Scheme Bonus: {l.name}
                           </td>
                           <td style={{ padding: '6px 12px', fontSize: '11px' }}>{l.unit}</td>
                           <td style={{ padding: '6px 12px', fontSize: '11px', fontWeight: 700 }}>+{l.bonusQty}</td>

@@ -432,7 +432,7 @@ export const CashHandoverPage: React.FC = () => {
             >
               <span style={{ fontSize: '12px', fontWeight: 700, color: actualTendered - expectedAmount === 0 ? '#2E7D32' : '#C62828' }}>
                 {actualTendered - expectedAmount === 0
-                  ? '✓ Balanced Handover ($0 Variance)'
+                  ? '✓ Balanced Handover (PKR 0 Variance)'
                   : `⚠️ Discrepancy: PKR ${(actualTendered - expectedAmount).toLocaleString()}`}
               </span>
               <Badge variant={actualTendered - expectedAmount === 0 ? 'success' : 'danger'}>

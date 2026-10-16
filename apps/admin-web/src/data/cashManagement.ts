@@ -167,7 +167,7 @@ export const INITIAL_CASH_RECONCILIATION_SESSIONS: CashReconciliationSession[] =
         timestamp: '2026-09-17 19:00',
         actor: 'Farhan Zaidi',
         action: 'APPROVED_AND_POSTED_TO_GL',
-        details: 'Reconciliation balanced with $0 variance. Posted to General Ledger under JV-2026-0091.',
+        details: 'Reconciliation balanced with PKR 0 variance.',
       },
     ],
     createdAt: '2026-09-17 18:00',

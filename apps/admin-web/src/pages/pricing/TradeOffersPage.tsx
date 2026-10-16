@@ -3,6 +3,7 @@ import { Card, Table, Badge, Button, Modal, Input, Alert } from '@candi/ui';
 import { TradeOffer, CustomerTier } from '@candi/types';
 import { INITIAL_TRADE_OFFERS } from '../../data/tradeOffers';
 import { INITIAL_PRICE_LIST } from '../../data/priceLists';
+import { IconPricing } from '../../components/Icons';
 
 export const TradeOffersPage: React.FC = () => {
   const [offers, setOffers] = useState<TradeOffer[]>(INITIAL_TRADE_OFFERS);
@@ -275,7 +276,7 @@ export const TradeOffersPage: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <span style={{ fontSize: '18px' }}>🎁</span>
+        <IconPricing size={20} color="#006D77" />
         <div>
           <strong>Trade Offer Rule Governance:</strong> Trade offers are strictly enforced and automatically validated by the order pricing engine. Offers will NOT apply if the customer’s tier is excluded, the required MOQ is not satisfied, or the transaction falls outside the start/end dates.
         </div>

@@ -101,13 +101,13 @@ export const FleetConsolePage: React.FC = () => {
   const getStatusBadge = (status: TripManifestStatus) => {
     switch (status) {
       case 'dispatched_in_transit':
-        return <Badge status="pending" label="🚚 In Transit on Road" />;
+        return <Badge status="pending" label="In Transit on Road" />;
       case 'staged_loading':
-        return <Badge status="overdue" label="📦 Staged at Loading Dock" />;
+        return <Badge status="overdue" label="Staged at Loading Dock" />;
       case 'completed_delivered':
-        return <Badge status="delivered" label="🏁 Completed (At Depot)" />;
+        return <Badge status="delivered" label="Completed (At Depot)" />;
       case 'reconciled_closed':
-        return <Badge status="delivered" label="🔐 Reconciled & Closed" />;
+        return <Badge status="delivered" label="Reconciled & Closed" />;
       case 'draft_clustering':
         return <Badge status="draft" label="Draft Cluster" />;
       default:
@@ -228,7 +228,7 @@ export const FleetConsolePage: React.FC = () => {
             variant="outline"
             onClick={() => setSelectedTripForPrint(t)}
           >
-            🖨️ Manifest
+            Print Manifest
           </Button>
         </div>
       ),
@@ -351,7 +351,7 @@ export const FleetConsolePage: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              🚚 In Transit on Road ({trips.filter((t) => t.status === 'dispatched_in_transit').length})
+              In Transit ({trips.filter((t) => t.status === 'dispatched_in_transit').length})
             </button>
 
             <button
@@ -367,7 +367,7 @@ export const FleetConsolePage: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              📦 Staged Loading at Dock ({trips.filter((t) => t.status === 'staged_loading').length})
+              Staged at Dock ({trips.filter((t) => t.status === 'staged_loading').length})
             </button>
 
             <button
@@ -383,7 +383,7 @@ export const FleetConsolePage: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              🏁 Completed Delivered ({trips.filter((t) => t.status === 'completed_delivered').length})
+              Completed ({trips.filter((t) => t.status === 'completed_delivered').length})
             </button>
 
             <button
@@ -399,7 +399,7 @@ export const FleetConsolePage: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              🔐 Reconciled & Closed ({trips.filter((t) => t.status === 'reconciled_closed').length})
+              Reconciled & Closed ({trips.filter((t) => t.status === 'reconciled_closed').length})
             </button>
 
             <button
@@ -415,7 +415,7 @@ export const FleetConsolePage: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              🚛 Fleet Vehicles Roster ({vehicles.length})
+              Fleet Vehicles ({vehicles.length})
             </button>
 
             <button
@@ -431,7 +431,7 @@ export const FleetConsolePage: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              🗺️ Beat Route Directory ({beatRoutes.length})
+              Beat Routes ({beatRoutes.length})
             </button>
           </div>
 
@@ -480,7 +480,7 @@ export const FleetConsolePage: React.FC = () => {
                 variant="primary"
                 onClick={() => setIsClusteringModalOpen(true)}
               >
-                🚀 + Cluster New Beat Trip
+                + Cluster New Beat Trip
               </Button>
             </div>
           </div>
