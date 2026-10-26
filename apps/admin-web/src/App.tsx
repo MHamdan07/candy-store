@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth, PermissionsProvider, usePermissions } from '@candi/auth';
 import '@candi/theme/tokens.css';
+import './admin.css';
 
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';

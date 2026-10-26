@@ -306,10 +306,10 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <span style={{ fontSize: '22px', lineHeight: 1 }}>{activeCategoryInfo.icon}</span>
                     <div>
-                      <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A' }}>
+                      <div style={{ fontSize: '14px', fontWeight: 800, color: '#1e1f22' }}>
                         Showing {filteredProducts.length} product{filteredProducts.length === 1 ? '' : 's'} in {activeCategoryInfo.name}
                       </div>
-                      <div style={{ fontSize: '11.5px', color: '#64748B' }}>
+                      <div style={{ fontSize: '11.5px', color: '#4c4e51' }}>
                         Filtered confectionery inventory • Factory-gate bulk pricing
                       </div>
                     </div>
@@ -326,22 +326,22 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
                       borderRadius: '9999px',
                       backgroundColor: '#FFFFFF',
                       border: '1.5px solid #E2E8F0',
-                      color: '#0F172A',
+                      color: '#1e2023',
                       fontSize: '12px',
                       fontWeight: 700,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
-                      boxShadow: '0 1px 3px rgba(15, 23, 42, 0.06)',
+                      boxShadow: '0 1px 3px rgba(30, 32, 35, 0.06)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#E11D48';
+                      e.currentTarget.style.backgroundColor = '#1e2023';
                       e.currentTarget.style.color = '#FFFFFF';
-                      e.currentTarget.style.borderColor = '#E11D48';
+                      e.currentTarget.style.borderColor = '#1e2023';
                       e.currentTarget.style.transform = 'translateY(-1px)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.backgroundColor = '#FFFFFF';
-                      e.currentTarget.style.color = '#0F172A';
+                      e.currentTarget.style.color = '#1e2023';
                       e.currentTarget.style.borderColor = '#E2E8F0';
                       e.currentTarget.style.transform = 'none';
                     }}
@@ -354,7 +354,7 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
 
               {/* General Results Header Count */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
+                <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-main, #1e1f22)' }}>
                   Showing {filteredProducts.length} Wholesale SKUs
                   {selectedCategory !== 'all' && ` in ${activeCategoryInfo ? activeCategoryInfo.name : selectedCategory}`}
                   {selectedBrand !== 'all' && ` from ${selectedBrand}`}
@@ -367,7 +367,7 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
                     style={{
                       border: 'none',
                       background: 'none',
-                      color: 'var(--color-primary, #E11D48)',
+                      color: 'var(--color-primary, #1e2023)',
                       fontSize: '13px',
                       fontWeight: 800,
                       cursor: 'pointer',
@@ -469,8 +469,8 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 700 }}>
-                    <span style={{ color: 'var(--color-text-main, #0F172A)' }}>Profile Completion:</span>
-                    <span style={{ color: 'var(--color-primary, #E11D48)' }}>{completionPercentage}%</span>
+                    <span style={{ color: 'var(--color-text-main, #1e1f22)' }}>Profile Completion:</span>
+                    <span style={{ color: 'var(--color-primary, #1e2023)' }}>{completionPercentage}%</span>
                   </div>
                   <div
                     style={{
@@ -485,7 +485,7 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
                       style={{
                         height: '100%',
                         width: `${completionPercentage}%`,
-                        backgroundColor: 'var(--color-primary, #E11D48)',
+                        backgroundColor: 'var(--color-primary, #1e2023)',
                       }}
                     />
                   </div>
@@ -497,10 +497,10 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
             <Card padding="lg">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
-                  <h2 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)', margin: 0 }}>
+                  <h2 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--color-text-main, #1e1f22)', margin: 0 }}>
                     Saved Delivery Addresses ({addresses.length})
                   </h2>
-                  <p style={{ fontSize: '12px', color: 'var(--color-text-muted, #64748B)', margin: '4px 0 0 0' }}>
+                  <p style={{ fontSize: '12px', color: 'var(--color-text-muted, #4c4e51)', margin: '4px 0 0 0' }}>
                     Karachi warehouse vans deliver wholesale confectionery orders to your verified primary address.
                   </p>
                 </div>
@@ -517,8 +517,8 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
                     style={{
                       padding: '16px',
                       borderRadius: '8px',
-                      border: `1.5px solid ${addr.isPrimary ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
-                      backgroundColor: addr.isPrimary ? '#FFF1F2' : '#FFFFFF',
+                      border: `1.5px solid ${addr.isPrimary ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
+                      backgroundColor: addr.isPrimary ? '#F8FAFC' : '#FFFFFF',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
@@ -528,17 +528,17 @@ export const CustomerPortalPage: React.FC<CustomerPortalPageProps> = ({ defaultT
                   >
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontWeight: 800, fontSize: '14px', color: 'var(--color-text-main, #0F172A)' }}>
+                        <span style={{ fontWeight: 800, fontSize: '14px', color: 'var(--color-text-main, #1e1f22)' }}>
                           {addr.label}
                         </span>
                         {addr.isPrimary && <Badge status="approved" label="PRIMARY" />}
                       </div>
 
-                      <div style={{ fontSize: '13px', color: 'var(--color-text-main, #0F172A)', marginTop: '4px' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--color-text-main, #1e1f22)', marginTop: '4px' }}>
                         {addr.addressLine}, {addr.area}, {addr.city}
                       </div>
 
-                      <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
+                      <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #4c4e51)', marginTop: '2px' }}>
                         Recipient: {addr.recipientName} ({addr.phone}) • Pin: {addr.coordinates}
                       </div>
                     </div>

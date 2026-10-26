@@ -202,7 +202,7 @@ export const FleetConsolePage: React.FC = () => {
       header: 'COD Cash Collection',
       render: (t: TripManifest) => (
         <div>
-          <div style={{ fontWeight: 800, color: '#E11D48', fontSize: '13px' }}>
+          <div style={{ fontWeight: 800, color: '#1e2023', fontSize: '13px' }}>
             PKR {t.collectedTotalCod.toLocaleString()}
           </div>
           <div style={{ fontSize: '11px', color: '#64748B' }}>
@@ -296,7 +296,7 @@ export const FleetConsolePage: React.FC = () => {
           <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>
             COD Cash Collected Today
           </div>
-          <div style={{ fontSize: '24px', fontWeight: 800, color: '#E11D48', marginTop: '6px' }}>
+          <div style={{ fontSize: '24px', fontWeight: 800, color: '#1e2023', marginTop: '6px' }}>
             PKR {kpis.totalCodCollectedToday.toLocaleString()}
           </div>
           <div style={{ fontSize: '12px', color: '#64748B', marginTop: '2px' }}>

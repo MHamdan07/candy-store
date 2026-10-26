@@ -338,7 +338,7 @@ export const OrderTrackingDrawer: React.FC<OrderTrackingDrawerProps> = ({ order:
                 justifyContent: 'space-between',
                 fontSize: '15px',
                 fontWeight: 900,
-                color: 'var(--color-primary, #E11D48)',
+                color: 'var(--color-primary, #1e2023)',
                 paddingTop: '6px',
                 borderTop: '1px solid var(--color-border, #E2E8F0)',
               }}

@@ -41,7 +41,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
       <div
         className="wholesale-microbar"
         style={{
-          backgroundColor: '#0F172A',
+          backgroundColor: '#1e1f22',
           color: '#F8FAFC',
           padding: '6px 20px',
           fontSize: '12px',
@@ -53,13 +53,13 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <span style={{ color: '#F59E0B', fontWeight: 700 }}>
-            ★ Candi B2B Wholesale Portal
+          <span style={{ color: '#F8FAFC', fontWeight: 700 }}>
+            Candi B2B Wholesale Portal
           </span>
-          <span style={{ color: '#475569' }}>•</span>
+          <span style={{ color: '#47484c' }}>•</span>
           <span style={{ color: '#94A3B8' }}>Karachi Central Depot (Jodia Bazaar / Korangi)</span>
-          <span style={{ color: '#475569' }}>•</span>
-          <span style={{ color: '#10B981', fontWeight: 600 }}>✓ FBR Active Taxpayer Wholesale Supply</span>
+          <span style={{ color: '#47484c' }}>•</span>
+          <span style={{ color: '#A7F3D0', fontWeight: 600 }}>✓ FBR Taxpayer Wholesale Supply</span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -140,7 +140,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               padding: '6px 11px',
               borderRadius: 'var(--radius-md, 6px)',
               border: 'none',
-              backgroundColor: activeTab === 'catalog' ? '#0F172A' : 'transparent',
+              backgroundColor: activeTab === 'catalog' ? '#1e2023' : 'transparent',
               color: activeTab === 'catalog' ? '#FFFFFF' : 'var(--color-text-muted)',
               fontSize: '12px',
               fontWeight: 700,
@@ -163,7 +163,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               padding: '6px 11px',
               borderRadius: 'var(--radius-md, 6px)',
               border: 'none',
-              backgroundColor: activeTab === 'orders' ? '#0F172A' : 'transparent',
+              backgroundColor: activeTab === 'orders' ? '#1e2023' : 'transparent',
               color: activeTab === 'orders' ? '#FFFFFF' : 'var(--color-text-muted)',
               fontSize: '12px',
               fontWeight: 700,
@@ -180,7 +180,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
             {activeOrdersCount > 0 && (
               <span
                 style={{
-                  backgroundColor: 'var(--color-promo-crimson)',
+                  backgroundColor: '#1e2023',
                   color: '#FFFFFF',
                   borderRadius: '10px',
                   padding: '0px 5px',
@@ -201,7 +201,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               padding: '6px 11px',
               borderRadius: 'var(--radius-md, 6px)',
               border: 'none',
-              backgroundColor: activeTab === 'khata' ? '#0F172A' : 'transparent',
+              backgroundColor: activeTab === 'khata' ? '#1e2023' : 'transparent',
               color: activeTab === 'khata' ? '#FFFFFF' : 'var(--color-text-muted)',
               fontSize: '12px',
               fontWeight: 700,
@@ -224,7 +224,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               padding: '6px 11px',
               borderRadius: 'var(--radius-md, 6px)',
               border: 'none',
-              backgroundColor: activeTab === 'addresses' ? '#0F172A' : 'transparent',
+              backgroundColor: activeTab === 'addresses' ? '#1e2023' : 'transparent',
               color: activeTab === 'addresses' ? '#FFFFFF' : 'var(--color-text-muted)',
               fontSize: '12px',
               fontWeight: 700,
@@ -259,7 +259,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               aria-label="Switch to English"
               style={{
                 border: 'none',
-                backgroundColor: currentLang === 'en' ? 'var(--color-primary, #E11D48)' : 'transparent',
+                backgroundColor: currentLang === 'en' ? 'var(--color-primary, #1e2023)' : 'transparent',
                 color: currentLang === 'en' ? '#FFFFFF' : '#475569',
                 padding: '3px 8px',
                 borderRadius: '999px',
@@ -278,7 +278,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               aria-label="Switch to Urdu"
               style={{
                 border: 'none',
-                backgroundColor: currentLang === 'ur' ? 'var(--color-primary, #E11D48)' : 'transparent',
+                backgroundColor: currentLang === 'ur' ? 'var(--color-primary, #1e2023)' : 'transparent',
                 color: currentLang === 'ur' ? '#FFFFFF' : '#475569',
                 padding: '3px 8px',
                 borderRadius: '999px',
@@ -299,7 +299,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
             className="wholesale-desktop-cart candi-nav-cart"
             type="button"
             style={{
-              backgroundColor: cartItemCount > 0 ? 'var(--color-promo-crimson, #E11D48)' : '#334155',
+              backgroundColor: cartItemCount > 0 ? 'var(--color-primary, #1e2023)' : '#47484c',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: 'var(--radius-md, 6px)',
@@ -310,7 +310,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               cursor: 'pointer',
               fontWeight: 800,
               fontSize: '12px',
-              boxShadow: cartItemCount > 0 ? '0 3px 10px rgba(225, 29, 72, 0.28)' : 'none',
+              boxShadow: cartItemCount > 0 ? '0 2px 8px rgba(30, 32, 35, 0.22)' : 'none',
             }}
           >
             <span style={{ fontSize: '14px' }}>🛒</span>
@@ -331,7 +331,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
             type="button"
             aria-label={`Shopping cart with ${cartItemCount} items`}
             style={{
-              backgroundColor: cartItemCount > 0 ? 'var(--color-promo-crimson, #E11D48)' : '#0F172A',
+              backgroundColor: cartItemCount > 0 ? 'var(--color-primary, #1e2023)' : '#1e1f22',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: '8px',
@@ -344,7 +344,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
               justifyContent: 'center',
               position: 'relative',
               cursor: 'pointer',
-              boxShadow: cartItemCount > 0 ? '0 3px 10px rgba(225, 29, 72, 0.35)' : 'none',
+              boxShadow: cartItemCount > 0 ? '0 2px 8px rgba(30, 32, 35, 0.25)' : 'none',
               transition: 'all 0.15s ease',
             }}
           >
@@ -356,7 +356,7 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
                   top: '-4px',
                   right: '-4px',
                   backgroundColor: '#FFFFFF',
-                  color: 'var(--color-primary, #E11D48)',
+                  color: 'var(--color-primary, #1e2023)',
                   borderRadius: '10px',
                   minWidth: '18px',
                   height: '18px',
@@ -366,8 +366,8 @@ export const WholesaleNavbar: React.FC<WholesaleNavbarProps> = ({
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: '0 4px',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
+                  border: '1.5px solid var(--color-primary, #1e2023)',
                 }}
               >
                 {cartItemCount}

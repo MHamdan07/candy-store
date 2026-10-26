@@ -1,6 +1,6 @@
 export const colors = {
-  smokyBlack: '#0F172A',
-  oliveDrab: '#475569',
+  smokyBlack: '#1e1f22',
+  oliveDrab: '#4c4e51',
   bone: '#E2E8F0',
   floralWhite: '#F8FAFC',
 
@@ -11,17 +11,17 @@ export const colors = {
   surfaceBone: '#E2E8F0',
   surfaceHover: '#E2E8F0',
 
-  text: '#0F172A',
-  textMuted: '#475569',
+  text: '#1e1f22',
+  textMuted: '#4c4e51',
   textDim: '#94A3B8',
   textInverse: '#FFFFFF',
 
   border: '#E2E8F0',
   borderSubtle: '#F1F5F9',
-  borderHover: '#CBD5E1',
+  borderHover: '#47484c',
   borderDark: '#334155',
 
-  // Status
+  // Status (subdued, professional accents)
   success: '#059669',
   successBg: '#ECFDF5',
   successBorder: '#A7F3D0',
@@ -34,25 +34,25 @@ export const colors = {
   dangerBg: '#FEF2F2',
   dangerBorder: '#FECACA',
 
-  info: '#0284C7',
-  infoBg: '#F0F9FF',
-  infoBorder: '#BAE6FD',
+  info: '#47484c',
+  infoBg: '#F1F5F9',
+  infoBorder: '#E2E8F0',
 
-  // Confectionery accents
-  promoCrimson: '#E11D48',
-  promoPink: '#FFE4E6',
-  promoWarmAmber: '#D97706',
-  promoChocolate: '#451A03',
-  promoCocoa: '#78350F',
-  primary: '#E11D48',
-  primaryHover: '#BE123C',
+  // Royal Charcoal palette replacing eye-cutting accents
+  promoCrimson: '#1e2023',
+  promoPink: '#F1F5F9',
+  promoWarmAmber: '#4c4e51',
+  promoChocolate: '#1e1f22',
+  promoCocoa: '#47484c',
+  primary: '#1e2023',
+  primaryHover: '#47484c',
 
   // Admin layout
-  adminSidebarBg: '#0F172A',
+  adminSidebarBg: '#1e1f22',
   adminSidebarText: '#F8FAFC',
   adminSidebarMuted: '#94A3B8',
-  adminSidebarHover: '#1E293B',
-  adminSidebarActive: '#E11D48',
+  adminSidebarHover: '#2a2c30',
+  adminSidebarActive: '#1e2023',
   adminCanvas: '#F8FAFC',
 } as const;
 

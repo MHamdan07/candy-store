@@ -158,7 +158,7 @@ export const WelcomePage: React.FC = () => {
               aria-label="Switch to English"
               style={{
                 border: 'none',
-                backgroundColor: language === 'en' ? 'var(--color-primary, #E11D48)' : 'transparent',
+                backgroundColor: language === 'en' ? 'var(--color-primary, #1e2023)' : 'transparent',
                 color: language === 'en' ? '#FFFFFF' : '#475569',
                 padding: '5px 14px',
                 borderRadius: '999px',
@@ -177,7 +177,7 @@ export const WelcomePage: React.FC = () => {
               aria-label="Switch to Urdu"
               style={{
                 border: 'none',
-                backgroundColor: language === 'ur' ? 'var(--color-primary, #E11D48)' : 'transparent',
+                backgroundColor: language === 'ur' ? 'var(--color-primary, #1e2023)' : 'transparent',
                 color: language === 'ur' ? '#FFFFFF' : '#475569',
                 padding: '5px 14px',
                 borderRadius: '999px',
@@ -228,17 +228,17 @@ export const WelcomePage: React.FC = () => {
               style={{
                 display: 'inline-block',
                 padding: '4px 12px',
-                backgroundColor: '#FFF1F2',
-                color: 'var(--color-primary, #E11D48)',
+                backgroundColor: '#F1F5F9',
+                color: 'var(--color-primary, #1e2023)',
                 borderRadius: '999px',
                 fontSize: '12px',
                 fontWeight: 800,
                 letterSpacing: '0.04em',
                 marginBottom: '14px',
-                border: '1px solid rgba(225, 29, 72, 0.2)',
+                border: '1px solid #E2E8F0',
               }}
             >
-              ★ {t('badge.official')}
+              {t('badge.official')}
             </span>
 
             <h1
@@ -325,7 +325,7 @@ export const WelcomePage: React.FC = () => {
               href="https://wa.me/923001234567"
               target="_blank"
               rel="noreferrer"
-              style={{ color: 'var(--color-primary, #E11D48)', fontWeight: 700, textDecoration: 'none' }}
+              style={{ color: 'var(--color-primary, #1e2023)', fontWeight: 700, textDecoration: 'none' }}
             >
               {t('hero.whatsappEscalation')}
             </a>
@@ -448,14 +448,14 @@ export const WelcomePage: React.FC = () => {
                   style={{
                     padding: '10px 12px',
                     borderRadius: '10px',
-                    border: customerType === 'retailer' ? '2px solid #E11D48' : '1px solid #CBD5E1',
-                    backgroundColor: customerType === 'retailer' ? '#FFF1F2' : '#FFFFFF',
+                    border: customerType === 'retailer' ? '2px solid #1e2023' : '1px solid #CBD5E1',
+                    backgroundColor: customerType === 'retailer' ? '#F8FAFC' : '#FFFFFF',
                     textAlign: isRTL ? 'right' : 'left',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: customerType === 'retailer' ? '#BE123C' : '#0F172A' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 800, color: customerType === 'retailer' ? '#1e2023' : '#1e1f22' }}>
                     {t('auth.role.retailer')}
                   </div>
                   <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
@@ -469,14 +469,14 @@ export const WelcomePage: React.FC = () => {
                   style={{
                     padding: '10px 12px',
                     borderRadius: '10px',
-                    border: customerType === 'sub_wholesaler' ? '2px solid #E11D48' : '1px solid #CBD5E1',
-                    backgroundColor: customerType === 'sub_wholesaler' ? '#FFF1F2' : '#FFFFFF',
+                    border: customerType === 'sub_wholesaler' ? '2px solid #1e2023' : '1px solid #CBD5E1',
+                    backgroundColor: customerType === 'sub_wholesaler' ? '#F8FAFC' : '#FFFFFF',
                     textAlign: isRTL ? 'right' : 'left',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: customerType === 'sub_wholesaler' ? '#BE123C' : '#0F172A' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 800, color: customerType === 'sub_wholesaler' ? '#1e2023' : '#1e1f22' }}>
                     {t('auth.role.wholesaler')}
                   </div>
                   <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>

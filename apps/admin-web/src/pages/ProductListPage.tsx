@@ -432,7 +432,7 @@ export const ProductListPage: React.FC = () => {
                 setProductToEdit(null);
                 setIsProductFormOpen(true);
               }}
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#E11D48', color: '#FFFFFF', fontWeight: 800 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#1e2023', color: '#FFFFFF', fontWeight: 800 }}
             >
               <span>➕</span>
               <span>Add New Product</span>

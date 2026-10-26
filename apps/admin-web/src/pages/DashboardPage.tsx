@@ -175,8 +175,8 @@ export const DashboardPage: React.FC = () => {
       label: 'Low Stock & Expiry Alerts',
       value: `${inventoryAlerts.totalAlerts} Alerts`,
       subtext: `${inventoryAlerts.lowStockCount} SKU(s) below reorder threshold · ${inventoryAlerts.nearExpiryCount} near expiry`,
-      icon: <IconAlert size={20} color="#E11D48" />,
-      borderColor: '#E11D48',
+      icon: <IconAlert size={20} color="#47484c" />,
+      borderColor: '#47484c',
       route: '/products',
     },
   ];

@@ -158,7 +158,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               padding: '4px 6px',
               position: 'relative',
               borderRadius: '8px',
-              color: isActive ? 'var(--color-primary, #E11D48)' : '#64748B',
+              color: isActive ? 'var(--color-primary, #1e2023)' : '#4c4e51',
               transition: 'all 0.15s ease',
               WebkitTapHighlightColor: 'transparent',
             }}
@@ -185,7 +185,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     position: 'absolute',
                     top: '-6px',
                     right: '-10px',
-                    backgroundColor: 'var(--color-primary, #E11D48)',
+                    backgroundColor: 'var(--color-primary, #1e2023)',
                     color: '#FFFFFF',
                     fontSize: '10px',
                     fontWeight: 800,
@@ -196,7 +196,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: '0 4px',
-                    boxShadow: '0 2px 4px rgba(225, 29, 72, 0.4)',
+                    boxShadow: '0 1px 3px rgba(30, 32, 35, 0.25)',
                     border: '1.5px solid #FFFFFF',
                   }}
                 >
@@ -224,7 +224,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   bottom: '0px',
                   width: '16px',
                   height: '3px',
-                  backgroundColor: 'var(--color-primary, #E11D48)',
+                  backgroundColor: 'var(--color-primary, #1e2023)',
                   borderRadius: '3px',
                 }}
               />

@@ -51,14 +51,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
         backgroundColor: '#FFFFFF',
         borderRadius: '12px',
         border: isInCart
-          ? '1.5px solid var(--color-primary, #E11D48)'
+          ? '1.5px solid var(--color-primary, #1e2023)'
           : '1px solid var(--color-border, #E2E8F0)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
         boxShadow: isInCart
-          ? '0 4px 14px rgba(225, 29, 72, 0.12)'
-          : '0 1px 4px rgba(15, 23, 42, 0.04)',
+          ? '0 3px 10px rgba(30, 32, 35, 0.08)'
+          : '0 1px 3px rgba(30, 32, 35, 0.03)',
         position: 'relative',
         fontFamily: 'var(--font-family-base)',
         cursor: 'pointer',
@@ -110,21 +110,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              color: '#94A3B8',
+              fontSize: '12px',
+              fontWeight: 600,
             }}
           >
-            <span style={{ fontSize: '38px' }}>
-              {product.category === 'Chocolates'
-                ? '🍫'
-                : product.category === 'Candies & Chews'
-                ? '🍬'
-                : product.category === 'Biscuits & Wafers'
-                ? '🧇'
-                : product.category === 'Gummies & Chews'
-                ? '🐻'
-                : product.category === 'Gums & Mints'
-                ? '🌿'
-                : '🍭'}
-            </span>
+            {product.category}
           </div>
         )}
 
@@ -135,20 +126,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
               position: 'absolute',
               top: '8px',
               left: '8px',
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              color: '#0F172A',
+              backgroundColor: '#1e2023',
+              color: '#FFFFFF',
               fontSize: '9.5px',
-              fontWeight: 800,
+              fontWeight: 700,
               padding: '2px 7px',
               borderRadius: '6px',
               letterSpacing: '0.02em',
-              boxShadow: '0 2px 6px rgba(15, 23, 42, 0.1)',
+              boxShadow: '0 1px 3px rgba(30, 32, 35, 0.15)',
               lineHeight: 1.1,
               pointerEvents: 'none',
-              backdropFilter: 'blur(4px)',
             }}
           >
-            ★ {product.badgeText}
+            {product.badgeText}
           </div>
         )}
       </div>
@@ -191,7 +181,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
             style={{
               fontSize: '12px',
               fontWeight: 700,
-              color: '#0F172A',
+              color: '#1e1f22',
               margin: '0 0 4px 0',
               lineHeight: 1.3,
               display: '-webkit-box',
@@ -208,7 +198,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
           <div
             style={{
               fontSize: '10.5px',
-              color: '#64748B',
+              color: '#4c4e51',
               fontWeight: 500,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -216,7 +206,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
               lineHeight: 1.2,
             }}
           >
-            📦 {cleanPackaging}
+            {cleanPackaging}
           </div>
         </div>
 
@@ -233,13 +223,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
             borderTop: '1px solid #F1F5F9',
           }}
         >
-          {/* Wholesale Carton Price Only (Profit pill removed for clean UI) */}
+          {/* Wholesale Carton Price Only */}
           <div>
             <span
               style={{
                 fontSize: '13.5px',
                 fontWeight: 900,
-                color: '#0F172A',
+                color: '#1e1f22',
                 lineHeight: 1,
               }}
             >
@@ -250,7 +240,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
             </span>
           </div>
 
-          {/* Minimalist Action Controller (Zero Heavy Red Backgrounds) */}
+          {/* Minimalist Action Controller */}
           <div onClick={(e) => e.stopPropagation()}>
             {isInCart ? (
               /* TRANSPARENT MINIMAL STEPPER */
@@ -260,10 +250,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
                   alignItems: 'center',
                   gap: '2px',
                   backgroundColor: '#FFFFFF',
-                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  border: '1.5px solid var(--color-primary, #1e2023)',
                   borderRadius: '999px',
                   padding: '2px 4px',
-                  boxShadow: '0 1px 4px rgba(225, 29, 72, 0.12)',
+                  boxShadow: '0 1px 4px rgba(30, 32, 35, 0.08)',
                 }}
               >
                 {/* Minus or Trash Button */}
@@ -277,7 +267,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
                     borderRadius: '50%',
                     border: 'none',
                     backgroundColor: 'transparent',
-                    color: cartQuantity === 1 ? '#EF4444' : '#0F172A',
+                    color: cartQuantity === 1 ? '#DC2626' : '#1e1f22',
                     fontSize: cartQuantity === 1 ? '11px' : '15px',
                     fontWeight: 800,
                     cursor: 'pointer',
@@ -288,7 +278,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  {cartQuantity === 1 ? '🗑️' : '−'}
+                  {cartQuantity === 1 ? '✕' : '−'}
                 </button>
 
                 {/* Quantity Number */}
@@ -298,7 +288,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
                     textAlign: 'center',
                     fontSize: '12px',
                     fontWeight: 900,
-                    color: '#0F172A',
+                    color: '#1e1f22',
                     userSelect: 'none',
                     padding: '0 2px',
                   }}
@@ -317,7 +307,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
                     borderRadius: '50%',
                     border: 'none',
                     backgroundColor: 'transparent',
-                    color: 'var(--color-primary, #E11D48)',
+                    color: 'var(--color-primary, #1e2023)',
                     fontSize: '15px',
                     fontWeight: 900,
                     cursor: 'pointer',
@@ -341,9 +331,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
                   width: '28px',
                   height: '28px',
                   borderRadius: '50%',
-                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  border: '1.5px solid var(--color-primary, #1e2023)',
                   backgroundColor: '#FFFFFF',
-                  color: 'var(--color-primary, #E11D48)',
+                  color: 'var(--color-primary, #1e2023)',
                   fontSize: '16px',
                   fontWeight: 800,
                   cursor: 'pointer',
@@ -351,7 +341,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: 0,
-                  boxShadow: '0 1px 3px rgba(225, 29, 72, 0.12)',
+                  boxShadow: '0 1px 3px rgba(30, 32, 35, 0.08)',
                   transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >

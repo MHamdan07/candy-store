@@ -84,7 +84,7 @@ export const CheckoutModal: React.FC = () => {
         >
           <div>
             <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)', fontWeight: 600 }}>Total Payable:</div>
-            <div style={{ fontSize: '18px', fontWeight: 900, color: 'var(--color-primary, #E11D48)' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: 'var(--color-primary, #1e2023)' }}>
               PKR {grandTotal.toLocaleString()}
             </div>
           </div>
@@ -128,7 +128,7 @@ export const CheckoutModal: React.FC = () => {
                 width: '24px',
                 height: '24px',
                 borderRadius: '50%',
-                backgroundColor: step >= 1 ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)',
+                backgroundColor: step >= 1 ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)',
                 color: step >= 1 ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
                 display: 'flex',
                 alignItems: 'center',
@@ -152,7 +152,7 @@ export const CheckoutModal: React.FC = () => {
                 width: '24px',
                 height: '24px',
                 borderRadius: '50%',
-                backgroundColor: step >= 2 ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)',
+                backgroundColor: step >= 2 ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)',
                 color: step >= 2 ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
                 display: 'flex',
                 alignItems: 'center',
@@ -176,7 +176,7 @@ export const CheckoutModal: React.FC = () => {
                 width: '24px',
                 height: '24px',
                 borderRadius: '50%',
-                backgroundColor: step === 3 ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)',
+                backgroundColor: step === 3 ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)',
                 color: step === 3 ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
                 display: 'flex',
                 alignItems: 'center',
@@ -208,7 +208,7 @@ export const CheckoutModal: React.FC = () => {
                 style={{
                   padding: '14px',
                   borderRadius: '8px',
-                  border: '1.5px solid var(--color-primary, #E11D48)',
+                  border: '1.5px solid var(--color-primary, #1e2023)',
                   backgroundColor: '#FFF1F2',
                 }}
               >
@@ -248,7 +248,7 @@ export const CheckoutModal: React.FC = () => {
                       style={{
                         padding: '12px 14px',
                         borderRadius: '8px',
-                        border: `1.5px solid ${isSelected ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
+                        border: `1.5px solid ${isSelected ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
                         backgroundColor: isSelected ? '#FFF1F2' : '#FFFFFF',
                         cursor: 'pointer',
                         display: 'flex',
@@ -323,7 +323,7 @@ export const CheckoutModal: React.FC = () => {
                 style={{
                   padding: '14px',
                   borderRadius: '8px',
-                  border: `1.5px solid ${paymentMethod === 'cash_on_delivery' ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
+                  border: `1.5px solid ${paymentMethod === 'cash_on_delivery' ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
                   backgroundColor: paymentMethod === 'cash_on_delivery' ? '#FFF1F2' : '#FFFFFF',
                   cursor: 'pointer',
                   display: 'flex',
@@ -353,7 +353,7 @@ export const CheckoutModal: React.FC = () => {
                 style={{
                   padding: '14px',
                   borderRadius: '8px',
-                  border: `1.5px solid ${paymentMethod === 'credit_khata' ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
+                  border: `1.5px solid ${paymentMethod === 'credit_khata' ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
                   backgroundColor: paymentMethod === 'credit_khata' ? '#FFF1F2' : '#FFFFFF',
                   cursor: canUseCredit ? 'pointer' : 'not-allowed',
                   opacity: canUseCredit ? 1 : 0.65,
@@ -407,7 +407,7 @@ export const CheckoutModal: React.FC = () => {
                 style={{
                   padding: '14px',
                   borderRadius: '8px',
-                  border: `1.5px solid ${paymentMethod === 'bank_transfer_ibft' ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
+                  border: `1.5px solid ${paymentMethod === 'bank_transfer_ibft' ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
                   backgroundColor: paymentMethod === 'bank_transfer_ibft' ? '#FFF1F2' : '#FFFFFF',
                   cursor: 'pointer',
                   display: 'flex',
@@ -566,7 +566,7 @@ export const CheckoutModal: React.FC = () => {
                   borderTop: '1.5px solid var(--color-border, #E2E8F0)',
                   fontSize: '15px',
                   fontWeight: 900,
-                  color: 'var(--color-primary, #E11D48)',
+                  color: 'var(--color-primary, #1e2023)',
                 }}
               >
                 <span>Net Invoice Payable:</span>

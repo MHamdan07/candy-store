@@ -33,6 +33,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
         <button
           onClick={onToggleSidebar}
           type="button"
+          className="admin-hamburger-btn"
           aria-label="Toggle Navigation Menu"
           style={{
             display: 'flex',
@@ -43,7 +44,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
             borderRadius: '6px',
             padding: '7px 9px',
             cursor: 'pointer',
-            color: 'var(--color-text-main, #0F172A)',
+            color: 'var(--color-text-main, #1e1f22)',
           }}
         >
           <IconMenu size={16} />
@@ -55,7 +56,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
               fontFamily: 'var(--font-family-base)',
               fontSize: '17px',
               fontWeight: 800,
-              color: 'var(--color-text-main, #0F172A)',
+              color: 'var(--color-text-main, #1e1f22)',
               lineHeight: 1.2,
               margin: 0,
             }}
@@ -67,7 +68,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
               style={{
                 fontFamily: 'var(--font-family-base)',
                 fontSize: '12px',
-                color: 'var(--color-text-muted, #64748B)',
+                color: 'var(--color-text-muted, #4c4e51)',
                 margin: '2px 0 0 0',
               }}
             >
@@ -91,7 +92,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
           }}
           className="admin-search-bar"
         >
-          <span style={{ marginRight: '8px', color: 'var(--color-text-muted, #64748B)', display: 'flex', alignItems: 'center' }}>
+          <span style={{ marginRight: '8px', color: 'var(--color-text-muted, #4c4e51)', display: 'flex', alignItems: 'center' }}>
             <IconSearch size={14} />
           </span>
           <input
@@ -104,7 +105,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
               fontFamily: 'inherit',
               fontSize: '12px',
               width: '100%',
-              color: 'var(--color-text-main, #0F172A)',
+              color: 'var(--color-text-main, #1e1f22)',
             }}
           />
           <kbd
@@ -114,7 +115,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
               border: '1px solid var(--color-border, #E2E8F0)',
               borderRadius: '3px',
               padding: '1px 5px',
-              color: 'var(--color-text-muted, #64748B)',
+              color: 'var(--color-text-muted, #4c4e51)',
             }}
           >
             /
@@ -139,7 +140,7 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
                 width: '28px',
                 height: '28px',
                 borderRadius: '50%',
-                backgroundColor: '#E11D48',
+                backgroundColor: '#1e2023',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
@@ -151,10 +152,10 @@ export const TopNav: React.FC<TopNavProps> = ({ title, subtitle, actions, onTogg
               {(profile?.fullName || 'S')[0]}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-text-main, #0F172A)', lineHeight: 1.2 }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-text-main, #1e1f22)', lineHeight: 1.2 }}>
                 {profile?.fullName || 'Staff User'}
               </span>
-              <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted, #64748B)', textTransform: 'capitalize' }}>
+              <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted, #4c4e51)', textTransform: 'capitalize' }}>
                 {staffAccount.role.replace('_', ' ')}
               </span>
             </div>

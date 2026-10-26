@@ -393,7 +393,7 @@ export const BeatClusteringModal: React.FC<BeatClusteringModalProps> = ({
 
           <div>
             <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 700 }}>EXPECTED COD CASH TO RECOVER</div>
-            <div style={{ fontSize: '18px', fontWeight: 900, color: '#E11D48' }}>
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#1e2023' }}>
               PKR {totalCod.toLocaleString()}
             </div>
           </div>
@@ -458,7 +458,7 @@ export const BeatClusteringModal: React.FC<BeatClusteringModalProps> = ({
                       <td style={{ padding: '8px 12px', textAlign: 'center', fontWeight: 600 }}>
                         {ord.totalWeightKg} kg
                       </td>
-                      <td style={{ padding: '8px 12px', textAlign: 'right', fontWeight: 700, color: ord.expectedCodAmount > 0 ? '#E11D48' : '#64748B' }}>
+                      <td style={{ padding: '8px 12px', textAlign: 'right', fontWeight: 700, color: ord.expectedCodAmount > 0 ? '#1e2023' : '#64748B' }}>
                         {ord.expectedCodAmount > 0 ? `PKR ${ord.expectedCodAmount.toLocaleString()}` : 'Credit / Advance'}
                       </td>
                     </tr>

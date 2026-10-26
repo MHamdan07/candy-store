@@ -82,7 +82,7 @@ export const PrintablePickSlipModal: React.FC<PrintablePickSlipModalProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '24px' }}>🍬</span>
               <div>
-                <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 900, color: '#E11D48', letterSpacing: '-0.5px' }}>
+                <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 900, color: '#1e2023', letterSpacing: '-0.5px' }}>
                   CANDI SUPER STORE
                 </h1>
                 <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>
@@ -152,7 +152,7 @@ export const PrintablePickSlipModal: React.FC<PrintablePickSlipModalProps> = ({
               FULFILLMENT & WAVE LOGISTICS
             </div>
             <div style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', marginTop: '2px' }}>
-              Order #: <strong style={{ color: '#E11D48' }}>{record.orderNumber}</strong>
+              Order #: <strong style={{ color: '#1e2023' }}>{record.orderNumber}</strong>
             </div>
             <div style={{ color: '#334155' }}>Wave: {waveName}</div>
             <div style={{ color: '#334155' }}>Assigned Picker: <strong>{pickerName}</strong></div>
@@ -270,7 +270,7 @@ export const PrintablePickSlipModal: React.FC<PrintablePickSlipModalProps> = ({
 
           <div>
             <span style={{ fontWeight: 700, color: '#0F172A' }}>Total Invoice Value: </span>
-            <span style={{ fontWeight: 800, color: '#E11D48', fontSize: '13px' }}>
+            <span style={{ fontWeight: 800, color: '#1e2023', fontSize: '13px' }}>
               PKR {record.totalAmount.toLocaleString()}
             </span>
           </div>

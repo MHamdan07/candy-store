@@ -262,7 +262,7 @@ export const TripExecutionDrawer: React.FC<TripExecutionDrawerProps> = ({
 
           <div>
             <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 700 }}>COD CASH ACCUMULATOR</div>
-            <div style={{ fontSize: '16px', fontWeight: 800, color: '#E11D48', marginTop: '2px' }}>
+            <div style={{ fontSize: '16px', fontWeight: 800, color: '#1e2023', marginTop: '2px' }}>
               PKR {totalCollectedCod.toLocaleString()}{' '}
               <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 400 }}>
                 / {trip.expectedTotalCod.toLocaleString()} expected
@@ -280,7 +280,7 @@ export const TripExecutionDrawer: React.FC<TripExecutionDrawerProps> = ({
             style={{
               width: `${progressPercent}%`,
               height: '100%',
-              backgroundColor: progressPercent === 100 ? '#10B981' : '#E11D48',
+              backgroundColor: progressPercent === 100 ? '#10B981' : '#1e2023',
               borderRadius: '999px',
               transition: 'width 0.3s ease',
             }}
@@ -380,7 +380,7 @@ export const TripExecutionDrawer: React.FC<TripExecutionDrawerProps> = ({
 
                     <div>
                       <span style={{ color: '#64748B' }}>COD Collection: </span>
-                      <strong style={{ color: '#E11D48', fontSize: '13px' }}>
+                      <strong style={{ color: '#1e2023', fontSize: '13px' }}>
                         PKR {stop.expectedCodAmount.toLocaleString()}
                       </strong>
                       {isDelivered && (

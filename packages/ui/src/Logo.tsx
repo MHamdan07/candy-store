@@ -29,15 +29,15 @@ export const Logo: React.FC<LogoProps> = ({
   const config = getSizeConfig();
 
   const getEmblemBg = () => {
-    if (isConfectionery) return 'var(--color-promo-crimson)';
+    if (isConfectionery) return 'var(--color-primary, #1e2023)';
     if (isLight) return '#FFFFFF';
-    return 'var(--color-smoky-black)';
+    return 'var(--color-smoky-black, #1e1f22)';
   };
 
   const getInnerFill = () => {
-    if (isConfectionery) return '#E11D48';
+    if (isConfectionery) return '#1e2023';
     if (isLight) return '#FFFFFF';
-    return '#0F172A';
+    return '#1e1f22';
   };
 
   const getCircleFill = () => {

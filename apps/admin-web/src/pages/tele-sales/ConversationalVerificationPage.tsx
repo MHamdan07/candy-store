@@ -487,7 +487,7 @@ export const ConversationalVerificationPage: React.FC = () => {
         {[1, 2, 3, 4, 5].map((s) => {
           const isPassed = s < stage;
           const isCurrent = s === stage;
-          const bg = isCurrent ? '#E11D48' : isPassed ? '#10B981' : '#E2E8F0';
+          const bg = isCurrent ? '#1e2023' : isPassed ? '#10B981' : '#E2E8F0';
           const textColor = isCurrent || isPassed ? '#FFFFFF' : '#64748B';
 
           return (
@@ -706,7 +706,7 @@ export const ConversationalVerificationPage: React.FC = () => {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <div>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#E11D48', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#1e2023', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 5-Stage Conversational Verification & Fulfillment Pipeline
               </span>
               <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 800, color: '#0F172A' }}>
@@ -911,7 +911,7 @@ export const ConversationalVerificationPage: React.FC = () => {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#E11D48',
+                  color: '#1e2023',
                   fontSize: '12px',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -1745,7 +1745,7 @@ export const ConversationalVerificationPage: React.FC = () => {
 
                     <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '6px', border: '1px solid #E9D5FF' }}>
                       <div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 600 }}>ORDER INVOICE TOTAL</div>
-                      <div style={{ fontSize: '16px', fontWeight: 800, color: '#E11D48' }}>
+                      <div style={{ fontSize: '16px', fontWeight: 800, color: '#1e2023' }}>
                         PKR {selectedRecord.totalAmount.toLocaleString()}
                       </div>
                     </div>

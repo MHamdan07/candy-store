@@ -23,17 +23,17 @@ export const Button: React.FC<ButtonProps> = ({
     switch (variant) {
       case 'primary':
         return {
-          backgroundColor: 'var(--color-promo-crimson)',
+          backgroundColor: 'var(--color-primary, #1e2023)',
           color: '#FFFFFF',
-          border: '1px solid var(--color-promo-crimson)',
-          boxShadow: '0 2px 8px rgba(225, 29, 72, 0.25)',
+          border: '1px solid var(--color-primary, #1e2023)',
+          boxShadow: '0 2px 6px rgba(30, 32, 35, 0.18)',
         };
       case 'secondary':
         return {
-          backgroundColor: '#1E293B',
+          backgroundColor: '#47484c',
           color: '#F8FAFC',
-          border: '1px solid #1E293B',
-          boxShadow: '0 1px 3px rgba(15, 23, 42, 0.1)',
+          border: '1px solid #47484c',
+          boxShadow: '0 1px 3px rgba(30, 32, 35, 0.1)',
         };
       case 'outline':
         return {
@@ -50,10 +50,10 @@ export const Button: React.FC<ButtonProps> = ({
         };
       case 'promo':
         return {
-          backgroundColor: 'var(--color-promo-crimson)',
+          backgroundColor: 'var(--color-primary, #1e2023)',
           color: '#FFFFFF',
-          border: '1px solid var(--color-promo-crimson)',
-          boxShadow: '0 4px 12px rgba(225, 29, 72, 0.3)',
+          border: '1px solid var(--color-primary, #1e2023)',
+          boxShadow: '0 3px 10px rgba(30, 32, 35, 0.2)',
         };
       case 'ghost':
         return {

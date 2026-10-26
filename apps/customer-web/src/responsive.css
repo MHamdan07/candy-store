@@ -42,8 +42,8 @@
 @media (hover: hover) and (pointer: fine) {
   .candi-product-card:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.12) !important;
-    border-color: var(--color-primary, #E11D48) !important;
+    box-shadow: 0 10px 24px -4px rgba(30, 32, 35, 0.08) !important;
+    border-color: var(--color-primary, #1e2023) !important;
   }
 
   .candi-product-card:hover .product-card-img {
@@ -292,13 +292,13 @@
 
 @media (hover: hover) and (pointer: fine) {
   .category-pill-btn:hover {
-    transform: translateY(-2px) scale(1.03) !important;
-    box-shadow: 0 6px 16px -2px rgba(15, 23, 42, 0.14) !important;
-    border-color: #0F172A !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 4px 12px -2px rgba(30, 32, 35, 0.1) !important;
+    border-color: #1e2023 !important;
   }
 
   .category-pill-btn:hover .category-pill-icon {
-    transform: scale(1.22) rotate(-6deg);
+    transform: scale(1.15) rotate(-4deg);
   }
 }
 
@@ -312,7 +312,7 @@
 }
 
 .category-pill-btn.active-pill {
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25) !important;
+  box-shadow: 0 3px 10px rgba(30, 32, 35, 0.18) !important;
 }
 
 /* --------------------------------------------------------------------------

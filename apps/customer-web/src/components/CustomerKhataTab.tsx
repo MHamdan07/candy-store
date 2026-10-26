@@ -50,7 +50,7 @@ export const CustomerKhataTab: React.FC = () => {
           <div style={{ fontSize: '12px', color: 'var(--color-text-muted, #64748B)', textTransform: 'uppercase', fontWeight: 700 }}>
             Current Utilized Balance
           </div>
-          <div style={{ fontSize: '26px', fontWeight: 900, color: 'var(--color-primary, #E11D48)', marginTop: '4px' }}>
+          <div style={{ fontSize: '26px', fontWeight: 900, color: 'var(--color-primary, #1e2023)', marginTop: '4px' }}>
             PKR {currentBalance.toLocaleString()}
           </div>
           <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)', marginTop: '4px' }}>

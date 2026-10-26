@@ -64,17 +64,15 @@ export const AppSplashScreen: React.FC<AppSplashScreenProps> = ({
         transform: isFadingOut ? 'scale(1.03)' : 'scale(1)',
       }}
     >
-      {/* Background Animated Confectionery Particle Texture */}
+      {/* Background Subtle Particle Texture */}
       <div
         className="candi-splash-texture"
         style={{
           position: 'absolute',
           inset: 0,
-          opacity: 0.12,
-          backgroundImage: `radial-gradient(circle, #E11D48 1.5px, transparent 1.5px), radial-gradient(circle, #F59E0B 1px, transparent 1px)`,
-          backgroundSize: '36px 36px, 24px 24px',
-          backgroundPosition: '0 0, 18px 18px',
-          animation: 'candiTextureDrift 16s linear infinite',
+          opacity: 0.08,
+          backgroundImage: `radial-gradient(circle, #47484c 1.5px, transparent 1.5px)`,
+          backgroundSize: '36px 36px',
           pointerEvents: 'none',
         }}
       />
@@ -231,10 +229,10 @@ export const AppSplashScreen: React.FC<AppSplashScreenProps> = ({
             style={{
               height: '100%',
               width: `${progress}%`,
-              background: 'linear-gradient(90deg, #E11D48 0%, #F59E0B 100%)',
+              backgroundColor: '#FFFFFF',
               borderRadius: '999px',
               transition: 'width 0.4s ease-out',
-              boxShadow: '0 0 8px rgba(225, 29, 72, 0.8)',
+              boxShadow: '0 0 6px rgba(255, 255, 255, 0.4)',
             }}
           />
         </div>
@@ -256,8 +254,7 @@ export const AppSplashScreen: React.FC<AppSplashScreenProps> = ({
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              backgroundColor: isAuthenticated ? '#10B981' : '#E11D48',
-              boxShadow: `0 0 6px ${isAuthenticated ? '#10B981' : '#E11D48'}`,
+              backgroundColor: isAuthenticated ? '#059669' : '#94A3B8',
             }}
           />
           <span>

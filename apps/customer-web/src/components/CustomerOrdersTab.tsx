@@ -33,8 +33,8 @@ export const CustomerOrdersTab: React.FC = () => {
             style={{
               padding: '6px 14px',
               borderRadius: '999px',
-              border: `1px solid ${filter === 'all' ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
-              backgroundColor: filter === 'all' ? 'var(--color-primary, #E11D48)' : '#FFFFFF',
+              border: `1px solid ${filter === 'all' ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
+              backgroundColor: filter === 'all' ? 'var(--color-primary, #1e2023)' : '#FFFFFF',
               color: filter === 'all' ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
               fontSize: '12px',
               fontWeight: 700,
@@ -51,8 +51,8 @@ export const CustomerOrdersTab: React.FC = () => {
             style={{
               padding: '6px 14px',
               borderRadius: '999px',
-              border: `1px solid ${filter === 'active' ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
-              backgroundColor: filter === 'active' ? 'var(--color-primary, #E11D48)' : '#FFFFFF',
+              border: `1px solid ${filter === 'active' ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
+              backgroundColor: filter === 'active' ? 'var(--color-primary, #1e2023)' : '#FFFFFF',
               color: filter === 'active' ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
               fontSize: '12px',
               fontWeight: 700,
@@ -69,8 +69,8 @@ export const CustomerOrdersTab: React.FC = () => {
             style={{
               padding: '6px 14px',
               borderRadius: '999px',
-              border: `1px solid ${filter === 'delivered' ? 'var(--color-primary, #E11D48)' : 'var(--color-border, #E2E8F0)'}`,
-              backgroundColor: filter === 'delivered' ? 'var(--color-primary, #E11D48)' : '#FFFFFF',
+              border: `1px solid ${filter === 'delivered' ? 'var(--color-primary, #1e2023)' : 'var(--color-border, #E2E8F0)'}`,
+              backgroundColor: filter === 'delivered' ? 'var(--color-primary, #1e2023)' : '#FFFFFF',
               color: filter === 'delivered' ? '#FFFFFF' : 'var(--color-text-muted, #64748B)',
               fontSize: '12px',
               fontWeight: 700,
@@ -126,7 +126,7 @@ export const CustomerOrdersTab: React.FC = () => {
 
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)', fontWeight: 600 }}>Net Invoice Amount:</div>
-                    <div style={{ fontSize: '18px', fontWeight: 900, color: 'var(--color-primary, #E11D48)' }}>
+                    <div style={{ fontSize: '18px', fontWeight: 900, color: 'var(--color-primary, #1e2023)' }}>
                       PKR {ord.grandTotal.toLocaleString()}
                     </div>
                     <div style={{ fontSize: '11px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>

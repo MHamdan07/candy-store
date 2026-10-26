@@ -276,14 +276,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
       <aside
         style={{
           width: '260px',
-          backgroundColor: '#0F172A',
+          backgroundColor: '#1e1f22',
           color: '#F8FAFC',
           display: 'flex',
           flexDirection: 'column',
           height: '100vh',
           position: 'sticky',
           top: 0,
-          borderRight: '1px solid #1E293B',
+          borderRight: '1px solid #2a2c30',
           flexShrink: 0,
           fontFamily: 'var(--font-family-base)',
           zIndex: 999,
@@ -295,8 +295,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
         <div
           style={{
             padding: '18px 20px',
-            borderBottom: '1px solid #1E293B',
-            backgroundColor: '#0F172A',
+            borderBottom: '1px solid #2a2c30',
+            backgroundColor: '#1e1f22',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -354,9 +354,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                         fontSize: '13px',
                         fontWeight: isActive ? 700 : 500,
                         color: isActive ? '#FFFFFF' : '#94A3B8',
-                        backgroundColor: isActive ? '#1E293B' : 'transparent',
+                        backgroundColor: isActive ? '#2a2c30' : 'transparent',
                         textDecoration: 'none',
-                        borderLeft: isActive ? '3px solid #E11D48' : '3px solid transparent',
+                        borderLeft: isActive ? '3px solid #FFFFFF' : '3px solid transparent',
                         transition: 'all 0.15s ease',
                       })}
                     >
@@ -371,7 +371,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                           style={{
                             fontSize: '10px',
                             fontWeight: 800,
-                            backgroundColor: '#E11D48',
+                            backgroundColor: '#47484c',
                             color: '#FFFFFF',
                             padding: '1px 6px',
                             borderRadius: '999px',
@@ -404,9 +404,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                     fontSize: '13px',
                     fontWeight: isActive ? 700 : 500,
                     color: isActive ? '#FFFFFF' : '#94A3B8',
-                    backgroundColor: isActive ? '#1E293B' : 'transparent',
+                    backgroundColor: isActive ? '#2a2c30' : 'transparent',
                     textDecoration: 'none',
-                    borderLeft: isActive ? '3px solid #E11D48' : '3px solid transparent',
+                    borderLeft: isActive ? '3px solid #FFFFFF' : '3px solid transparent',
                     transition: 'all 0.15s ease',
                   })}
                 >
@@ -421,7 +421,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                       style={{
                         fontSize: '10px',
                         fontWeight: 800,
-                        backgroundColor: '#E11D48',
+                        backgroundColor: '#47484c',
                         color: '#FFFFFF',
                         padding: '1px 6px',
                         borderRadius: '999px',
@@ -442,8 +442,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
         <div
           style={{
             padding: '16px',
-            borderTop: '1px solid #1E293B',
-            backgroundColor: '#0B1120',
+            borderTop: '1px solid #2a2c30',
+            backgroundColor: '#18191b',
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',
@@ -455,14 +455,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                 width: '32px',
                 height: '32px',
                 borderRadius: '50%',
-                backgroundColor: '#1E293B',
+                backgroundColor: '#2a2c30',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontWeight: 800,
                 fontSize: '12px',
-                border: '1px solid #334155',
+                border: '1px solid #47484c',
               }}
             >
               {profile?.fullName ? profile.fullName.slice(0, 2).toUpperCase() : 'AD'}

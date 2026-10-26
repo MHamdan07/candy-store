@@ -1,0 +1,93 @@
+/* ==========================================================================
+   Candi Super Store Admin Control Tower - Responsive & Royal Charcoal Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Responsive Sidebar & Navigation Drawer (Desktop vs Tablet/Mobile)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1025px) {
+  .admin-hamburger-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  aside {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: none;
+  }
+
+  aside.admin-sidebar-mobile-open {
+    transform: translateX(0) !important;
+    box-shadow: 8px 0 32px rgba(30, 32, 35, 0.3) !important;
+  }
+
+  .admin-hamburger-btn {
+    display: flex !important;
+  }
+
+  .admin-search-bar {
+    width: 180px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-search-bar {
+    display: none !important;
+  }
+
+  header {
+    height: 56px !important;
+    padding: 0 12px !important;
+  }
+
+  main {
+    padding: 14px 12px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Responsive Tables (Touch Scrolling & Zero Cutoff)
+   -------------------------------------------------------------------------- */
+.admin-table-container,
+table {
+  max-width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/* --------------------------------------------------------------------------
+   3. Custom Royal Charcoal Clean Scrollbar
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+aside ::-webkit-scrollbar-thumb {
+  background: #2a2c30;
+}
+
+aside ::-webkit-scrollbar-thumb:hover {
+  background: #47484c;
+}

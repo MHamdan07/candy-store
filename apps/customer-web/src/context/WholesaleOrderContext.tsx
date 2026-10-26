@@ -178,7 +178,7 @@ export const WholesaleOrderProvider: React.FC<{ children: React.ReactNode }> = (
   // Add to cart helper respecting retailer pricing
   const addToCart = (product: WholesaleProductItem, unit?: PackagingUnitType, quantity = 1) => {
     const selectedUnit = unit || product.baseUnit;
-    const addQty = Math.max(quantity, product.minOrderQuantity || 1);
+    const addQty = quantity && quantity > 0 ? quantity : 1;
 
     // Calculate unit price: check customer account tier if applicable
     let unitPrice = product.standardWholesalePrice;
@@ -247,19 +247,16 @@ export const WholesaleOrderProvider: React.FC<{ children: React.ReactNode }> = (
   const totalCartons = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
 
-  // 5% wholesale bulk incentive discount on orders with 5+ units or >= 10,000 PKR
-  const bulkDiscount = totalCartons >= 5 || subtotal >= 10000 ? Math.round(subtotal * 0.05) : 0;
-
-  // Free delivery threshold: PKR 5,000 in Karachi wholesale zone
-  const FREE_DELIVERY_THRESHOLD = 5000;
-  const isFreeDelivery = subtotal >= FREE_DELIVERY_THRESHOLD || subtotal === 0;
-  const freeDeliveryShortfall = Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal);
-  const deliveryFee = subtotal === 0 ? 0 : isFreeDelivery ? 0 : 250;
+  // Disconnected promotional features removed
+  const bulkDiscount = 0;
+  const isFreeDelivery = true;
+  const freeDeliveryShortfall = 0;
+  const deliveryFee = 0;
 
   // Pakistan Tax Filer 0.5% advance withholding tax on wholesale confectionery
-  const taxFilerAdvance = Math.round((subtotal - bulkDiscount) * 0.005 * 100) / 100;
+  const taxFilerAdvance = Math.round(subtotal * 0.005 * 100) / 100;
 
-  const grandTotal = Math.round((subtotal - bulkDiscount + taxFilerAdvance + deliveryFee) * 100) / 100;
+  const grandTotal = Math.round((subtotal + taxFilerAdvance) * 100) / 100;
 
   // Place Order
   const placeOrder = (params: {

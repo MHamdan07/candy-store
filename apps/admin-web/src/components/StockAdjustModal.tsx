@@ -139,7 +139,7 @@ export const StockAdjustModal: React.FC<StockAdjustModalProps> = ({
                   flex: 1,
                   padding: '7px 0',
                   borderRadius: '6px',
-                  border: quantityToAdd === qty ? '2px solid #E11D48' : '1px solid #CBD5E1',
+                  border: quantityToAdd === qty ? '2px solid #1e2023' : '1px solid #CBD5E1',
                   backgroundColor: quantityToAdd === qty ? '#FFF1F2' : '#FFFFFF',
                   color: quantityToAdd === qty ? '#BE123C' : '#0F172A',
                   fontWeight: 800,

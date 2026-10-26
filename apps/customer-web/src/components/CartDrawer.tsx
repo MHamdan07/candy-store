@@ -78,10 +78,10 @@ export const CartDrawer: React.FC = () => {
           }}
         >
           <div>
-            <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-text-main, #0F172A)' }}>
+            <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-text-main, #1e1f22)' }}>
               Wholesale Order Basket
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--color-text-muted, #64748B)', marginTop: '2px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--color-text-muted, #4c4e51)', marginTop: '2px' }}>
               {cartItemCount} Products • {totalCartons} Units
             </div>
           </div>
@@ -320,28 +320,28 @@ export const CartDrawer: React.FC = () => {
           >
             {/* Breakdown */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', marginBottom: '14px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-muted, #64748B)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-muted, #4c4e51)' }}>
                 <span>Gross Catalog Subtotal:</span>
-                <span style={{ fontWeight: 700, color: 'var(--color-text-main, #0F172A)' }}>PKR {subtotal.toLocaleString()}</span>
+                <span style={{ fontWeight: 700, color: 'var(--color-text-main, #1e1f22)' }}>PKR {subtotal.toLocaleString()}</span>
               </div>
 
               {bulkDiscount > 0 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#059669', fontWeight: 700 }}>
-                  <span>★ Bulk Trade Incentive (5%):</span>
+                  <span>Bulk Trade Incentive (5%):</span>
                   <span>-PKR {bulkDiscount.toLocaleString()}</span>
                 </div>
               )}
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-muted, #64748B)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-muted, #4c4e51)' }}>
                 <span>Advance Income Tax WHT (0.5% Filer):</span>
                 <span>+PKR {taxFilerAdvance.toLocaleString()}</span>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-muted, #64748B)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-muted, #4c4e51)' }}>
                 <span>Karachi Wholesale Route Delivery:</span>
                 <span>
                   {deliveryFee === 0 ? (
-                    <strong style={{ color: '#059669' }}>FREE (Order &gt; 5,000)</strong>
+                    <strong style={{ color: '#059669' }}>FREE Standard Delivery</strong>
                   ) : (
                     `+PKR ${deliveryFee}`
                   )}
@@ -354,13 +354,13 @@ export const CartDrawer: React.FC = () => {
                   justifyContent: 'space-between',
                   fontSize: '16px',
                   fontWeight: 900,
-                  color: 'var(--color-text-main, #0F172A)',
+                  color: 'var(--color-text-main, #1e1f22)',
                   paddingTop: '8px',
                   borderTop: '1px solid var(--color-border, #E2E8F0)',
                 }}
               >
                 <span>Estimated Net Payable:</span>
-                <span style={{ color: 'var(--color-primary, #E11D48)' }}>
+                <span style={{ color: 'var(--color-primary, #1e2023)' }}>
                   PKR {grandTotal.toLocaleString()}
                 </span>
               </div>

@@ -135,9 +135,9 @@ export const CategoryPillBar: React.FC<CategoryPillBarProps> = ({
               style={{
                 padding: '8px 16px',
                 borderRadius: 'var(--radius-full, 9999px)',
-                border: isSelected ? '1.5px solid #0F172A' : '1px solid var(--color-border, #E2E8F0)',
-                backgroundColor: isSelected ? '#0F172A' : '#F8FAFC',
-                color: isSelected ? '#FFFFFF' : 'var(--color-text, #334155)',
+                border: isSelected ? '1.5px solid #1e2023' : '1px solid var(--color-border, #E2E8F0)',
+                backgroundColor: isSelected ? '#1e2023' : '#FFFFFF',
+                color: isSelected ? '#FFFFFF' : 'var(--color-text, #1e1f22)',
                 fontSize: '12.5px',
                 fontWeight: isSelected ? 800 : 600,
                 cursor: 'pointer',
@@ -159,8 +159,8 @@ export const CategoryPillBar: React.FC<CategoryPillBarProps> = ({
                   fontWeight: 700,
                   padding: '2px 7px',
                   borderRadius: '9999px',
-                  backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.2)' : '#E2E8F0',
-                  color: isSelected ? '#FFFFFF' : '#475569',
+                  backgroundColor: isSelected ? '#38393d' : '#F1F5F9',
+                  color: isSelected ? '#FFFFFF' : '#4c4e51',
                   lineHeight: 1.2,
                   transition: 'all 0.2s ease',
                 }}
